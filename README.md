@@ -22,7 +22,7 @@ To use this library in your C# project, you can either download the Securibox.Fa
 dotnet add package Securibox.FacturX
 ```
 Once you have the Securibox FacturX library installed, you can include calls to it in your code.
-For sample implementations, see the tests in the Securibox.FacturX.Tests project.
+For sample implementations, see the tests in the [Securibox.FacturX.Tests](https://github.com/Securibox/facturx/tree/main/Securibox.FacturX.Tests) project.
 
 ## Dependencies
 Securibox.FacturX library utilises the following MIT licensed projects:
