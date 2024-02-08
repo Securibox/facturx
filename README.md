@@ -33,7 +33,7 @@ Securibox.FacturX library utilises the following MIT licensed projects:
 ## Quick start
 ### Read information from Factur-X PDF invoice
 The following is the minimum needed code to read a Factur-X PDF invoice in Minimum profile:
-```net
+```csharp
 var importer = new FacturxImporter("C:\\Path\\To\\Facture_UE_MINIMUM.pdf"));
 var crossIndustryInvoice = importer.ImportDataWithDeserialization();
 var invoice = crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
@@ -41,20 +41,20 @@ Assert.AreEqual("FA-2017-0008", invoice.ExchangedDocument.ID.Value);
 Assert.AreEqual("20171103", invoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
 ```
 The following is the minimum needed code to read a Factur-X PDF invoice in Basic profile:
-```net
+```csharp
 var importer = new FacturxImporter("C:\\Path\\To\\Facture_UE_MINIMUM.pdf"));
 var crossIndustryInvoice = importer.ImportDataWithDeserialization();
 var invoice = crossIndustryInvoice as FacturX.SpecificationModels.Basic.CrossIndustryInvoice;
 ```
 
 ### Validate Factur-X
-```net
+```csharp
 var importer = new FacturxImporter(@"C:\Path\To\Facture_UE_MINIMUM.pdf"));
 importer.IsFacturXValid();
 ```
 
 ### Generate a Factur-X PDF invoice
-```net
+```csharp
 Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice invoiceToExport = new Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice()
 {
     ExchangedDocument = new SpecificationModels.Minimum.ExchangedDocument()
