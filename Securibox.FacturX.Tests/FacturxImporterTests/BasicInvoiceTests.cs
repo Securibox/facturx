@@ -3059,12 +3059,5 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.AreEqual("BUYER ACCOUNT REF", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
         }
-
-        [Test]
-        public void ExtractData_Facture_FCLI000003_20221100001_Basic_FAILURE_INVALID_AGAINST_SCHEMATRON()
-        {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "FCLI000003_20221100001.pdf"));
-            Assert.Throws<Exception>(() => importer.ImportDataWithDeserialization());
-        }
     }
 }

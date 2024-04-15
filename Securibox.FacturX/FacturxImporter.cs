@@ -2,10 +2,8 @@
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.Advanced;
 using PdfSharpCore.Pdf.IO;
-using Securibox.FacturX.Core;
 using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
-using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.SpecificationModels;
 using System.Text;
 using System.Xml;
@@ -67,8 +65,16 @@ namespace Securibox.FacturX
             var validationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
             if (!validationResult._isSuccessfullValidation)
             {
-                throw new Exception("Invalid Xml.");
+                var errors = validationResult._results.Where(x => x.IsError == true).ToList();
+
+                var exception = new Exception("Invalid xml.");
+                for (int i = 0; i < errors.Count; i++)
+                {
+                    exception.Data.Add(i, errors[i]);
+                }
+                throw exception;
             }
+
             return true;
         }
 

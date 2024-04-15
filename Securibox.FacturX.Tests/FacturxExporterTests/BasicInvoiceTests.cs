@@ -319,8 +319,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             using (var stream = exporter.CreateFacturXStream(
                 Path.Combine(_mainDir, "2023-6013_facture.pdf"),
                 invoice,
-                $"SEPEM: Invoice ",
-                $"Invoice "))
+                $"SEPEM: Invoice "))
             {
                 using (var fileStream = new FileStream(outputPath, FileMode.Create))
                 {

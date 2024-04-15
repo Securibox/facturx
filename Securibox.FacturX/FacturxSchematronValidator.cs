@@ -19,9 +19,7 @@ namespace Securibox.FacturX
 
         public static ValidationResult ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
         {
-
             var validationSchema = LoadValidationSchema(conformanceLevel);
-
 
             XmlReader xmlReader = new XmlNodeReader(xmlDocument);
             XPathDocument doc = new XPathDocument(xmlReader);
