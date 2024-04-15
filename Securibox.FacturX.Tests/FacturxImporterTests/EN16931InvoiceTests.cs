@@ -40,7 +40,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("urn:cen.eu:en16931:2017", invoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line1.SpecifiedTradeProduct);
             Assert.AreEqual("3518370400049", line1.SpecifiedTradeProduct.GlobalID.Value);
@@ -66,7 +66,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual(-20.48, line1.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line2.SpecifiedTradeProduct);
             Assert.AreEqual("HOLANCL", line2.SpecifiedTradeProduct.SellerAssignedID);
@@ -195,7 +195,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("urn:cen.eu:en16931:2017", invoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line1.SpecifiedTradeProduct);
             Assert.AreEqual("3518370400049", line1.SpecifiedTradeProduct.GlobalID.Value);
@@ -222,7 +222,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual(20.48, line1.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line2.SpecifiedTradeProduct);
             Assert.AreEqual("HOLANCL", line2.SpecifiedTradeProduct.SellerAssignedID);
@@ -360,7 +360,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
             Assert.AreEqual("3518370400049", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0160", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
             Assert.AreEqual("NOUG250", line1.SpecifiedTradeProduct.SellerAssignedID);
@@ -383,7 +383,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("3518370200090", line2.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0160", line2.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -403,7 +403,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
             Assert.AreEqual("Huile d'olive à l'ancienne", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("HOLANCL", line3.SpecifiedTradeProduct.SellerAssignedID);
 
@@ -530,7 +530,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
             Assert.AreEqual("3518370400049", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0160", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
             Assert.AreEqual("Nougat de l'Abbaye 250g", line1.SpecifiedTradeProduct.Name);
@@ -552,7 +552,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("3518370200090", line2.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0160", line2.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -572,7 +572,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
             Assert.AreEqual("Huile d'olive à l'ancienne", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("HOLANCL", line3.SpecifiedTradeProduct.SellerAssignedID);
 
@@ -695,7 +695,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("urn:cen.eu:en16931:2017", invoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line1.SpecifiedTradeProduct);
             Assert.AreEqual("3518370400049", line1.SpecifiedTradeProduct.GlobalID.Value);
@@ -722,7 +722,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual(204.75, line1.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line2.SpecifiedTradeProduct);
             Assert.AreEqual("3518370200090", line2.SpecifiedTradeProduct.GlobalID.Value);
@@ -746,7 +746,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual(128.00, line2.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.NotNull(line3.SpecifiedTradeProduct);
             Assert.AreEqual("HOLANCL", line3.SpecifiedTradeProduct.SellerAssignedID);
@@ -866,7 +866,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         public void ExtractData_Facture_F20220023_EN16931_SUCCESS()
         {
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
-            
+
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.NotNull(crossIndustryInvoice);
 
@@ -898,14 +898,14 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
             Assert.AreEqual("PRESTATION SUPPORT", line1.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line1.SpecifiedTradeProduct.Description);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual(60.0000, line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
             Assert.AreEqual(1.0000, line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
@@ -964,7 +964,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -1022,7 +1022,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -1354,7 +1354,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -1415,7 +1415,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -1470,7 +1470,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -1703,7 +1703,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -1731,7 +1731,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -1756,7 +1756,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -1842,7 +1842,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.AdditionalReferencedDocument);
 
             Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SpecifiedProcuringProject);
-            
+
             Assert.AreEqual("DEL Name", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
             Assert.AreEqual("06000", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
             Assert.AreEqual("DEL ADRESSE LIGNE 1", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
@@ -1959,7 +1959,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -1990,7 +1990,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -2016,7 +2016,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -2240,7 +2240,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -2271,7 +2271,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -2297,7 +2297,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -2520,7 +2520,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -2551,7 +2551,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -2577,7 +2577,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -2800,7 +2800,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -2831,7 +2831,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -2857,7 +2857,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -3077,7 +3077,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -3108,7 +3108,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -3135,7 +3135,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -3371,7 +3371,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("598785412598745", line1.SpecifiedTradeProduct.GlobalID.Value);
             Assert.AreEqual("0088", line1.SpecifiedTradeProduct.GlobalID.SchemeID);
@@ -3437,7 +3437,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line2 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("FOURNITURES DIVERSES", line2.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line2.SpecifiedTradeProduct.Description);
@@ -3497,7 +3497,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var line3 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID);
+            Assert.AreEqual("3", line3.AssociatedDocumentLineDocument.LineID.Value);
 
             Assert.AreEqual("APPEL", line3.SpecifiedTradeProduct.Name);
             Assert.AreEqual("Description", line3.SpecifiedTradeProduct.Description);
@@ -3731,6 +3731,174 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceReferencedDocument);
 
             Assert.AreEqual("BUYER ACCOUNT REF", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+        }
+
+        [Test]
+        public void ExtractData_Facture_IFR_2200566_EN16931_SUCCESS()
+        {
+            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_IFR_2200566_EN_16931_444998_000000000000280.pdf"));
+
+            var crossIndustryInvoice = importer.ImportDataWithDeserialization();
+            Assert.NotNull(crossIndustryInvoice);
+
+            var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
+
+            Assert.AreEqual("IFR_2200566", invoice.ExchangedDocument.ID.Value);
+            Assert.AreEqual("20220719", invoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
+            Assert.AreEqual("102", invoice.ExchangedDocument.IssueDateTime.DateTimeString.Format);
+            Assert.AreEqual("380", invoice.ExchangedDocument.TypeCode);
+
+            var noteList = invoice.ExchangedDocument.IncludedNote;
+            Assert.IsNotNull(noteList);
+            Assert.AreEqual("TEXTE PAB texte pab", noteList.ElementAt(0).Content);
+            Assert.AreEqual("AAI", noteList.ElementAt(0).SubjectCode);
+
+            Assert.AreEqual("Test après modif", noteList.ElementAt(1).Content);
+
+            Assert.AreEqual("MCOM", noteList.ElementAt(2).Content);
+            Assert.AreEqual("AAA", noteList.ElementAt(2).SubjectCode);
+
+            Assert.IsNull(invoice.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
+
+            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+
+            var line1 = invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
+
+            Assert.NotNull(line1.SpecifiedTradeProduct);
+            Assert.IsNull(line1.SpecifiedTradeProduct.GlobalID);
+            Assert.AreEqual("LAIT", line1.SpecifiedTradeProduct.SellerAssignedID);
+            Assert.AreEqual("Lait", line1.SpecifiedTradeProduct.Name);
+            Assert.AreEqual("Lait demi-écrémé U.H.T. Test SOQUIJ coucou Mag", line1.SpecifiedTradeProduct.Description);
+
+            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
+            Assert.AreEqual(1000.0000, line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
+            Assert.IsNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge);
+
+            Assert.NotNull(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
+            Assert.AreEqual(1000.0000, line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+
+            Assert.AreEqual(1.0000, line1.SpecifiedLineTradeDelivery.BilledQuantity.Value);
+            Assert.AreEqual("LTR", line1.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+
+            Assert.AreEqual("VAT", line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
+            Assert.AreEqual("S", line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
+            Assert.AreEqual(20.60, line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+
+            Assert.AreEqual(1000.00, line1.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+
+            Assert.AreEqual("IFR QUALIAC (IFR)", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.Name);
+
+            Assert.AreEqual("31639383400080", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.Value);
+            Assert.AreEqual("0002", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.AreEqual("SA INFERENCE", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.TradingBusinessName);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.DefinedTradeContact);
+
+            Assert.AreEqual("FR", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
+            Assert.AreEqual("15000", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
+            Assert.AreEqual("14 avenue du Garric", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("Parc d'activité de tronquière", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineTwo);
+            Assert.AreEqual("AURILLAC", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+
+            Assert.AreEqual("EM", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.AreEqual("support@qualiac.com", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.URIUniversalCommunication.URIID.Value);
+
+            Assert.AreEqual("VA", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.FirstOrDefault().ID.SchemeID);
+            Assert.AreEqual("FR123456789101", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.FirstOrDefault().ID.Value);
+
+            Assert.AreEqual("PAULINE&test_\"BLALA'CCC<JD?IF> TEST COMPLET PASBBBBBBBBBBBBB", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization);
+
+            Assert.AreEqual("interloc. log. C", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.DefinedTradeContact.DepartmentName);
+
+            Assert.AreEqual("FR", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CountryID);
+            Assert.AreEqual("15000", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
+            Assert.AreEqual("5 rue de compte TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("BATA", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineTwo);
+            Assert.AreEqual("test", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineThree);
+            Assert.AreEqual("AURILLAC", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CityName);
+
+            Assert.AreEqual("VA", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedTaxRegistration.FirstOrDefault().ID.SchemeID);
+            Assert.AreEqual("FR123456789", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedTaxRegistration.FirstOrDefault().ID.Value);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerReference);
+
+            Assert.AreEqual("PAB 2780 3", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID);
+
+            Assert.AreEqual("12345568787864", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault().Value);
+            Assert.AreEqual("0002", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault().SchemeID);
+            Assert.AreEqual("PAULINE&test_\"BLALA'CCC<JD?IF> TEST COMPLET PASBBBBBBBBBBBBB", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
+
+            Assert.AreEqual("15000", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
+            Assert.AreEqual("5 rue de compte TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("BATA", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
+            Assert.AreEqual("test", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineThree);
+            Assert.AreEqual("AURILLAC", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("FR", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent);
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument);
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument);
+
+            Assert.AreEqual("20220719", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
+            Assert.AreEqual("102", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PaymentReference);
+            Assert.AreEqual("EUR", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode);
+
+            Assert.AreEqual("Dépôt principal test complet PABBBBBBBBBBBBBBBBBBBBBBBBBBBBB", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PayeeTradeParty.Name);
+
+            Assert.AreEqual("37915832200097", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
+            Assert.AreEqual("0002", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+
+            Assert.AreEqual("30", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.TypeCode);
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.Information);
+            Assert.AreEqual("TTTTDDDTTD", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value);
+            Assert.AreEqual("FR7610278365730001036790131", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault().IBANID.Value);
+
+            var taxDistributionList = invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax;
+            Assert.IsNotNull(taxDistributionList);
+
+            Assert.AreEqual(185.40, taxDistributionList.ElementAt(0).CalculatedAmount.Value);
+            Assert.AreEqual("VAT", taxDistributionList.ElementAt(0).TypeCode);
+            Assert.IsNull(taxDistributionList.ElementAt(0).ExemptionReason);
+            Assert.AreEqual(900.00, taxDistributionList.ElementAt(0).BasisAmount.Value);
+            Assert.AreEqual("S", taxDistributionList.ElementAt(0).CategoryCode);
+            Assert.AreEqual("72", taxDistributionList.ElementAt(0).DueDateTypeCode);
+            Assert.AreEqual(20.60, taxDistributionList.ElementAt(0).RateApplicablePercent);
+
+            Assert.IsFalse(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
+            Assert.AreEqual(10.00, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
+            Assert.AreEqual(1000.00, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value);
+            Assert.AreEqual(100.00, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
+            Assert.AreEqual("Remise en pourcentage Euro", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.AreEqual("VAT", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
+            Assert.AreEqual("S", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
+            Assert.AreEqual(20.60, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+
+            Assert.AreEqual("Ceci est un test d'édition & de ca conditions \" et ' et < et > voila correctment, je devrai voir le texte a peu pres jusqu'ici.", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.Description);
+            Assert.AreEqual("20220805", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
+            Assert.AreEqual("102", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+
+            Assert.AreEqual(1000.00, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.LineTotalAmount.Value);
+            Assert.AreEqual(100.00, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.AllowanceTotalAmount.Value);
+
+            Assert.AreEqual(1085.40, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value);
+
+            Assert.AreEqual(900.00, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxBasisTotalAmount.Value);
+
+            Assert.AreEqual(185.40, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.FirstOrDefault().Value);
+            Assert.AreEqual("EUR", invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.FirstOrDefault().CurrencyID);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TotalPrepaidAmount);
+
+            Assert.AreEqual(1085.40, invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value);
+
+            Assert.IsNull(invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceReferencedDocument);
         }
     }
 }

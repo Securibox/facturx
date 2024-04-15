@@ -8,9 +8,6 @@ using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.SpecificationModels;
 using System.Xml.Serialization;
 using System.Xml;
-using PdfSharpCore.Fonts;
-using PdfSharpCore.Utils;
-using PdfSharpCore.Drawing;
 
 namespace Securibox.FacturX
 {
@@ -21,7 +18,7 @@ namespace Securibox.FacturX
         public FacturxExporter(ILogger<FacturxExporter>? logger = null)
         {
             InitializeLogger(logger);
-            
+
         }
 
         public Stream CreateFacturXStream(string pdfPath, string xmlPath, FacturXConformanceLevelType conformanceLevel, string documentTitle = "Invoice", string documentDescription = "Invoice description")
@@ -58,7 +55,7 @@ namespace Securibox.FacturX
             {
                 conformanceLevel = FacturXConformanceLevelType.BasicWL;
             }
-            else if(invoiceType == typeof(Models.Basic.Invoice))
+            else if (invoiceType == typeof(Models.Basic.Invoice))
             {
                 conformanceLevel = FacturXConformanceLevelType.Basic;
             }
@@ -140,7 +137,7 @@ namespace Securibox.FacturX
 
         public Stream CreateFacturXStream(Stream pdfStream, Stream xmlStream, FacturXConformanceLevelType conformanceLevel, string documentTitle = "Invoice", string documentDescription = "Invoice description")
         {
-            if(pdfStream == null)
+            if (pdfStream == null)
             {
                 throw new ArgumentNullException(nameof(pdfStream));
             }
@@ -160,9 +157,7 @@ namespace Securibox.FacturX
             PdfDocument outputDocument = new PdfDocument();
             for (int i = 0; i < pdfDocument.PageCount; i++)
             {
-                var page = outputDocument.AddPage(pdfDocument.Pages[i]);
-                var gfx = XGraphics.FromPdfPage(page);
-                gfx.MUH = PdfFontEncoding.Unicode;
+                outputDocument.AddPage(pdfDocument.Pages[i]);
             }
 
             string xmlChecksum = string.Empty;
@@ -176,9 +171,6 @@ namespace Securibox.FacturX
                 xmlFileBytes = new byte[xmlStream.Length];
                 xmlStream.Read(xmlFileBytes, 0, (int)xmlStream.Length);
             }
-
-            GlobalFontSettings.FontResolver = new PdfSharpCore.Utils.FontResolver();
-
 
             _logger.LogInformation($"Calculated the MD5 checksum for the XML file");
 
@@ -220,7 +212,7 @@ namespace Securibox.FacturX
 
 
             var dateTimeNow = DateTime.UtcNow;
-            var conformanceLevelName = conformanceLevel == FacturXConformanceLevelType.BasicWL ? "BASIC WL" : conformanceLevel.Name.ToUpperInvariant();
+            var conformanceLevelName = conformanceLevel.Name.ToUpperInvariant();
             var xmpmeta = Resources.PdfMetadataTemplate
                 .Replace("{{CreationDate}}", dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz"))
                 .Replace("{{ModificationDate}}", dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz"))

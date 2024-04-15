@@ -2,7 +2,7 @@
 {
     public class DocumentLineDocument
     {
-        public string LineID { get; set; }
-        public BasicWL.Note IncludedNote { get; set; }  
+        public Minimum.ID LineID { get; set; }
+        public BasicWL.Note IncludedNote { get; set; }
     }
 }

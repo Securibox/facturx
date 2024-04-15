@@ -36,7 +36,10 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", pdfFilename);
             }
 
-            _pdfDocument = PdfReader.Open(File.OpenRead(pdfFilename));
+            using (var pdfFile = File.OpenRead(pdfFilename))
+            {
+                _pdfDocument = PdfReader.Open(pdfFile);
+            }
         }
 
         public FacturXMetadata GetMetadata()
@@ -60,33 +63,13 @@ namespace Securibox.FacturX
             }
             LoadXml(xmlPdfStream);
 
-            try
+            FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
+            var validationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
+            if (!validationResult._isSuccessfullValidation)
             {
-                FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-                var validationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-                if (!validationResult._isSuccessfullValidation)
-                {
-                    throw new Exception("Invalid Xml.");
-                }
-                return true;
+                throw new Exception("Invalid Xml.");
             }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public Invoice ExtractData()
-        {
-            IsFacturXValid();
-            Xml2ModelConverter converter = new Xml2ModelConverter(_xmlDocument, _facturXMetadata.ConformanceLevel);
-            return converter.Convert();
-        }
-
-        public ICrossIndustryInvoice ExtractDataWithDeserialization()
-        {
-            IsFacturXValid();
-            return ImportDataWithDeserialization();
+            return true;
         }
 
         public ICrossIndustryInvoice ImportDataWithDeserialization()

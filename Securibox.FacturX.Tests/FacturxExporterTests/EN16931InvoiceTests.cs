@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Securibox.FacturX.SpecificationModels.Minimum;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,10 +10,21 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
     internal class EN16931InvoiceTests
     {
         private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Custom\\";
+        private readonly string _invoiceName = "2023-6013_facture_facturx_en16931.pdf";
 
         [SetUp]
         public void Setup()
         {
+        }
+
+        [OneTimeTearDown]
+        public void Teardown()
+        {
+            var outputPath = Path.Combine(_mainDir, _invoiceName);
+            if (File.Exists(outputPath))
+            {
+                File.Delete(outputPath);
+            }
         }
 
         public static SpecificationModels.EN16931.CrossIndustryInvoice GetInvoice_SpecificationModels()
@@ -21,53 +33,54 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             {
                 ExchangedDocument = new SpecificationModels.BasicWL.ExchangedDocument()
                 {
-                    ID = new SpecificationModels.Minimum.ID { Value = "F20220025" },
-                    IssueDateTime = new SpecificationModels.Minimum.IssueDateTime() { DateTimeString = new SpecificationModels.Minimum.DateTimeString() { Value = "20220131", Format = "102" } },
+                    ID = new SpecificationModels.Minimum.ID { Value = "2023-6013" },
+                    IssueDateTime = new SpecificationModels.Minimum.IssueDateTime() { DateTimeString = new SpecificationModels.Minimum.DateTimeString() { Value = "20230920", Format = "102" } },
                     TypeCode = "380",
                     IncludedNote = new SpecificationModels.BasicWL.Note[]
-                    {
+                     {
                         new SpecificationModels.BasicWL.Note()
                         {
-                            Content = "FOURNISSEUR F SARL au capital de 50 000 EUR",
+                            Content = "SASU au capital de 200000€",
                             SubjectCode = "REG",
 
                         },
                         new SpecificationModels.BasicWL.Note()
                         {
-                            Content = "RCS MAVILLE 123 456 782",
+                            Content = "R.C.S Paris 123 456 789",
                             SubjectCode = "ABL",
 
                         },
                         new SpecificationModels.BasicWL.Note()
                         {
-                            Content = "35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789",
+                            Content = "2, rue de la Paix – 75000 Paris – Tel: +33 1 01 12 34 56",
                             SubjectCode = "AAI",
 
                         },
                         new SpecificationModels.BasicWL.Note()
                         {
-                            Content = "Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal.",
+                            Content = "APE 5510Z – TVA FR40123456824",
+                            SubjectCode = "AAI",
+
+                        },
+                        new SpecificationModels.BasicWL.Note()
+                        {
+                            Content = "La loi n°92/1442 du 31 décembre 1992 nous fait l’obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de retard suivant modalités et taux défini par la loi.",
                             SubjectCode = "PMD",
 
                         },
                         new SpecificationModels.BasicWL.Note()
                         {
-                            Content = "Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.",
+                            Content = "Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.",
                             SubjectCode = "PMT",
 
                         },
-                        new SpecificationModels.BasicWL.Note()
-                        {
-                            Content = "Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.",
-                            SubjectCode = "AAB",
-                        },
-                    },
+                     },
                 },
                 ExchangedDocumentContext = new SpecificationModels.Minimum.ExchangedDocumentContext()
                 {
                     BusinessProcessSpecifiedDocumentContextParameter = new SpecificationModels.Minimum.DocumentContextParameter()
                     {
-                        ID = new SpecificationModels.Minimum.ID() {  Value = "A1" },
+                        ID = new SpecificationModels.Minimum.ID() { Value = "A1" },
                     },
                     GuidelineSpecifiedDocumentContextParameter = new SpecificationModels.Minimum.DocumentContextParameter()
                     {
@@ -77,85 +90,72 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 SupplyChainTradeTransaction = new SpecificationModels.EN16931.SupplyChainTradeTransaction()
                 {
                     IncludedSupplyChainTradeLineItem = new SpecificationModels.EN16931.SupplyChainTradeLineItem[]
-                    {
+                     {
                         new SpecificationModels.EN16931.SupplyChainTradeLineItem()
                         {
                             AssociatedDocumentLineDocument = new SpecificationModels.Basic.DocumentLineDocument()
                             {
-                                LineID = "1",
+                                LineID = new SpecificationModels.Minimum.ID { Value = "1" },
                             },
                             SpecifiedTradeProduct = new SpecificationModels.EN16931.TradeProduct()
                             {
-                                GlobalID = new SpecificationModels.Minimum.ID() { Value = "598785412598745", SchemeID = "0088" },
-                                Name = "PRESTATION SUPPORT",
-                                Description = "Description",
+                                Name = "Chambre du 09/08/2023 au 15/08/2023",
                             },
                             SpecifiedLineTradeAgreement = new SpecificationModels.EN16931.LineTradeAgreement()
                             {
-                                BuyerOrderReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                                {
-                                    LineID = new SpecificationModels.Minimum.ID { Value = "1" },
-                                },
                                 NetPriceProductTradePrice = new SpecificationModels.Basic.TradePrice()
                                 {
-                                    ChargeAmount = new SpecificationModels.Minimum.Amount { Value = 60.0000m },
+                                    ChargeAmount = new SpecificationModels.Minimum.Amount { Value =  205.9000m },
                                     BasisQuantity = new SpecificationModels.Basic.Quantity()
                                     {
                                         UnitCode = "C62",
-                                        Value = 1.0000m,
+                                        Value = 6.0000m,
                                     }
                                 }
                             },
-                            SpecifiedLineTradeDelivery = new SpecificationModels.Basic.LineTradeDelivery()
-                            {
-                                BilledQuantity = new SpecificationModels.Basic.Quantity()
-                                {
-                                    Value = 1.0000m,
-                                    UnitCode = "C62",
-                                }
-                            },
                             SpecifiedLineTradeSettlement = new SpecificationModels.EN16931.LineTradeSettlement()
                             {
                                 ApplicableTradeTax = new SpecificationModels.EN16931.TradeTaxEN16931()
                                 {
                                     TypeCode = "VAT",
                                     CategoryCode = "S",
-                                    RateApplicablePercent = 20.00m,
+                                    RateApplicablePercent = 10.00m,
                                 },
                                 SpecifiedTradeSettlementLineMonetarySummation = new SpecificationModels.Basic.TradeSettlementLineMonetarySummation()
                                 {
-                                    LineTotalAmount = new SpecificationModels.Minimum.Amount { Value = 60.00m },
+                                    LineTotalAmount = new SpecificationModels.Minimum.Amount { Value = 1235.40m },
+                                }
+                            },
+                            SpecifiedLineTradeDelivery = new SpecificationModels.Basic.LineTradeDelivery()
+                            {
+                                BilledQuantity = new SpecificationModels.Basic.Quantity()
+                                {
+                                        UnitCode = "C62",
+                                        Value = 6.0000m,
                                 }
                             }
+
                         },
                         new SpecificationModels.EN16931.SupplyChainTradeLineItem()
                         {
                             AssociatedDocumentLineDocument = new SpecificationModels.Basic.DocumentLineDocument()
                             {
-                                LineID = "2",
+                                LineID = new ID { Value = "2" },
                             },
                             SpecifiedTradeProduct = new SpecificationModels.EN16931.TradeProduct()
                             {
-                                Name = "FOURNITURES DIVERSES",
-                                Description = "Description",
+                                Name = "Forfait taxe de séjour",
                             },
                             SpecifiedLineTradeAgreement = new SpecificationModels.EN16931.LineTradeAgreement()
                             {
-                                BuyerOrderReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                                {
-                                    LineID = new SpecificationModels.Minimum.ID { Value = "3" },
-                                },
                                 NetPriceProductTradePrice = new SpecificationModels.Basic.TradePrice()
                                 {
-                                    ChargeAmount = new SpecificationModels.Minimum.Amount { Value = 10.0000m },
-                                }
-                            },
-                            SpecifiedLineTradeDelivery = new SpecificationModels.Basic.LineTradeDelivery()
-                            {
-                                BilledQuantity = new SpecificationModels.Basic.Quantity()
-                                {
-                                    Value = 3.0000m,
-                                    UnitCode = "C62",
+                                    ChargeAmount = new SpecificationModels.Minimum.Amount { Value = 1.65m },
+                                    BasisQuantity = new SpecificationModels.Basic.Quantity()
+                                    {
+                                        UnitCode = "C62",
+                                        Value = 6.0000m,
+                                    }
                                 }
                             },
                             SpecifiedLineTradeSettlement = new SpecificationModels.EN16931.LineTradeSettlement()
@@ -163,96 +163,49 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                 ApplicableTradeTax = new SpecificationModels.EN16931.TradeTaxEN16931()
                                 {
                                     TypeCode = "VAT",
-                                    CategoryCode = "S",
-                                    RateApplicablePercent = 20.00m,
+                                    CategoryCode = "Z",
+                                    RateApplicablePercent = 0.00m,
                                 },
                                 SpecifiedTradeSettlementLineMonetarySummation = new SpecificationModels.Basic.TradeSettlementLineMonetarySummation()
                                 {
-                                    LineTotalAmount = new SpecificationModels.Minimum.Amount { Value = 30.00m },
-                                }
-                            }
-                        },
-                        new SpecificationModels.EN16931.SupplyChainTradeLineItem()
-                        {
-                            AssociatedDocumentLineDocument = new SpecificationModels.Basic.DocumentLineDocument()
-                            {
-                                LineID = "3",
-                            },
-                            SpecifiedTradeProduct = new SpecificationModels.EN16931.TradeProduct()
-                            {
-                                Name = "APPEL",
-                                Description = "Description"
-                            },
-                            SpecifiedLineTradeAgreement = new SpecificationModels.EN16931.LineTradeAgreement()
-                            {
-                                BuyerOrderReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                                {
-                                    LineID = new SpecificationModels.Minimum.ID { Value = "2" },
-                                },
-                                NetPriceProductTradePrice = new SpecificationModels.Basic.TradePrice()
-                                {
-                                    ChargeAmount = new SpecificationModels.Minimum.Amount { Value = 5.0000m },
+                                    LineTotalAmount = new SpecificationModels.Minimum.Amount { Value = 9.90m },
                                 }
                             },
                             SpecifiedLineTradeDelivery = new SpecificationModels.Basic.LineTradeDelivery()
                             {
                                 BilledQuantity = new SpecificationModels.Basic.Quantity()
                                 {
-                                    Value = 1.0000m,
                                     UnitCode = "C62",
-                                }
-                            },
-                            SpecifiedLineTradeSettlement = new SpecificationModels.EN16931.LineTradeSettlement()
-                            {
-                                ApplicableTradeTax = new SpecificationModels.EN16931.TradeTaxEN16931()
-                                {
-                                    TypeCode = "VAT",
-                                    CategoryCode = "S",
-                                    RateApplicablePercent = 20.00m,
-                                },
-                                SpecifiedTradeSettlementLineMonetarySummation = new SpecificationModels.Basic.TradeSettlementLineMonetarySummation()
-                                {
-                                    LineTotalAmount = new SpecificationModels.Minimum.Amount { Value = 5.00m },
+                                    Value = 6.0000m,
                                 }
                             }
                         },
-                    },
+                     },
                     ApplicableHeaderTradeAgreement = new SpecificationModels.EN16931.HeaderTradeAgreement()
                     {
-                        BuyerReference = "SERVEXEC",
                         SellerTradeParty = new SpecificationModels.EN16931.TradePartyEN16931()
                         {
-                            GlobalID = new SpecificationModels.Minimum.ID[]
-                            {
-                                new SpecificationModels.Minimum.ID()
-                                {
-                                    Value = "587451236587",
-                                    SchemeID = "0088"
-                                },
-                            },
-                            Name = "LE FOURNISSEUR",
+                            Name = "Société Hôtelière du Pacano",
                             SpecifiedLegalOrganization = new SpecificationModels.BasicWL.LegalOrganization()
                             {
                                 ID = new SpecificationModels.Minimum.ID()
                                 {
-                                    Value = "123456782",
+                                    Value = "12345682400016",
                                     SchemeID = "0002"
                                 },
-                                TradingBusinessName = "SELLER TRADE NAME",
                             },
                             PostalTradeAddress = new SpecificationModels.BasicWL.TradeAddress()
                             {
                                 CountryID = "FR",
-                                PostcodeCode = "75018",
-                                LineOne = "35 rue d'ici",
-                                LineTwo = "Seller line 2",
+                                PostcodeCode = "75000",
+                                LineOne = "2, rue de la Paix",
                                 CityName = "PARIS",
                             },
                             URIUniversalCommunication = new SpecificationModels.BasicWL.UniversalCommunication()
                             {
                                 URIID = new SpecificationModels.Minimum.ID()
                                 {
-                                    Value = "moi@seller.com",
+                                    Value = "info@hotel-du-pacano.fr",
                                     SchemeID = "EM"
                                 }
                             },
@@ -262,231 +215,109 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                 {
                                     ID = new SpecificationModels.Minimum.ID()
                                     {
-                                        Value = "FR11123456782",
+                                        Value = "FR40123456824",
                                         SchemeID = "VA"
                                     }
-                                }
-                            },
+                                },
+                            }
                         },
                         BuyerTradeParty = new SpecificationModels.EN16931.TradePartyEN16931()
                         {
-                            GlobalID = new SpecificationModels.Minimum.ID[]
-                            {
-                                new SpecificationModels.Minimum.ID()
-                            {
-                                Value = "3654789851",
-                                SchemeID = "0088"
-                            },
-                            },
-                            Name = "LE CLIENT",
+                            Name = "Securibox SARL",
                             SpecifiedLegalOrganization = new SpecificationModels.BasicWL.LegalOrganization()
                             {
-                                ID = new SpecificationModels.Minimum.ID() { Value = "987654321", SchemeID = "0002" },
-                            },
-                            PostalTradeAddress = new SpecificationModels.BasicWL.TradeAddress()
-                            {
-                                CountryID = "FR",
-                                PostcodeCode = "06000",
-                                LineOne = "58 rue de la mer",
-                                LineTwo = "Buyer line 2",
-                                CityName = "NICE",
-                            },
-                            URIUniversalCommunication = new SpecificationModels.BasicWL.UniversalCommunication()
-                            {
-                                URIID = new SpecificationModels.Minimum.ID()
-                                {
-                                    Value = "me@buyer.com",
-                                    SchemeID = "EM"
-                                }
+                                ID = new SpecificationModels.Minimum.ID() { Value = "50000371000034", SchemeID = "0002" },
                             },
                             SpecifiedTaxRegistration = new SpecificationModels.Minimum.TaxRegistration[]
                             {
-                                new SpecificationModels.Minimum.TaxRegistration()
+                                new SpecificationModels.Minimum.TaxRegistration
                                 {
                                     ID = new SpecificationModels.Minimum.ID()
                                     {
-                                        Value = "FR 05 987 654 321",
+                                        Value = "FR38500003710",
                                         SchemeID = "VA"
                                     }
                                 },
                             },
-                        },
-                        BuyerOrderReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                        {
-                            IssuerAssignedID = new SpecificationModels.Minimum.ID() { Value = "PO201925478" }
-                        },
-                        ContractReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                        {
-                            IssuerAssignedID = new SpecificationModels.Minimum.ID() { Value = "CT2018120802" },
-                        },
-                    },
-                    ApplicableHeaderTradeDelivery = new SpecificationModels.EN16931.HeaderTradeDelivery() 
-                    {
-                        ShipToTradeParty = new SpecificationModels.EN16931.TradePartyEN16931()
-                        {
-                            Name = "DEL Name",
                             PostalTradeAddress = new SpecificationModels.BasicWL.TradeAddress()
                             {
                                 CountryID = "FR",
-                                PostcodeCode = "06000",
-                                LineOne = "DEL ADRESSE LIGNE 1",
-                                LineTwo = "DEL line 2",
-                                CityName = "NICE",
+                                PostcodeCode = "75008",
+                                LineOne = "27, Rue de Bassano",
+                                CityName = "Paris",
                             },
                         },
-                        ActualDeliverySupplyChainEvent = new SpecificationModels.BasicWL.SupplyChainEvent()
-                        {
-                            OccurrenceDateTime = new SpecificationModels.Minimum.IssueDateTime()
-                            {
-                                DateTimeString = new SpecificationModels.Minimum.DateTimeString()
-                                {
-                                    Value = "20220128",
-                                    Format = "102",
-                                }
-                            }
-                        },
-                        ReceivingAdviceReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                        {
-                            IssuerAssignedID = new SpecificationModels.Minimum.ID()
-                            {
-                                Value = "RECEIV-ADV002",
-                            },
-                        },
-                        DespatchAdviceReferencedDocument = new SpecificationModels.EN16931.ReferencedDocumentEN16931()
-                        {
-                            IssuerAssignedID = new SpecificationModels.Minimum.ID() { Value = "DESPADV002" },
-                        },
-                    },    
-                    ApplicableHeaderTradeSettlement = new SpecificationModels.EN16931.HeaderTradeSettlement() 
+                    },
+                    ApplicableHeaderTradeDelivery = new SpecificationModels.EN16931.HeaderTradeDelivery()
                     {
-                        PaymentReference = "F20180023BUYER",
+                    },
+                    ApplicableHeaderTradeSettlement = new SpecificationModels.EN16931.HeaderTradeSettlement()
+                    {
                         InvoiceCurrencyCode = "EUR",
-                        PayeeTradeParty = new SpecificationModels.EN16931.TradePartyEN16931()
-                        {
-                            Name = "PAYEE NAME",
-                            SpecifiedLegalOrganization = new SpecificationModels.BasicWL.LegalOrganization()
-                            {
-                                ID = new SpecificationModels.Minimum.ID()
-                                {
-                                    Value = "123456782",
-                                    SchemeID = "0002",
-                                }
-                            }
-                        },
                         SpecifiedTradeSettlementPaymentMeans = new SpecificationModels.EN16931.TradeSettlementPaymentMeans()
                         {
                             TypeCode = "30",
                             PayeePartyCreditorFinancialAccount = new SpecificationModels.EN16931.CreditorFinancialAccount[]
-                            {
+                             {
                                 new SpecificationModels.EN16931.CreditorFinancialAccount()
                                 {
-                                    IBANID = new SpecificationModels.Minimum.ID { Value = "FR76 1254 2547 2569 8542 5874 698" },
+                                    IBANID = new SpecificationModels.Minimum.ID { Value = "FR7430003000402964223654P78" },
                                 }
-                            },
+                             },
                         },
                         ApplicableTradeTax = new SpecificationModels.EN16931.TradeTaxEN16931[]
-                        {
+                         {
                             new SpecificationModels.EN16931.TradeTaxEN16931()
                             {
-                                CalculatedAmount = new SpecificationModels.Minimum.Amount() { Value = 20.00m },
+                                CalculatedAmount = new SpecificationModels.Minimum.Amount { Value = 123.54m },
                                 TypeCode = "VAT",
-                                BasisAmount = new SpecificationModels.Minimum.Amount() { Value = 100.00m },
                                 CategoryCode = "S",
-                                DueDateTypeCode = "72",
-                                RateApplicablePercent = 20.00m,
+                                BasisAmount = new SpecificationModels.Minimum.Amount { Value = 1235.40m },
+                                RateApplicablePercent = 10.00m,
+                            },
+                            new SpecificationModels.EN16931.TradeTaxEN16931()
+                            {
+                                CalculatedAmount = new SpecificationModels.Minimum.Amount { Value = 0.00m },
+                                TypeCode = "VAT",
+                                CategoryCode = "Z",
+                                BasisAmount = new SpecificationModels.Minimum.Amount { Value = 9.90m },
+                                RateApplicablePercent = 0.00m,
                             }
-                        },
-                        SpecifiedTradeAllowanceCharge = new SpecificationModels.BasicWL.TradeAllowanceCharge[]
-                        {
-                            new SpecificationModels.BasicWL.TradeAllowanceCharge()
-                            {
-                                ChargeIndicator = new SpecificationModels.BasicWL.IndicatorType()
-                                {
-                                    Indicator = false,
-                                },
-                                ActualAmount = new SpecificationModels.Minimum.Amount { Value = 5.00m },
-                                Reason = "REMISE COMMERCIALE",
-                                CategoryTradeTax = new SpecificationModels.BasicWL.TradeTax()
-                                {
-                                    TypeCode = "VAT",
-                                    CategoryCode = "S",
-                                    RateApplicablePercent = 20.00m,
-                                }
-                            },
-                            new SpecificationModels.BasicWL.TradeAllowanceCharge()
-                            {
-                                ChargeIndicator = new SpecificationModels.BasicWL.IndicatorType()
-                                {
-                                    Indicator = true,
-                                },
-                                ActualAmount = new SpecificationModels.Minimum.Amount { Value = 10.00m },
-                                Reason = "FRAIS DEPLACEMENT",
-                                CategoryTradeTax = new SpecificationModels.BasicWL.TradeTax()
-                                {
-                                    TypeCode = "VAT",
-                                    CategoryCode = "S",
-                                    RateApplicablePercent = 20.00m,
-                                }
-                            },
-                        },
+                         },
                         SpecifiedTradePaymentTerms = new SpecificationModels.BasicWL.TradePaymentTerms()
                         {
                             DueDateDateTime = new SpecificationModels.Minimum.IssueDateTime()
                             {
                                 DateTimeString = new SpecificationModels.Minimum.DateTimeString()
                                 {
-                                    Value = "20220302",
+                                    Value = "20231019",
                                     Format = "102"
                                 }
-                            }
+                            },
+                            Description = "30 jours net",
                         },
                         SpecifiedTradeSettlementHeaderMonetarySummation = new SpecificationModels.EN16931.TradeSettlementHeaderMonetarySummation()
                         {
-                            LineTotalAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 95.00m,
-                            },
-                            ChargeTotalAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 10.00m,
-                            },
-                            AllowanceTotalAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 5.00m,
-                            },
-                            TaxBasisTotalAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 100.80m,
-                            },
-                            TaxTotalAmount = new SpecificationModels.Minimum.Amount[] { new SpecificationModels.Minimum.Amount() { Value = 20.00m, CurrencyID = "EUR" } },
-                            GrandTotalAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 120.00m,
-                            },
-                            TotalPrepaidAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 20.00m,
-                            },
-                            DuePayableAmount = new SpecificationModels.Minimum.Amount()
-                            {
-                                Value = 100.00m,
-                            },
+                            LineTotalAmount = new SpecificationModels.Minimum.Amount() { Value = 1245.30m, },
+                            TaxBasisTotalAmount = new SpecificationModels.Minimum.Amount() { Value = 1245.30m },
+                            TaxTotalAmount = new SpecificationModels.Minimum.Amount[] { new SpecificationModels.Minimum.Amount() { Value = 123.54m, CurrencyID = "EUR" } },
+                            GrandTotalAmount = new SpecificationModels.Minimum.Amount() { Value = 1368.84m },
+                            TotalPrepaidAmount = new SpecificationModels.Minimum.Amount() { Value = 452.98m },
+                            DuePayableAmount = new SpecificationModels.Minimum.Amount() { Value = 915.86m },
                         },
-                        ReceivableSpecifiedTradeAccountingAccount = new SpecificationModels.EN16931.TradeAccountingAccountEN16931()
-                        {
-                            ID = new SpecificationModels.Minimum.ID() { Value = "BUYER ACCOUNT REF" },
-                        }
                     },
                 }
             };
 
             return invoice;
-
         }
 
         [Test]
+        [Order(1)]
         public async Task WriteData_EN16931_SUCCESS()
         {
+            var outputPath = Path.Combine(_mainDir, "2023-6013_facture_facturx_en16931.pdf");
+
             Securibox.FacturX.SpecificationModels.EN16931.CrossIndustryInvoice invoice = GetInvoice_SpecificationModels();
             FacturxExporter exporter = new FacturxExporter();
 
@@ -496,138 +327,133 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 $"SEPEM: Invoice ",
                 $"Invoice "))
             {
-                await stream.CopyToAsync(new FileStream(Path.Combine(_mainDir, "2023-6013_facture_facturx_EN16931.pdf"), FileMode.OpenOrCreate));
+                using (var fileStream = new FileStream(outputPath, FileMode.Create))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
             }
         }
 
         [Test]
+        [Order(2)]
         public async Task AssertWrittenData_EN16931_SUCCESS()
         {
-            var invoicePath = string.Format("{0}\\{1}", _mainDir, "2023-6013 - Basic - FacturX.pdf");
+            var invoicePath = Path.Combine(_mainDir, "2023-6013_facture_facturx_en16931.pdf");
 
             var importer = new FacturxImporter(invoicePath);
-            var basicInvoice = importer.ImportDataWithDeserialization() as Securibox.FacturX.SpecificationModels.Basic.CrossIndustryInvoice;
+            var en16931Invoice = importer.ImportDataWithDeserialization() as Securibox.FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.NotNull(basicInvoice);
+            Assert.NotNull(en16931Invoice);
 
-            Assert.AreEqual("F20220025", basicInvoice.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", basicInvoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", basicInvoice.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", basicInvoice.ExchangedDocument.TypeCode);
+            Assert.AreEqual("2023-6013", en16931Invoice.ExchangedDocument.ID.Value);
+            Assert.AreEqual("20230920", en16931Invoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
+            Assert.AreEqual("102", en16931Invoice.ExchangedDocument.IssueDateTime.DateTimeString.Format);
+            Assert.AreEqual("380", en16931Invoice.ExchangedDocument.TypeCode);
 
-            Assert.AreEqual(6, basicInvoice.ExchangedDocument.IncludedNote.Count());
+            Assert.AreEqual(6, en16931Invoice.ExchangedDocument.IncludedNote.Count());
 
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(0).Content);
-            Assert.AreEqual("REG", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(0).SubjectCode);
+            Assert.AreEqual("SASU au capital de 200000€", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(0).Content);
+            Assert.AreEqual("REG", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(0).SubjectCode);
 
-            Assert.AreEqual("RCS MAVILLE 123 456 782", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(1).Content);
-            Assert.AreEqual("ABL", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(1).SubjectCode);
+            Assert.AreEqual("R.C.S Paris 123 456 789", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(1).Content);
+            Assert.AreEqual("ABL", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(1).SubjectCode);
 
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(2).Content);
-            Assert.AreEqual("AAI", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(2).SubjectCode);
+            Assert.AreEqual("2, rue de la Paix – 75000 Paris – Tel: +33 1 01 12 34 56", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(2).Content);
+            Assert.AreEqual("AAI", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(2).SubjectCode);
 
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal.", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(3).Content);
-            Assert.AreEqual("PMD", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(3).SubjectCode);
+            Assert.AreEqual("APE 5510Z – TVA FR40123456824", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(3).Content);
+            Assert.AreEqual("AAI", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(3).SubjectCode);
 
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(4).Content);
-            Assert.AreEqual("PMT", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(4).SubjectCode);
+            Assert.AreEqual("La loi n°92/1442 du 31 décembre 1992 nous fait l’obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de retard suivant modalités et taux défini par la loi.", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(4).Content);
+            Assert.AreEqual("PMD", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(4).SubjectCode);
 
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(5).Content);
-            Assert.AreEqual("AAB", basicInvoice.ExchangedDocument.IncludedNote.ElementAt(5).SubjectCode);
+            Assert.AreEqual("Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(5).Content);
+            Assert.AreEqual("PMT", en16931Invoice.ExchangedDocument.IncludedNote.ElementAt(5).SubjectCode);
 
-            Assert.AreEqual("A1", basicInvoice.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
-            Assert.AreEqual("urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic", basicInvoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.AreEqual("A1", en16931Invoice.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.AreEqual("urn:cen.eu:en16931:2017", en16931Invoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
 
-            Assert.AreEqual("SERVEXEC", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerReference);
+            Assert.AreEqual(2, en16931Invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.Count());
 
-            Assert.AreEqual("PO201925478", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.ContractReferencedDocument.IssuerAssignedID.Value);
+            var line1 = en16931Invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0);
+            Assert.AreEqual("1", line1.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.AreEqual("Chambre du 09/08/2023 au 15/08/2023", line1.SpecifiedTradeProduct.Name);
+            Assert.AreEqual(205.9000m, line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.AreEqual(6.0000m, line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
+            Assert.AreEqual("C62", line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.AreEqual("VAT", line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
+            Assert.AreEqual("S", line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
+            Assert.AreEqual(10.00m, line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.AreEqual(1235.40m, line1.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
 
-            Assert.AreEqual("LE CLIENT", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
-            Assert.AreEqual("987654321", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            var line2 = en16931Invoice.SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(1);
+            Assert.AreEqual("2", line2.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.AreEqual("Forfait taxe de séjour", line2.SpecifiedTradeProduct.Name);
+            Assert.AreEqual(1.6500m, line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.AreEqual(6.0000m, line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
+            Assert.AreEqual("C62", line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.AreEqual("VAT", line2.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
+            Assert.AreEqual("Z", line2.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
+            Assert.AreEqual(0.00m, line2.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.AreEqual(9.90m, line2.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
 
-            Assert.AreEqual("LE FOURNISSEUR", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.Name);
-            Assert.AreEqual("587451236587", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.GlobalID.ElementAt(0).SchemeID);
-            Assert.AreEqual("123456782", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.TradingBusinessName);
-            Assert.AreEqual("FR", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("FR", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("PARIS", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("moi@seller.com", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("FR11123456782", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.Value);
-            Assert.AreEqual("VA", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.SchemeID);
+            Assert.AreEqual("Securibox SARL", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
+            Assert.AreEqual("50000371000034", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
+            Assert.AreEqual("0002", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.AreEqual("FR38500003710", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedTaxRegistration.ElementAt(0).ID.Value);
+            Assert.AreEqual("VA", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedTaxRegistration.ElementAt(0).ID.SchemeID);
+            Assert.AreEqual("FR", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CountryID);
+            Assert.AreEqual("75008", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
+            Assert.AreEqual("27, Rue de Bassano", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("Paris", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CityName);
 
-            Assert.AreEqual("DEL Name", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("FR", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL ADRESSE LIGNE 1", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("NICE", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("Société Hôtelière du Pacano", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.Name);
+            Assert.AreEqual("12345682400016", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.Value);
+            Assert.AreEqual("0002", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.AreEqual("FR", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
+            Assert.AreEqual("75000", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
+            Assert.AreEqual("2, rue de la Paix", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("PARIS", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("info@hotel-du-pacano.fr", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.URIUniversalCommunication.URIID.Value);
+            Assert.AreEqual("EM", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.AreEqual("FR40123456824", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ElementAt(0).ID.Value);
+            Assert.AreEqual("VA", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ElementAt(0).ID.SchemeID);
 
-            Assert.AreEqual("20220128", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.AreEqual("EUR", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode);
 
-            Assert.AreEqual("DESPADV002", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.AreEqual("30", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.TypeCode);
 
-            Assert.AreEqual("F20180023BUYER", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PaymentReference);
-            Assert.AreEqual("EUR", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode);
+            Assert.AreEqual(1, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.Count());
+            Assert.AreEqual("FR7430003000402964223654P78", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.ElementAt(0).IBANID.Value);
 
-            Assert.AreEqual("PAYEE NAME", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PayeeTradeParty.Name);
-            Assert.AreEqual("123456782", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.AreEqual(2, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.Count());
 
-            Assert.AreEqual("30", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.TypeCode);
+            Assert.AreEqual(123.54m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).CalculatedAmount.Value);
+            Assert.AreEqual("VAT", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).TypeCode);
+            Assert.AreEqual(1235.40m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).BasisAmount.Value);
+            Assert.AreEqual("S", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).CategoryCode);
+            Assert.AreEqual(10.00, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).RateApplicablePercent);
 
-            Assert.AreEqual(1, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.Count());
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.ElementAt(0).IBANID.Value);
+            Assert.AreEqual(0.00, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).CalculatedAmount.Value);
+            Assert.AreEqual("VAT", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).TypeCode);
+            Assert.AreEqual(9.90, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).BasisAmount.Value);
+            Assert.AreEqual("Z", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).CategoryCode);
+            Assert.AreEqual(0.00, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).RateApplicablePercent);
 
-            Assert.AreEqual(1, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.Count());
-            Assert.AreEqual(20.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).TypeCode);
-            Assert.AreEqual(100.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).CategoryCode);
-            Assert.AreEqual("72", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).RateApplicablePercent);
+            Assert.AreEqual("20231019", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
+            Assert.AreEqual("102", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+            Assert.AreEqual("30 jours net", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.Description);
 
-            Assert.AreEqual(2, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.Count());
+            Assert.AreEqual(1245.30m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.LineTotalAmount.Value);
+            Assert.AreEqual(1245.30m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxBasisTotalAmount.Value);
 
-            Assert.AreEqual(false, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("REMISE COMMERCIALE", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.AreEqual(1, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.Count());
+            Assert.AreEqual("EUR", en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.ElementAt(0).CurrencyID);
+            Assert.AreEqual(123.54m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.ElementAt(0).Value);
 
-            Assert.AreEqual(true, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FRAIS DEPLACEMENT", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
-
-            Assert.AreEqual("20220302", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-
-            Assert.AreEqual(95.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.LineTotalAmount.Value);
-            Assert.AreEqual(10.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.AllowanceTotalAmount.Value);
-            Assert.AreEqual(100.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxBasisTotalAmount.Value);
-
-            Assert.AreEqual(1, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.Count());
-            Assert.AreEqual("EUR", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.ElementAt(0).CurrencyID);
-            Assert.AreEqual(20.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.ElementAt(0).Value);
-
-            Assert.AreEqual(120.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value);
-            Assert.AreEqual(100.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value);
-            Assert.AreEqual(20.00m, basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TotalPrepaidAmount.Value);
-
-            Assert.AreEqual("BUYER ACCOUNT REF", basicInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.AreEqual(1368.84m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value);
+            Assert.AreEqual(915.86m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value);
+            Assert.AreEqual(452.98m, en16931Invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TotalPrepaidAmount.Value);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Securibox.FacturX.Schematron.Xslt
 {
     public class SchematronContext : XsltContext
     {
-        private IEnumerable<Types.Let> Lets { get; set; }
+        public IEnumerable<Types.Let> Lets { get; set; }
 
         public SchematronContext(IEnumerable<Types.Let> lets)
         {
@@ -38,6 +38,11 @@ namespace Securibox.FacturX.Schematron.Xslt
 
         public override IXsltContextFunction ResolveFunction(string prefix, string name, XPathResultType[] ArgTypes)
         {
+            if (name.Equals("document"))
+            {
+                return new DocumentFunction();
+            }
+
             return null;
         }
 
