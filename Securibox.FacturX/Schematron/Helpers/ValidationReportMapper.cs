@@ -1,6 +1,4 @@
 ﻿using Securibox.FacturX.Schematron.Types;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace Securibox.FacturX.Schematron.Helpers
 {

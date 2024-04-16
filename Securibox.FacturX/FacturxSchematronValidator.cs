@@ -16,7 +16,6 @@ namespace Securibox.FacturX
             ValidateXml(xmlDocument, conformanceLevel);
         }
 
-
         public static ValidationResult ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
         {
             var validationSchema = LoadValidationSchema(conformanceLevel);
@@ -89,63 +88,5 @@ namespace Securibox.FacturX
                 throw new ArgumentException($"Could not determine FacturXConformanceLevelType");
             }
         }
-
-
-        //public Validator(byte[] schemaByteArray, string facturXProfile)
-        //{
-        //    MemoryStream schemaStream = new MemoryStream(schemaByteArray);
-        //    var reader = XmlReader.Create(schemaStream);
-        //    LoadSchema(reader);
-        //}
-
-        //private void LoadSchema(XmlReader reader)
-        //{
-        //    XmlSerializer serializer = new XmlSerializer(typeof(Schematron.Types.Schema));
-        //    this.Schema = (Schematron.Types.Schema)serializer.Deserialize(reader);
-        //}
-
-        //public ValidationResult ValidateFile(string filename)
-        //{
-        //    using (Stream stream = File.OpenRead(filename))
-        //    {
-        //        return ValidateStream(stream);
-        //    }
-        //}
-        //public ValidationResult ValidateXml(XmlDocument xmlDocument)
-        //{
-        //    using (Stream stream = new MemoryStream())
-        //    {
-        //        xmlDocument.Save(stream);
-        //        stream.Position = 0;
-        //        return ValidateStream(stream);
-        //    }
-        //}
-
-        //public ValidationResult ValidateStream(Stream stream)
-        //{
-        //    XPathDocument doc = new XPathDocument(stream);
-
-        //    if (this.Schema.Phases != null)
-        //    {
-        //        var phaseResults = this.Schema.EvaluatePhase(doc.CreateNavigator());
-        //        var reportMapper = new ValidationReportMapper(phaseResults);
-        //        var report = reportMapper.MapReport();
-        //        return report;
-        //        //return new ValidationResult(result);
-        //    }
-        //    else
-        //    {
-        //        var patternResults = this.Schema.Evaluate(doc.CreateNavigator());
-
-        //        var reportMapper = new ValidationReportMapper(patternResults);
-        //        var report = reportMapper.MapReport();
-        //        return report;
-        //    }
-        //}
-
-
-
-
-
     }
 }

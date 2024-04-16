@@ -1,7 +1,9 @@
 # .NET Factur-X library
 
 ## Context
-Factur-X is a new French and German standard for electronic invoicing, expanding on the German ZUGFeRD standard. It represents the first implementation of the European Commission’s European Semantic Standard EN 16931, introduced in 2017 by the [FNFE-MPE](http://fnfe-mpe.org/factur-x/). Factur-X belong to a class of e-invoices known as mixed or hybrid invoices, combining PDFs for users and XML data for automated processing.
+Factur-X is a new French and German standard for electronic invoicing, expanding the German ZUGFeRD standard. 
+It represents the first implementation of the European Commission’s European Semantic Standard EN 16931, introduced in 2017 by the [FNFE-MPE](http://fnfe-mpe.org/factur-x/). 
+Factur-X belongs to a class of e-invoices known as mixed or hybrid invoices, that combine PDFs for users and XML data for automated processing.
 
 Several standard data profiles are available with more or less information:
 - Minimum: Does not contain all of the invoicing information necessary for use in Germany
@@ -32,28 +34,64 @@ Securibox.FacturX library utilises the following MIT licensed projects:
 
 ## Quick start
 ### Read information from Factur-X PDF invoice
-The following is the minimum needed code to read a Factur-X PDF invoice in Minimum profile:
+In order to read a Factur-X PDF invoice you only need to :
+
+```csharp
+var importer = new FacturxImporter("C:\\Path\\To\\Facture.pdf"));
+var crossIndustryInvoice = importer.ImportDataWithDeserialization();
+var invoice = crossIndustryInvoice as FacturX.SpecificationModels.Profile.CrossIndustryInvoice;
+```
+
+In the following examples we are reading a Factur-X PDF invoice with a Minimum and Basic profiles.
 ```csharp
 var importer = new FacturxImporter("C:\\Path\\To\\Facture_UE_MINIMUM.pdf"));
 var crossIndustryInvoice = importer.ImportDataWithDeserialization();
 var invoice = crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
-Assert.AreEqual("FA-2017-0008", invoice.ExchangedDocument.ID.Value);
-Assert.AreEqual("20171103", invoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
 ```
-The following is the minimum needed code to read a Factur-X PDF invoice in Basic profile:
+In the following example we are reading a Factur-X PDF invoice with a Basic profile.
 ```csharp
-var importer = new FacturxImporter("C:\\Path\\To\\Facture_UE_MINIMUM.pdf"));
+var importer = new FacturxImporter("C:\\Path\\To\\Facture_UE_BASIC.pdf"));
 var crossIndustryInvoice = importer.ImportDataWithDeserialization();
 var invoice = crossIndustryInvoice as FacturX.SpecificationModels.Basic.CrossIndustryInvoice;
 ```
 
 ### Validate Factur-X
+
+To validate the factur-x you just need to call **IsFacturXValid()** method. 
+
+This method returns either an object containing a boolean indicating the success of the validation and a list with information about the tests that have been made or an exception. 
+In case of success, the boolean will assume the value true and the list will be empty, otherwise, the boolean will be false and an Exception will be thrown.This exception will have the Exception.Data property fullfilled with a list of information about the tests that have failed. 
+
+This method validates the factur-x invoice against it's xsd schema and schematron.
+
+A FacturX pdf is valid if:
+    - it is a valid PDF/A-3;
+    - it has a valid XMP;
+    - the embebed xml is valid against the profile xsd;
+    - the embebed xml is valid against the profile schematron.
+    
+Below an example is shown :
 ```csharp
-var importer = new FacturxImporter(@"C:\Path\To\Facture_UE_MINIMUM.pdf"));
+var importer = new FacturxImporter(@"C:\Path\To\Facture.pdf"));
 importer.IsFacturXValid();
 ```
 
 ### Generate a Factur-X PDF invoice
+
+In order to generate a pdf invoice from a valid xml you will need to create a new CrossIndustryInvoice, matching the profile you want, this object will be used to generate the xml for your invoice. 
+After that, you just need to create a new FacturXExporter and call the method CreateFacturXStream.
+
+```csharp
+CreateFacturXStream(@".\path\InvoiceToExtract.pdf", crossIndustryInvoice , invoiceName, invoiceDescription);
+```
+
+ - @".\path\InvoiceToExtract.pdf" => Path to the pdf file that you want to embeb the xml file;
+ - crossIndustryInvoice => The CrossIndustryInvoice object that you created and populated and will be used to generate the xml;
+ - invoiceName and invoiceDescription => Values that will be used in the pdf metadata.
+
+The arguments invoiceName and invoiceDescription are optional.
+
+Below you will find an extensive example of a facturx creation. 
 ```csharp
 Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice invoiceToExport = new Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice()
 {
@@ -133,12 +171,15 @@ using (var outputStream = new new FileStream(outputPath, FileMode.Create))
          inputNonFacturxPdfPath,
          invoiceToExport,
          "Invoice 2023-6026",
-         $"Hotel payment"))
+         "Hotel payment"))
      {
          await stream.CopyToAsync(outputStream);
      }    
 }
 ```
+
+
+Happy coding! 
 
 
 
