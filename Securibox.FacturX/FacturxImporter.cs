@@ -62,10 +62,11 @@ namespace Securibox.FacturX
             LoadXml(xmlPdfStream);
 
             FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-            var validationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-            if (!validationResult._isSuccessfullValidation)
+            
+            var schValidationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
+            if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = validationResult._results.Where(x => x.IsError == true).ToList();
+                var errors = schValidationResult._results.Where(x => x.IsError == true).ToList();
 
                 var exception = new Exception("Invalid xml.");
                 for (int i = 0; i < errors.Count; i++)
