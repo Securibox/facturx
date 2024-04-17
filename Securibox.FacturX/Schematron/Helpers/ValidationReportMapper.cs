@@ -1,6 +1,4 @@
 ﻿using Securibox.FacturX.Schematron.Types;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace Securibox.FacturX.Schematron.Helpers
 {
@@ -26,7 +24,7 @@ namespace Securibox.FacturX.Schematron.Helpers
         {
             foreach (var patternResult in _patternResults)
             {
-                var ruleResults = patternResult.RuleResults.Where(x => x.RuleFired).ToList();
+                var ruleResults = patternResult.RuleResults.ToList();
                 foreach (var ruleResult in ruleResults)
                 {
                     if (ruleResult.ExecutedAssertions.Any(x => x.IsError == true))
@@ -47,13 +45,14 @@ namespace Securibox.FacturX.Schematron.Helpers
             var results = new List<ValidationReport>();
             foreach (var patternResult in _patternResults)
             {
+
                 foreach (var ruleResult in patternResult.RuleResults)
                 {
-                    var validationReport = new ValidationReport();
-                    validationReport.Path = ruleResult.Rule.Context;
 
                     foreach (var executedAssertion in ruleResult.ExecutedAssertions)
                     {
+                        var validationReport = new ValidationReport();
+                        validationReport.Path = ruleResult.Rule.Context;
                         validationReport.ContextElement = executedAssertion.ContextElement;
                         validationReport.ContextLine = executedAssertion.ContextLine;
                         validationReport.ContextPosition = executedAssertion.ContextPosition;
@@ -63,17 +62,6 @@ namespace Securibox.FacturX.Schematron.Helpers
                         validationReport.Test = executedAssertion.Assertion.Test;
 
                         results.Add(validationReport);
-
-                        if (validationReport.IsError)
-                        {
-                            Debug.WriteLine("ContextElement : " + validationReport.ContextElement);
-                            Debug.WriteLine("Path : " + validationReport.Path);
-                            Debug.WriteLine("ContextLine : " + validationReport.ContextLine);
-                            Debug.WriteLine("ContextPosition : " + validationReport.ContextPosition);
-                            Debug.WriteLine("Description : " + validationReport.Description);
-                            Debug.WriteLine("IsError : " + validationReport.IsError);
-                            Debug.WriteLine("Test : " + validationReport.Test);
-                        }
                     }
                 }
             }

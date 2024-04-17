@@ -12,7 +12,7 @@
     <PackageReference Include="PdfSharpCore" Version="1.3.62" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
     <PackageReference Include="XmpCore" Version="6.1.10.1" />
-    <PackageReference Include="XPath2" Version="1.1.4" />
+    <PackageReference Include="XPath2" Version="1.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,20 +33,20 @@
   <ItemGroup>
     <Folder Include="Xsd\FacturX\Basic\" />
     <Folder Include="Xsd\FacturX\Minimum\" />
-    <Folder Include="Xsd\FacturX\Basic-WL\" />
+    <Folder Include="Xsd\FacturX\Basic WL\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Xsd\FacturX\Basic-WL\FACTUR-X_BASIC-WL.xsd">
+    <None Update="Xsd\FacturX\Basic WL\FACTUR-X_BASIC-WL.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\Basic-WL\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
+    <None Update="Xsd\FacturX\Basic WL\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\Basic-WL\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
+    <None Update="Xsd\FacturX\Basic WL\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\Basic-WL\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
+    <None Update="Xsd\FacturX\Basic WL\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Xsd\FacturX\Basic\FACTUR-X_BASIC.xsd">
@@ -61,16 +61,16 @@
     <None Update="Xsd\FacturX\Basic\FACTUR-X_BASIC_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\EN16931\FACTUR-X_EN16931.xsd">
+    <None Update="Xsd\FacturX\EN 16931\FACTUR-X_EN16931.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\EN16931\FACTUR-X_EN16931_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
+    <None Update="Xsd\FacturX\EN 16931\FACTUR-X_EN16931_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\EN16931\FACTUR-X_EN16931_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
+    <None Update="Xsd\FacturX\EN 16931\FACTUR-X_EN16931_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Xsd\FacturX\EN16931\FACTUR-X_EN16931_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
+    <None Update="Xsd\FacturX\EN 16931\FACTUR-X_EN16931_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Xsd\FacturX\Extended\FACTUR-X_BASIC-WL_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">

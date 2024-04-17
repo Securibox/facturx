@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using Securibox.FacturX.Schematron.Xslt;
+using System.Diagnostics;
+using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using Wmhelp.XPath2;
@@ -53,7 +55,6 @@ namespace Securibox.FacturX.Schematron.Types
 
         [XmlAttribute(AttributeName = "context")]
         public string Context { get; set; }
-        private XPath2Expression compiledContext;
 
         #region Rich Attributes
 
@@ -85,7 +86,7 @@ namespace Securibox.FacturX.Schematron.Types
             {
                 foreach (var assert in this.Assertions)
                 {
-                    var result = assert.Evaluate(schema, navigator, context, ruleContext);
+                    var result = assert.Evaluate(schema, navigator, context);
                     results.Add(result);
                 }
             }
@@ -100,10 +101,8 @@ namespace Securibox.FacturX.Schematron.Types
             return results.ToArray();
         }
 
-        public RuleResult Evaluate(Schema schema, XPathNavigator navigator, IEnumerable<Let> lets, bool evalAbstract = false)
+        private SchematronContext BuildSchematronContext(Schema schema, IEnumerable<Let> lets)
         {
-            if (this.Abstract && !evalAbstract) return RuleResult.Empty;
-
             List<Let> combined = new List<Let>(lets);
             if (this.Lets != null) combined.AddRange(this.Lets);
 
@@ -116,33 +115,19 @@ namespace Securibox.FacturX.Schematron.Types
                 }
             }
 
+            return context;
+        }
+
+        public RuleResult Evaluate(Schema schema, XPathNavigator navigator, IEnumerable<Let> lets, bool evalAbstract = false)
+        {
+            if (this.Abstract && !evalAbstract) return RuleResult.Empty;
+
             var results = new List<EvaluationResult>();
 
-            if (compiledContext == null)
-            {
-                compiledContext = XPath2Expression.Compile(this.Context, context);
-            }
-
-            var returnType = compiledContext.GetResultType(new Dictionary<XmlQualifiedName, object>());
-            //compiledContext.SetContext(context);
-
-            var executionContext = compiledContext;
-            if (returnType != XPath2ResultType.NodeSet)
-            {
-                var newContext = (string)navigator.Evaluate(this.Context, context);
-                executionContext = XPath2Expression.Compile("//" + newContext);
-                //executionContext.SetContext(context);
-            }
-            else if (!this.Context.StartsWith("/"))
-            {
-                compiledContext = XPath2Expression.Compile("//" + this.Context, context);
-                //compiledContext.SetContext(context);
-                executionContext = compiledContext;
-            }
-
             navigator.MoveToRoot();
-            //navigator.MoveToFirstChild();
-            XPath2NodeIterator nodes = navigator.XPath2Select(this.Context, context);
+
+            var context = BuildSchematronContext(schema, lets);
+            var nodes = navigator.XPath2Select(this.Context, context);
 
             foreach (XPathNavigator nav in nodes)
             {
@@ -153,6 +138,7 @@ namespace Securibox.FacturX.Schematron.Types
                     contextLine = info.LineNumber;
                     contextPosition = info.LinePosition;
                 }
+
                 string contextName = nav.Name;
 
                 if (this.Extensions != null)
@@ -167,7 +153,7 @@ namespace Securibox.FacturX.Schematron.Types
                         }
                     }
                 }
-                var assertResults = this.EvaluateAssertions(schema, nav, context);
+                var assertResults = this.EvaluateAssertions(schema, nav, context, this.Context);
                 foreach (var result in assertResults)
                 {
                     result.ContextLine = contextLine;
@@ -177,7 +163,8 @@ namespace Securibox.FacturX.Schematron.Types
                 results.AddRange(assertResults);
             }
 
-            return new RuleResult() {
+            return new RuleResult()
+            {
                 Rule = this,
                 RuleFired = nodes.Count > 0,
                 ExecutedAssertions = results.ToArray(),

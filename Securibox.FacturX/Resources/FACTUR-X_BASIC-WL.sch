@@ -6,24 +6,8 @@
   <ns uri="urn:un:unece:uncefact:data:standard:QualifiedDataType:100" prefix="qdt"/>
   <ns uri="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100" prefix="ram"/>
   <ns uri="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100" prefix="udt"/>
- <pattern>
-    <rule context="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:TypeCode">
-      <let name="codeValue1" value="."/>
-      <assert test="document(&apos;FACTUR-X_BASIC-WL_codedb.xml&apos;)//cl[@id=1]/enumeration[@value=$codeValue1]">
-	Value of 'ram:TypeCode' is not allowed.</assert>
-    </rule>
-  </pattern>
-   <pattern>
-    <rule context="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeAgreement/ram:BuyerTradeParty/ram:SpecifiedTaxRegistration/ram:ID[@schemeID]">
-      <let name="codeValue10" value="@schemeID"/>
-      <assert test="document(&apos;FACTUR-X_BASIC-WL_codedb.xml&apos;)//cl[@id=10]/enumeration[@value=$codeValue10]">
-	Value of '@schemeID' is not allowed.</assert>
-    </rule>
-  </pattern>
   <pattern>
     <rule context="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument">
-	      <let name="banana" value="@schemeID"/>
-
       <assert test="count(ram:TypeCode)=1">
 	Element 'ram:TypeCode' must occur exactly 1 times.</assert>
     </rule>
@@ -256,6 +240,13 @@
     <rule context="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:RevisionID">
       <report test="true()">
 	Element 'ram:RevisionID' is marked as not used in the given context.</report>
+    </rule>
+  </pattern>
+  <pattern>
+    <rule context="/rsm:CrossIndustryInvoice/rsm:ExchangedDocument/ram:TypeCode">
+      <let name="codeValue1" value="."/>
+      <assert test="document(&apos;FACTUR-X_BASIC-WL_codedb.xml&apos;)//cl[@id=1]/enumeration[@value=$codeValue1]">
+	Value of 'ram:TypeCode' is not allowed.</assert>
     </rule>
   </pattern>
   <pattern>
@@ -1156,6 +1147,13 @@
     <rule context="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeAgreement/ram:BuyerTradeParty/ram:SpecifiedTaxRegistration/ram:ID[@schemeDataURI]">
       <report test="true()">
 	Attribute @schemeDataURI' marked as not used in the given context.</report>
+    </rule>
+  </pattern>
+  <pattern>
+    <rule context="/rsm:CrossIndustryInvoice/rsm:SupplyChainTradeTransaction/ram:ApplicableHeaderTradeAgreement/ram:BuyerTradeParty/ram:SpecifiedTaxRegistration/ram:ID[@schemeID]">
+      <let name="codeValue10" value="@schemeID"/>
+      <assert test="document(&apos;FACTUR-X_BASIC-WL_codedb.xml&apos;)//cl[@id=10]/enumeration[@value=$codeValue10]">
+	Value of '@schemeID' is not allowed.</assert>
     </rule>
   </pattern>
   <pattern>

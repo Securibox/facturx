@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,21 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
     internal class MinimumInvoiceTests
     {
         private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Custom\\";
+        private readonly string _invoiceName = "2023-6026_facture_facturx_minimum.pdf";
 
         [SetUp]
         public void Setup()
         {
+        }
+
+        [OneTimeTearDown]
+        public void Teardown()
+        {
+            var outputPath = Path.Combine(_mainDir, _invoiceName);
+            if (File.Exists(outputPath))
+            {
+                File.Delete(outputPath);
+            }
         }
 
         public static SpecificationModels.Minimum.CrossIndustryInvoice GetInvoice()
@@ -45,7 +57,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                             SpecifiedLegalOrganization = new SpecificationModels.Minimum.LegalOrganization()
                             {
                                 ID = new SpecificationModels.Minimum.ID() { Value = "50000371000034", SchemeID = "0002" },
-                            }
+                            },
                         },
                         SellerTradeParty = new SpecificationModels.Minimum.TradeParty()
                         {
@@ -86,13 +98,13 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             };
 
             return invoice;
-
         }
 
         [Test]
+        [Order(1)]
         public async Task WriteData_Minimum_SUCCESS()
         {
-            var outputPath = Path.Combine(_mainDir, "2023-6026_facture_minimum_facturx.pdf");
+            var outputPath = Path.Combine(_mainDir, _invoiceName);
 
             Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice invoiceToExport = GetInvoice();
             FacturxExporter exporter = new FacturxExporter();
@@ -103,14 +115,18 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 $"SEPEM: Invoice ",
                 $"Invoice "))
             {
-                await stream.CopyToAsync(new FileStream(outputPath, FileMode.Create));
+                using (var fileStream = new FileStream(outputPath, FileMode.Create))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
             }
         }
 
         [Test]
+        [Order(2)]
         public async Task AssertWrittenData_Minimum_SUCCESS()
         {
-            var invoicePath = Path.Combine(_mainDir, "2023-6026_facture_minimum_facturx.pdf");
+            var invoicePath = Path.Combine(_mainDir, "2023-6026_facture_facturx_minimum.pdf");
 
             var importer = new FacturxImporter(invoicePath);
             var minimumInvoice = importer.ImportDataWithDeserialization() as Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
@@ -140,7 +156,6 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             Assert.AreEqual("EUR", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.CurrencyID);
             Assert.AreEqual(228.14m, minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value);
             Assert.AreEqual(228.14m, minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value);
-
         }
     }
 }

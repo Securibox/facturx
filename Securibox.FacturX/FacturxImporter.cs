@@ -2,10 +2,8 @@
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.Advanced;
 using PdfSharpCore.Pdf.IO;
-using Securibox.FacturX.Core;
 using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
-using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.SpecificationModels;
 using System.Text;
 using System.Xml;
@@ -36,7 +34,10 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", pdfFilename);
             }
 
-            _pdfDocument = PdfReader.Open(File.OpenRead(pdfFilename));
+            using (var pdfFile = File.OpenRead(pdfFilename))
+            {
+                _pdfDocument = PdfReader.Open(pdfFile);
+            }
         }
 
         public FacturXMetadata GetMetadata()
@@ -60,33 +61,22 @@ namespace Securibox.FacturX
             }
             LoadXml(xmlPdfStream);
 
-            try
+            FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
+            
+            var schValidationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
+            if (!schValidationResult._isSuccessfullValidation)
             {
-                FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-                var validationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-                if (!validationResult._isSuccessfullValidation)
+                var errors = schValidationResult._results.Where(x => x.IsError == true).ToList();
+
+                var exception = new Exception("Invalid xml.");
+                for (int i = 0; i < errors.Count; i++)
                 {
-                    throw new Exception("Invalid Xml.");
+                    exception.Data.Add(i, errors[i]);
                 }
-                return true;
+                throw exception;
             }
-            catch
-            {
-                return false;
-            }
-        }
 
-        public Invoice ExtractData()
-        {
-            IsFacturXValid();
-            Xml2ModelConverter converter = new Xml2ModelConverter(_xmlDocument, _facturXMetadata.ConformanceLevel);
-            return converter.Convert();
-        }
-
-        public ICrossIndustryInvoice ExtractDataWithDeserialization()
-        {
-            IsFacturXValid();
-            return ImportDataWithDeserialization();
+            return true;
         }
 
         public ICrossIndustryInvoice ImportDataWithDeserialization()

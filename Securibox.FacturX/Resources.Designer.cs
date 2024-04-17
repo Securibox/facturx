@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Securibox.FacturX {
+namespace Securibox.FacturX
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,64 +23,76 @@ namespace Securibox.FacturX {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
-        
+    public class Resources
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resources()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        public static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Securibox.FacturX.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
-            get {
+        public static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] EN16931_CII_validation_preprocessed {
-            get {
+        public static byte[] EN16931_CII_validation_preprocessed
+        {
+            get
+            {
                 object obj = ResourceManager.GetObject("EN16931_CII_validation_preprocessed", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] FACTUR_X_BASIC_WL {
-            get {
+        public static byte[] FACTUR_X_BASIC_WL
+        {
+            get
+            {
                 object obj = ResourceManager.GetObject("FACTUR_X_BASIC_WL", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;codedb&gt;
@@ -100,22 +113,28 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;296&quot;/&gt;
         ///     [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string FACTUR_X_BASIC_WL_codedb {
-            get {
-                return ResourceManager.GetString("FACTUR_X_BASIC_WL_codedb", resourceCulture);
+        public static byte[] FACTUR_X_BASIC_WL_codedb
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("FACTUR_X_BASIC_WL_codedb", resourceCulture);
+                return ((byte[])(obj));
+
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] FACTUR_X_EXTENDED {
-            get {
+        public static byte[] FACTUR_X_EXTENDED
+        {
+            get
+            {
                 object obj = ResourceManager.GetObject("FACTUR_X_EXTENDED", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;codedb&gt;
@@ -136,22 +155,27 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;296&quot;/&gt;
         ///     [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string FACTUR_X_EXTENDED_codedb {
-            get {
-                return ResourceManager.GetString("FACTUR_X_EXTENDED_codedb", resourceCulture);
+        public static byte[] FACTUR_X_EXTENDED_codedb
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("FACTUR_X_EXTENDED_codedb", resourceCulture);
+                return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] FACTUR_X_MINIMUM {
-            get {
+        public static byte[] FACTUR_X_MINIMUM
+        {
+            get
+            {
                 object obj = ResourceManager.GetObject("FACTUR_X_MINIMUM", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;codedb&gt;
@@ -172,12 +196,15 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;296&quot;/&gt;
         ///     [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string FACTUR_X_MINIMUM_codedb {
-            get {
-                return ResourceManager.GetString("FACTUR_X_MINIMUM_codedb", resourceCulture);
+        public static byte[] FACTUR_X_MINIMUM_codedb
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("FACTUR_X_MINIMUM_codedb", resourceCulture);
+                return ((byte[])(obj));
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xpacket begin=&quot;\ufeff&quot; id=&quot;W5M0MpCehiHzreSzNTczkc9d&quot;?&gt;
         ///&lt;x:xmpmeta xmlns:x=&quot;adobe:ns:meta/&quot;&gt;
@@ -191,17 +218,21 @@ namespace Securibox.FacturX {
         ///        &lt;rdf:Alt&gt;
         ///          &lt;rdf:li xml:lang=&quot;x-default [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string PdfMetadataTemplate {
-            get {
+        public static string PdfMetadataTemplate
+        {
+            get
+            {
                 return ResourceManager.GetString("PdfMetadataTemplate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] sRGB_IEC61966_2_1 {
-            get {
+        public static byte[] sRGB_IEC61966_2_1
+        {
+            get
+            {
                 object obj = ResourceManager.GetObject("sRGB_IEC61966_2_1", resourceCulture);
                 return ((byte[])(obj));
             }

@@ -8,7 +8,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         [XmlElement]
         public SupplyChainTradeLineItem[] IncludedSupplyChainTradeLineItem { get; set; }
         public HeaderTradeAgreement ApplicableHeaderTradeAgreement { get; set; }
-        public TradeDelivery ApplicableHeaderTradeDelivery { get; set; }
+        public HeaderTradeDelivery ApplicableHeaderTradeDelivery { get; set; }
         public HeaderTradeSettlement ApplicableHeaderTradeSettlement { get; set; }
     }
 }
