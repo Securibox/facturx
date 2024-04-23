@@ -235,7 +235,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
         [Test]
         [Order(2)]
-        public async Task AssertWrittenData_BasicWL_SUCCESS()
+        public void AssertWrittenData_BasicWL_SUCCESS()
         {
             var invoicePath = Path.Combine(_mainDir, "2023-6013_facture_facturx_basicWL.pdf");
 
@@ -244,7 +244,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             Assert.NotNull(basicWLInvoice);
 
-            Assert.AreEqual("2023-6013", basicWLInvoice.ExchangedDocument.ID.Value);
+            Assert.AreEqual("2023-6013", basicWLInvoice!.ExchangedDocument.ID.Value);
             Assert.AreEqual("20230920", basicWLInvoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
             Assert.AreEqual("102", basicWLInvoice.ExchangedDocument.IssueDateTime.DateTimeString.Format);
             Assert.AreEqual("380", basicWLInvoice.ExchangedDocument.TypeCode);
