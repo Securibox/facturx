@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Securibox.FacturX.SpecificationModels.Minimum;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,12 +9,15 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 {
     internal class ExtendedInvoiceTests
     {
-        private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Custom\\";
+
+        private readonly string _mainDir = $"{AppDomain.CurrentDomain.BaseDirectory?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Custom\\";
+        //private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Custom\\";
         private readonly string _invoiceName = "2023-6013_facture_facturx_extended.pdf";
 
         [SetUp]
         public void Setup()
         {
+            TestContext.WriteLine(_mainDir);
         }
 
         [OneTimeTearDown]

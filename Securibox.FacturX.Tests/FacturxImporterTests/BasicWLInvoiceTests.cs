@@ -11,6 +11,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [SetUp]
         public void Setup()
         {
+            TestContext.WriteLine(_mainDir);
         }
 
         [Test]
