@@ -330,7 +330,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
         [Test]
         [Order(2)]
-        public async Task AssertWrittenData_Basic_SUCCESS()
+        public void AssertWrittenData_Basic_SUCCESS()
         {
             var invoicePath = Path.Combine(_mainDir, "2023-6013_facture_facturx_basic.pdf");
 
