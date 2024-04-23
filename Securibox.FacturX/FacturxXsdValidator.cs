@@ -16,7 +16,7 @@ namespace Securibox.FacturX
         public static void ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
         {
             var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            path = Path.Combine(path, $@"Xsd\FacturX\{conformanceLevel.Name}");
+            path = Path.Combine(path, "Xsd", "FacturX", conformanceLevel.Name);
 
             var XsdDirectory = new DirectoryInfo(path);
             foreach (FileInfo file in XsdDirectory.GetFiles("*.xsd"))
