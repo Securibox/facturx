@@ -1,12 +1,13 @@
 using NUnit.Framework;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Securibox.FacturX.Tests.FacturxImporterTests
 {
     public class ExtendedInvoiceTests
     {
-        private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Extended\\";
+        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory()?.Split("bin").First()!, "Invoices", "Extended");
 
         [SetUp]
         public void Setup()
