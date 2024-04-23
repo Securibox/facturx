@@ -23,8 +23,11 @@ namespace Securibox.FacturX.Core
             return fields.Select(f => f.GetValue(null)).Cast<T>();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
+            if(obj == null)
+                return false;
+
             if (!(obj is Enumeration otherValue))
                 return false;
 
@@ -54,21 +57,21 @@ namespace Securibox.FacturX.Core
             return matchingItem;
         }
 
-        public static bool TryParse<T>(string nameToParse, out T parsedValue) where T : Enumeration
+        public static bool TryParse<T>(string nameToParse, out T? parsedValue) where T : Enumeration
         {
             parsedValue = GetAll<T>().FirstOrDefault(a => a.Name == nameToParse);
 
             return parsedValue != null;
         }
 
-        public static bool TryParse<T>(int idToParse, out T parsedValue) where T : Enumeration
+        public static bool TryParse<T>(int idToParse, out T? parsedValue) where T : Enumeration
         {
             parsedValue = GetAll<T>().FirstOrDefault(a => a.Id == idToParse);
 
             return parsedValue != null;
         }
 
-        public static bool TryParse<T>(Func<T, bool> predicate, out T parsedValue) where T : Enumeration
+        public static bool TryParse<T>(Func<T, bool> predicate, out T? parsedValue) where T : Enumeration
         {
             parsedValue = GetAll<T>().FirstOrDefault(predicate);
 
@@ -87,8 +90,12 @@ namespace Securibox.FacturX.Core
             return matchingItem;
         }
 
-        public int CompareTo(object other)
+        public int CompareTo(object? other)
         {
+            if (other == null)
+            {
+
+            }
             return Id.CompareTo(((Enumeration)other).Id);
         }
     }
