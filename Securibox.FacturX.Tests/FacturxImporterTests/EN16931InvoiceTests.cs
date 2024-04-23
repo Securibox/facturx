@@ -3,13 +3,14 @@ using NUnit.Framework.Internal;
 using Securibox.FacturX.Models.EN16931.Enum;
 using System;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 
 namespace Securibox.FacturX.Tests.FacturxImporterTests
 {
     public class EN16931InvoiceTests
     {
-        private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\EN16931\\";
+        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory()?.Split("bin").First()!, "Invoices", "EN16931");
 
         [SetUp]
         public void Setup()
