@@ -13,8 +13,8 @@ variables:
   buildConfiguration: 'Release'
   major: '1'
   minor: '0'
-  revision: $[counter(variables['minor'], 1)]
-  app_version: '$(major).$(minor).$(revision)'
+  patch: $[counter(format('{0}.{1}', variables['major'], variables['minor']), 0)]
+  packageVersion: '$(major).$(minor).$(patch)'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -34,6 +34,6 @@ steps:
     packagesToPack: 'Securibox.FacturX\Securibox.FacturX.csproj'
     packDestination: '$(Build.ArtifactStagingDirectory)'
     versioningScheme: byPrereleaseNumber
-    majorVersion: '$(Major)'
-    minorVersion: '$(Minor)'
-    patchVersion: '$(Patch)'
+    majorVersion: '$(major)'
+    minorVersion: '$(minor)'
+    patchVersion: '$(patch)'
