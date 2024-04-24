@@ -13,8 +13,12 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dir
-- script: dotnet build '*\Securibox.FacturX.Tests\Securibox.FacturX.Tests.csproj' --configuration $(buildConfiguration)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+    projects: 'Securibox.FacturX.Tests\Securibox.FacturX.Tests.csproj'
+  displayName: 'dotnet build $(buildConfiguration)'
 - task: DotNetCoreCLI@2
   inputs:
     command: test
