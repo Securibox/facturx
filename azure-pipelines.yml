@@ -11,6 +11,10 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  major: '1'
+  minor: '0'
+  revision: $[counter(variables['minor'], 1)]
+  app_version: '$(major).$(minor).$(revision)'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -24,3 +28,12 @@ steps:
     command: test
     projects: 'Securibox.FacturX.Tests\Securibox.FacturX.Tests.csproj'
     arguments: '--configuration $(buildConfiguration)'
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: 'Securibox.FacturX\Securibox.FacturX.csproj'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: byPrereleaseNumber
+    majorVersion: '$(Major)'
+    minorVersion: '$(Minor)'
+    patchVersion: '$(Patch)'
