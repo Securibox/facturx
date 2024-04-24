@@ -33,7 +33,12 @@ steps:
     command: pack
     packagesToPack: 'Securibox.FacturX\Securibox.FacturX.csproj'
     packDestination: '$(Build.ArtifactStagingDirectory)'
-    versioningScheme: byPrereleaseNumber
+    versioningScheme: byEnvVar
     majorVersion: '$(major)'
     minorVersion: '$(minor)'
     patchVersion: '$(patch)'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'Securibox.FacturX Nuget Package'
+#     publishLocation: 'Container'
