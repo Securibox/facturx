@@ -293,6 +293,15 @@ namespace Securibox.FacturX
                                 if (filename.Value == xmlFileName)
                                 {
                                     var efDict = dict.Elements["/EF"] as PdfDictionary;
+                                    if(efDict == null)
+                                    {
+                                        var efRef = dict.Elements["/EF"] as PdfReference;
+                                        if(efRef != null)
+                                        {
+                                            efDict = efRef.Value as PdfDictionary;
+                                        }
+                                    }
+
                                     var fDict = efDict.Elements["/F"] as PdfReference;
                                     var embeded = fDict.Value as PdfDictionary;
                                     return embeded.Stream;
