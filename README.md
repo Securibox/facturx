@@ -59,22 +59,30 @@ var invoice = crossIndustryInvoice as FacturX.SpecificationModels.Basic.CrossInd
 
 To validate the factur-x you just need to call **IsFacturXValid()** method. 
 
-This method returns either an object containing a boolean indicating the success of the validation and a list with information about the tests that have been made or an exception. 
-In case of success, the boolean will assume the value true and the list will be empty, otherwise, the boolean will be false and an Exception will be thrown.This exception will have the Exception.Data property fullfilled with a list of information about the tests that have failed. 
+This method performs both XSD schema and Schematron validation of the embedded XML inside a Factur-X PDF. It also checks the PDF/A-3 conformance and XMP metadata.
 
-This method validates the factur-x invoice against it's xsd schema and schematron.
-
-A FacturX pdf is valid if:
+A Factur-X invoice is considered valid if:
     - it is a valid PDF/A-3;
     - it has a valid XMP;
     - the embebed xml is valid against the profile xsd;
     - the embebed xml is valid against the profile schematron.
-    
+
 Below an example is shown :
 ```csharp
 var importer = new FacturxImporter(@"C:\Path\To\Facture.pdf"));
 importer.IsFacturXValid();
 ```
+The output:
+    - Returns true if the Factur-X file is fully valid.
+    - Returns false if any Schematron rules fail or warnings are found. 
+    - All issues (errors or warnings) are accessible through the public field:
+
+```csharp
+public List<ValidationReport> validationReport;
+```
+If IsFacturXValid() returns false, the list validationReport will contain one or more EvaluationResult objects, which detail exactly what went wrong or needs attention. An Error (IsError = true) means the Factur-X invoice does not comply with required rules. A Warning (IsWarning = true) usually corresponds to a <report> rule in the Schematron, not critical but should be addressed. These are both included in the validationReport list.
+
+These are both included in the validationReport list.
 
 ### Generate a Factur-X PDF invoice
 
