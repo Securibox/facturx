@@ -10,5 +10,6 @@
         public int ContextPosition { get; set; } = -1;
         public string? ContextElement { get; set; } = null;
         public bool IsError { get; internal set; } = false;
+        public bool IsWarning { get; internal set; } = false;
     }
 }

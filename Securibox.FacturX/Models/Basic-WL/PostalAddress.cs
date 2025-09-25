@@ -3,8 +3,11 @@
     public class PostalAddress : Minimum.PostalAddress
     {
         public string? PostCode { get; set; }
+
         public PostalAddressLines? AddressLines { get; set; }
+
         public string? City { get; set; }
+
         public string? CountrySubdivision { get; set; }
 
         public PostalAddress(string[] addressLines, string postCode, string city, string country):

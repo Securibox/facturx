@@ -1,6 +1,4 @@
-﻿using Securibox.FacturX.Core;
-
-namespace Securibox.FacturX.Models.EN16931.Enum
+﻿namespace Securibox.FacturX.Models.EN16931.Enum
 {
     public enum AdditionalDocumentReferenceType
     {

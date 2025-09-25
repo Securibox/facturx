@@ -16,8 +16,6 @@ namespace Securibox.FacturX.Models.BasicWL.Enum
         public static PaymentMethodTypeCode SEPADirectDebit = new PaymentMethodTypeCode(59, "SEPADirectDebit");
         public static PaymentMethodTypeCode Report = new PaymentMethodTypeCode(97, "Report");
 
-
         private PaymentMethodTypeCode(int id, string name) : base(id, name) { }
-
     }
 }

@@ -3043,8 +3043,9 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220030_Extended_FAILURE_INVALID_AGAINST_SCHEMATRON()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf"));
-            Assert.Throws<Exception>(() => importer.ImportDataWithDeserialization());
+            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "2025-6013_facture_facturx_extended.pdf"));
+            var crossIndustryInvoice = importer.ImportDataWithDeserialization();
+            Assert.That(importer.validationReport.Count != 0);
         }
 
         [Test]
