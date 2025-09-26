@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Securibox.FacturX.SpecificationModels.Minimum;
 using System;
 using System.IO;

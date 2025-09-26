@@ -94,6 +94,7 @@ namespace Securibox.FacturX.Core
         {
             if (other == null)
             {
+            
             }
 
             return Id.CompareTo(((Enumeration)other).Id);
