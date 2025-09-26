@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Securibox.FacturX.Models.EN16931.Enum;
 using System;
