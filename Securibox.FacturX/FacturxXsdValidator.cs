@@ -17,7 +17,6 @@ namespace Securibox.FacturX
         {
             var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             ArgumentException.ThrowIfNullOrWhiteSpace(path);
-
             path = Path.Combine(path, "Xsd", "FacturX", conformanceLevel.Name);
             var XsdDirectory = new DirectoryInfo(path);
             foreach (FileInfo file in XsdDirectory.GetFiles("*.xsd"))

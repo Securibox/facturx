@@ -1,4 +1,4 @@
-using NUnit.Framework;
+ï»¿using NUnit.Framework;
 using System.IO;
 using System.Linq;
 
@@ -413,7 +413,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual(100.0, invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxBasisTotalAmount.Value);
 
             Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.CurrencyID);
-            
+
             Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode);
         }
 
@@ -702,7 +702,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
 
-            Assert.AreEqual("Hôtel Saint Denis", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
+            Assert.AreEqual("Hï¿½tel Saint Denis", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
             Assert.AreEqual("34343434600010", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
             Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
 
