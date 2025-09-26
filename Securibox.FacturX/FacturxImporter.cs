@@ -332,6 +332,15 @@ namespace Securibox.FacturX
                                     if (filename.Value == xmlFileName)
                                     {
                                         var efDict = dict.Elements["/EF"] as PdfDictionary;
+                                        if (efDict == null)
+                                        {
+                                            var efRef = dict.Elements["/EF"] as PdfReference;
+                                            if (efRef != null)
+                                            {
+                                                efDict = efRef.Value as PdfDictionary;
+                                            }
+                                        }
+
                                         if (efDict != null)
                                         {
                                             var fDict = efDict.Elements["/F"] as PdfReference;
@@ -367,6 +376,15 @@ namespace Securibox.FacturX
                             if (fileName == xmlFileName)
                             {
                                 var efDict = dict.Elements.GetDictionary("/EF");
+                                if (efDict == null)
+                                {
+                                    var efRef = dict.Elements["/EF"] as PdfReference;
+                                    if (efRef != null)
+                                    {
+                                        efDict = efRef.Value as PdfDictionary;
+                                    }
+                                }
+
                                 if (efDict != null)
                                 {
                                     var fDict = efDict.Elements["/F"] as PdfReference;
@@ -390,10 +408,22 @@ namespace Securibox.FacturX
                     if (filename != null && filename.Value == xmlFileName)
                     {
                         var efDict = dict.Elements["/EF"] as PdfDictionary;
-                        var fDict = efDict?.Elements["/F"] as PdfReference;
-                        if (fDict?.Value is PdfDictionary fileSpec && fileSpec.Stream != null)
+                        if (efDict == null)
                         {
-                            return fileSpec.Stream;
+                            var efRef = dict.Elements["/EF"] as PdfReference;
+                            if (efRef != null)
+                            {
+                                efDict = efRef.Value as PdfDictionary;
+                            }
+                        }
+
+                        if (efDict != null)
+                        {
+                            var fDict = efDict.Elements["/F"] as PdfReference;
+                            if (fDict?.Value is PdfDictionary embeddedDict)
+                            {
+                                return embeddedDict.Stream;
+                            }
                         }
                     }
                 }
@@ -414,16 +444,28 @@ namespace Securibox.FacturX
                         subtype.Value == "/FileAttachment")
                     {
                         var fsRef = annotDict.Elements["/FS"] as PdfReference;
-                        if (fsRef?.Value is PdfDictionary fsDict)
+                        if (fsRef?.Value is PdfDictionary dict)
                         {
-                            var filename = fsDict.Elements["/F"] as PdfString;
+                            var filename = dict.Elements["/F"] as PdfString;
                             if (filename != null && filename.Value == xmlFileName)
                             {
-                                var efDict = fsDict.Elements["/EF"] as PdfDictionary;
-                                var fDict = efDict?.Elements["/F"] as PdfReference;
-                                if (fDict?.Value is PdfDictionary fileSpec && fileSpec.Stream != null)
+                                var efDict = dict.Elements["/EF"] as PdfDictionary;
+                                if (efDict == null)
                                 {
-                                    return fileSpec.Stream;
+                                    var efRef = dict.Elements["/EF"] as PdfReference;
+                                    if (efRef != null)
+                                    {
+                                        efDict = efRef.Value as PdfDictionary;
+                                    }
+                                }
+
+                                if (efDict != null)
+                                {
+                                    var fDict = efDict.Elements["/F"] as PdfReference;
+                                    if (fDict?.Value is PdfDictionary embeddedDict)
+                                    {
+                                        return embeddedDict.Stream;
+                                    }
                                 }
                             }
                         }

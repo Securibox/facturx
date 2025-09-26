@@ -8,12 +8,13 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 {
     internal class MinimumInvoiceTests
     {
-        private readonly string _mainDir = $"{System.IO.Directory.GetCurrentDirectory()?.Split("\\bin")?.ElementAtOrDefault(0)}\\Invoices\\Custom\\";
+        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory()?.Split("bin").First()!, "Invoices", "Custom");
         private readonly string _invoiceName = "2023-6026_facture_facturx_minimum.pdf";
 
         [SetUp]
         public void Setup()
         {
+            TestContext.WriteLine(_mainDir);
         }
 
         [OneTimeTearDown]
@@ -124,7 +125,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
         [Test]
         [Order(2)]
-        public async Task AssertWrittenData_Minimum_SUCCESS()
+        public void AssertWrittenData_Minimum_SUCCESS()
         {
             var invoicePath = Path.Combine(_mainDir, "2023-6026_facture_facturx_minimum.pdf");
 
@@ -133,29 +134,29 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             Assert.NotNull(minimumInvoice);
 
-            Assert.AreEqual("2023-6026", minimumInvoice.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20230928", minimumInvoice.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", minimumInvoice.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", minimumInvoice.ExchangedDocument.TypeCode);
+            Assert.AreEqual("2023-6026", minimumInvoice!.ExchangedDocument.ID.Value);
+            Assert.AreEqual("20230928", minimumInvoice!.ExchangedDocument.IssueDateTime.DateTimeString.Value);
+            Assert.AreEqual("102", minimumInvoice!.ExchangedDocument.IssueDateTime.DateTimeString.Format);
+            Assert.AreEqual("380", minimumInvoice!.ExchangedDocument.TypeCode);
 
-            Assert.AreEqual("A1", minimumInvoice.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
-            Assert.AreEqual("urn:factur-x.eu:1p0:minimum", minimumInvoice.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.AreEqual("A1", minimumInvoice!.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.AreEqual("urn:factur-x.eu:1p0:minimum", minimumInvoice!.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
 
-            Assert.AreEqual("Securibox SARL", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
-            Assert.AreEqual("50000371000034", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("Société Hôtelière du Pacano", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.Name);
-            Assert.AreEqual("12345682400016", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("FR", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
-            Assert.IsNull(minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration);
+            Assert.AreEqual("Securibox SARL", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
+            Assert.AreEqual("50000371000034", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
+            Assert.AreEqual("0002", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.AreEqual("Société Hôtelière du Pacano", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.Name);
+            Assert.AreEqual("12345682400016", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.Value);
+            Assert.AreEqual("0002", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.AreEqual("FR", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
+            Assert.IsNull(minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration);
 
-            Assert.AreEqual("EUR", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode);
-            Assert.AreEqual(207.55m, minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxBasisTotalAmount.Value);
-            Assert.AreEqual(20.59m, minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.Value);
-            Assert.AreEqual("EUR", minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.CurrencyID);
-            Assert.AreEqual(228.14m, minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value);
-            Assert.AreEqual(228.14m, minimumInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value);
+            Assert.AreEqual("EUR", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode);
+            Assert.AreEqual(207.55m, minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxBasisTotalAmount.Value);
+            Assert.AreEqual(20.59m, minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.Value);
+            Assert.AreEqual("EUR", minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount.CurrencyID);
+            Assert.AreEqual(228.14m, minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value);
+            Assert.AreEqual(228.14m, minimumInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value);
         }
     }
 }

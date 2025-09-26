@@ -169,7 +169,7 @@ namespace Securibox.FacturX.Schematron.Types
             return ok;
         }
 
-        private bool GetAndEvaluateResult(XsltContext context, XPathNavigator navigator, string expr, Dictionary<string, Object> variablesDictionary = null)
+        private bool GetAndEvaluateResult(XsltContext context, XPathNavigator navigator, string expr, Dictionary<string, Object>? variablesDictionary = null)
         {
             #region Every condition
             var everyMatch = Regex.Match(expr, @"every\s+(.*)\s+satisfies\s+(.+)", RegexOptions.Singleline);
@@ -321,7 +321,7 @@ namespace Securibox.FacturX.Schematron.Types
             return ok;
         }
 
-        private string EvaluateForOrLetStatement(XsltContext context, XPathNavigator navigator, string expr, Match forMatch, Dictionary<string, Object> variables = null)
+        private string EvaluateForOrLetStatement(XsltContext context, XPathNavigator navigator, string expr, Match forMatch, Dictionary<string, Object>? variables = null)
         {
             var bindings = forMatch.Groups[1].Value.Trim();
             var returnExpr = forMatch.Groups[2].Value.Trim();

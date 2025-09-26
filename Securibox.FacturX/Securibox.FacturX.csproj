@@ -4,11 +4,24 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Title>Securibox Factur-X Library</Title>
+	<Version>0.3.0</Version>
+	<Company>Securibox</Company>
+	<RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<Authors>securibox</Authors>
+	<Description>Open Source .NET library to read, create and validate Factur-X e-invoices.</Description>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+	<PackageReference Include="NuGet.CommandLine" Version="6.9.1">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
     <PackageReference Include="PdfSharpCore" Version="1.3.62" />
     <PackageReference Include="XmpCore" Version="6.1.10.1" />
     <PackageReference Include="XPath2" Version="1.1.5" />
@@ -36,68 +49,97 @@
 	<Folder Include="Xsd\FacturX\EN 16931\" />
 	<Folder Include="Xsd\FacturX\Extended\" />
   </ItemGroup>
-
+  <ItemGroup>
+	<None Include="..\LICENSE">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+	</None>
+	<None Include="..\README.md">
+		<Pack>True</Pack>
+		<PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
   <ItemGroup>
     <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Pack>true</Pack>
     </None>
     <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Pack>true</Pack>
     </None>
     <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Pack>true</Pack>
     </None>
     <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Pack>true</Pack>
     </None>
     <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
     <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <Pack>true</Pack>
+	</None>
   </ItemGroup>
 
 </Project>
