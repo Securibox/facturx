@@ -5,12 +5,19 @@ namespace Securibox.FacturX.Models.Extended
     public class LineAdditionalDocument : IReference
     {
         public string AssignedId { get; private set; }
+
         public string? ExternalLocation { get; private set; }
+
         public string? LineId { get; private set; }
+
         public string TypeCode { get; private set; }
+
         public IEnumerable<string>? NameList { get; private set; }
+
         public Attachment? AttachedDocument { get; private set; }
+
         public string? ReferenceTypeCode { get; private set; }
+
         public DateTime? IssueDate { get; private set; }
 
         internal void AddAssignedId(string assignedId) => AssignedId = assignedId;

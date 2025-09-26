@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.Advanced;
+using PdfSharpCore.Pdf.Filters;
 using PdfSharpCore.Pdf.IO;
+using PdfSharpCore.Pdf.IO.enums;
 using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
+using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.SpecificationModels;
 using System.Text;
 using System.Xml;
@@ -13,17 +16,34 @@ using static PdfSharpCore.Pdf.PdfDictionary;
 
 namespace Securibox.FacturX
 {
-    public class FacturxImporter
+    public class FacturxImporter : IDisposable
     {
         private ILogger<FacturxImporter> _logger;
+        private MemoryStream _pdfFileStream;
         private XmlDocument _xmlDocument;
         private FacturXMetadata _facturXMetadata;
         private PdfDocument _pdfDocument;
+        public List<ValidationReport> validationReport;
 
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
         {
             InitializeLogger(logger);
-            _pdfDocument = PdfReader.Open(pdfStream);
+            if (pdfStream is MemoryStream memoryStream)
+            {
+                _pdfFileStream = memoryStream;
+            }
+            else
+            {
+                using (var temp = pdfStream)
+                {
+                    var ms = new MemoryStream();
+                    temp.CopyTo(ms);
+                    ms.Position = 0;
+                    _pdfFileStream = ms;
+                }            
+            }
+
+            _pdfDocument = PdfReader.Open(_pdfFileStream, accuracy: PdfReadAccuracy.Moderate);
         }
 
         public FacturxImporter(string pdfFilename, ILogger<FacturxImporter>? logger = null)
@@ -34,9 +54,14 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", pdfFilename);
             }
 
-            using (var pdfFile = File.OpenRead(pdfFilename))
+            using (var fileStream = File.OpenRead(pdfFilename))
             {
-                _pdfDocument = PdfReader.Open(pdfFile);
+                var memoryStream = new MemoryStream();
+                fileStream.CopyTo(memoryStream);
+                memoryStream.Position = 0;
+
+                _pdfFileStream = memoryStream;
+                _pdfDocument = PdfReader.Open(_pdfFileStream, accuracy: PdfReadAccuracy.Moderate);
             }
         }
 
@@ -52,6 +77,7 @@ namespace Securibox.FacturX
 
         public bool IsFacturXValid()
         {
+            validationReport = new List<ValidationReport>();
             var facturXMetadata = GetMetadata();
             var xmlPdfStream = GetEmbeddedXmlStream(_pdfDocument, facturXMetadata.DocumentFileName);
             if (xmlPdfStream == null || xmlPdfStream.Length == 0)
@@ -59,21 +85,19 @@ namespace Securibox.FacturX
                 _logger!.LogCritical("Could not read embedded XML file.");
                 throw new IOException("Could not read embedded XML file.");
             }
-            LoadXml(xmlPdfStream);
 
+            LoadXml(xmlPdfStream);
             FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
-            
             var schValidationResult = FacturxSchematronValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
             if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = schValidationResult._results.Where(x => x.IsError == true).ToList();
-
-                var exception = new Exception("Invalid xml.");
+                var errors = schValidationResult._results.Where(x => x.IsError == true || x.IsWarning == true).ToList();
                 for (int i = 0; i < errors.Count; i++)
                 {
-                    exception.Data.Add(i, errors[i]);
+                    validationReport.Add(errors[i]);
                 }
-                throw exception;
+
+                return false;
             }
 
             return true;
@@ -103,6 +127,7 @@ namespace Securibox.FacturX
             {
                 return this.Deserialize<SpecificationModels.Extended.CrossIndustryInvoice>(_xmlDocument);
             }
+
             return null;
         }
 
@@ -123,7 +148,6 @@ namespace Securibox.FacturX
                 {
                     builder.AddFilter("Microsoft", LogLevel.Warning).AddFilter("System", LogLevel.Warning).AddFilter(nameof(FacturxImporter), LogLevel.Debug);
                 });
-
 
                 _logger = factory.CreateLogger<FacturxImporter>();
                 _logger.LogInformation("Example log message");
@@ -156,6 +180,7 @@ namespace Securibox.FacturX
                 {
                     text = text.Substring(1);
                 }
+
                 _xmlDocument = new XmlDocument();
                 _xmlDocument.LoadXml(text);
             }
@@ -165,33 +190,51 @@ namespace Securibox.FacturX
         private Models.FacturXMetadata GetFacturXMetadata(PdfDocument document)
         {
             var facturXMetadata = new Models.FacturXMetadata();
-
-            var pdfReference = document.Internals.Catalog.Elements.GetReference("/AF");
-
             var metadataReference = document.Internals.Catalog.Elements.GetReference("/Metadata");
             if (metadataReference.Value is PdfDictionary)
             {
                 var dict = (PdfDictionary)metadataReference.Value;
-                var canUnfilter = dict.Stream.TryUnfilter();
-                byte[] metadataBytes;
-                if (canUnfilter)
+                byte[] metadataBytes = new byte[0];
+                if (dict?.Stream == null)
                 {
-                    metadataBytes = dict.Stream.Value;
+                    ArgumentNullException.ThrowIfNull(_pdfFileStream);
+
+                    _pdfFileStream.Position = 0;
+                    var pdfText = Encoding.UTF8.GetString(_pdfFileStream.ToArray());
+                    int pos = pdfText.IndexOf("<x:xmpmeta", StringComparison.Ordinal);
+                    if (pos >= 0)
+                    {
+                        int endPos = pdfText.IndexOf("</x:xmpmeta>", pos, StringComparison.Ordinal);
+                        if (endPos >= 0)
+                        {
+                            endPos += "</x:xmpmeta>".Length;
+                            string xmpXml = pdfText.Substring(pos, endPos - pos);
+                            metadataBytes = Encoding.UTF8.GetBytes(xmpXml);
+                        }
+                    }            
                 }
                 else
                 {
-                    PdfSharpCore.Pdf.Filters.FlateDecode flate = new PdfSharpCore.Pdf.Filters.FlateDecode();
-                    metadataBytes = flate.Decode(dict.Stream.Value, new PdfSharpCore.Pdf.Filters.FilterParms(null));
+                    var canUnfilter = dict.Stream.TryUnfilter();
+                    if (canUnfilter)
+                    {
+                        metadataBytes = dict.Stream.Value;
+                    }
+                    else
+                    {
+                        PdfSharpCore.Pdf.Filters.FlateDecode flate = new PdfSharpCore.Pdf.Filters.FlateDecode();
+                        metadataBytes = flate.Decode(dict.Stream.Value, new PdfSharpCore.Pdf.Filters.FilterParms(null));
+                    }
                 }
 
                 var xmp = XmpMetaFactory.ParseFromBuffer(metadataBytes);
-
                 var propertyPdfAConformance = xmp.GetProperty(XmpConstants.NsPdfaId, "pdfaid:conformance");
                 if (propertyPdfAConformance == null)
                 {
                     _logger.LogWarning("No PDF/A conformance.");
                     throw new Exception("No PDF/A conformance.");
                 }
+
                 var propertyPdfAPart = xmp.GetProperty(XmpConstants.NsPdfaId, "pdfaid:part");
                 if (propertyPdfAPart.Value != "3" && propertyPdfAPart.Value != "4")
                 {
@@ -257,52 +300,186 @@ namespace Securibox.FacturX
                     facturXMetadata.DocumentFileName = facturXDocumentFileNameProperty.Value;
                 }
             }
+
             return facturXMetadata;
         }
 
         private PdfStream? GetEmbeddedXmlStream(PdfDocument document, string xmlFileName = "factur-x.xml")
         {
-            if (!document.Internals.Catalog.Elements.ContainsKey("/AF"))
+            if (document.Internals.Catalog.Elements.ContainsKey("/AF"))
             {
-                throw new Exception($"Could not find PDF Element AF containing {xmlFileName}");
-            }
-
-            var element = document.Internals.Catalog.Elements["/AF"];
-
-            if (element is PdfReference)
-            {
-                PdfReference objectReferece = element as PdfReference;
-                element = objectReferece.Value;
-            }
-
-
-            PdfArray xObject = element as PdfArray;
-            if (xObject != null)
-            {
-                foreach (var pdfElement in xObject.Elements)
+                var element = document.Internals.Catalog.Elements["/AF"];
+                if (element is PdfReference)
                 {
-                    if (pdfElement is PdfReference)
+                    PdfReference objectReferece = element as PdfReference;
+                    element = objectReferece.Value;
+                }
+
+                PdfArray xObject = element as PdfArray;
+                if (xObject != null)
+                {
+                    foreach (var pdfElement in xObject.Elements)
                     {
-                        PdfReference reference = (PdfReference)pdfElement;
-                        if (reference.Value is PdfDictionary)
+                        if (pdfElement is PdfReference)
                         {
-                            var dict = (PdfDictionary)reference.Value;
-                            if (dict.Elements.ContainsKey("/EF") && dict.Elements.ContainsKey("/F"))
+                            PdfReference reference = (PdfReference)pdfElement;
+                            if (reference.Value is PdfDictionary)
                             {
-                                var filename = dict.Elements["/F"] as PdfString;
-                                if (filename.Value == xmlFileName)
+                                var dict = (PdfDictionary)reference.Value;
+                                if (dict.Elements.ContainsKey("/EF") && dict.Elements.ContainsKey("/F"))
                                 {
-                                    var efDict = dict.Elements["/EF"] as PdfDictionary;
-                                    var fDict = efDict.Elements["/F"] as PdfReference;
-                                    var embeded = fDict.Value as PdfDictionary;
-                                    return embeded.Stream;
+                                    var filename = dict.Elements["/F"] as PdfString;
+                                    if (filename.Value == xmlFileName)
+                                    {
+                                        var efDict = dict.Elements["/EF"] as PdfDictionary;
+                                        if (efDict == null)
+                                        {
+                                            var efRef = dict.Elements["/EF"] as PdfReference;
+                                            if (efRef != null)
+                                            {
+                                                efDict = efRef.Value as PdfDictionary;
+                                            }
+                                        }
+
+                                        if (efDict != null)
+                                        {
+                                            var fDict = efDict.Elements["/F"] as PdfReference;
+                                            if (fDict?.Value is PdfDictionary fileSpec && fileSpec.Stream != null)
+                                            {
+                                                return fileSpec.Stream;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+
+            if (document.Internals.Catalog.Elements.ContainsKey("/Names"))
+            {
+                var names = document.Internals.Catalog.Elements.GetDictionary("/Names");
+                if (names != null && names.Elements.ContainsKey("/EmbeddedFiles"))
+                {
+                    var efTree = names.Elements.GetDictionary("/EmbeddedFiles");
+                    var kids = efTree.Elements.GetArray("/Names");
+
+                    for (int i = 0; i < kids.Elements.Count; i += 2)
+                    {
+                        var name = kids.Elements[i] as PdfString;
+                        var fileSpec = kids.Elements[i + 1] as PdfReference;
+
+                        if (fileSpec?.Value is PdfDictionary dict)
+                        {
+                            var fileName = dict.Elements.GetString("/F");
+                            if (fileName == xmlFileName)
+                            {
+                                var efDict = dict.Elements.GetDictionary("/EF");
+                                if (efDict == null)
+                                {
+                                    var efRef = dict.Elements["/EF"] as PdfReference;
+                                    if (efRef != null)
+                                    {
+                                        efDict = efRef.Value as PdfDictionary;
+                                    }
+                                }
+
+                                if (efDict != null)
+                                {
+                                    var fDict = efDict.Elements["/F"] as PdfReference;
+                                    if (fDict?.Value is PdfDictionary embeddedDict)
+                                    {
+                                        return embeddedDict.Stream;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var obj in document.Internals.GetAllObjects())
+            {
+                if (obj is PdfDictionary dict && dict.Elements.ContainsKey("/Type") &&
+                    dict.Elements["/Type"] is PdfName type && type.Value == "/Filespec")
+                {
+                    var filename = dict.Elements["/F"] as PdfString;
+                    if (filename != null && filename.Value == xmlFileName)
+                    {
+                        var efDict = dict.Elements["/EF"] as PdfDictionary;
+                        if (efDict == null)
+                        {
+                            var efRef = dict.Elements["/EF"] as PdfReference;
+                            if (efRef != null)
+                            {
+                                efDict = efRef.Value as PdfDictionary;
+                            }
+                        }
+
+                        if (efDict != null)
+                        {
+                            var fDict = efDict.Elements["/F"] as PdfReference;
+                            if (fDict?.Value is PdfDictionary embeddedDict)
+                            {
+                                return embeddedDict.Stream;
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var page in document.Pages)
+            {
+                var annots = page.Elements["/Annots"] as PdfArray;
+                if (annots == null)
+                {
+                    continue;
+                }
+
+                foreach (var annot in annots.Elements.OfType<PdfReference>())
+                {
+                    if (annot.Value is PdfDictionary annotDict &&
+                        annotDict.Elements["/Subtype"] is PdfName subtype &&
+                        subtype.Value == "/FileAttachment")
+                    {
+                        var fsRef = annotDict.Elements["/FS"] as PdfReference;
+                        if (fsRef?.Value is PdfDictionary dict)
+                        {
+                            var filename = dict.Elements["/F"] as PdfString;
+                            if (filename != null && filename.Value == xmlFileName)
+                            {
+                                var efDict = dict.Elements["/EF"] as PdfDictionary;
+                                if (efDict == null)
+                                {
+                                    var efRef = dict.Elements["/EF"] as PdfReference;
+                                    if (efRef != null)
+                                    {
+                                        efDict = efRef.Value as PdfDictionary;
+                                    }
+                                }
+
+                                if (efDict != null)
+                                {
+                                    var fDict = efDict.Elements["/F"] as PdfReference;
+                                    if (fDict?.Value is PdfDictionary embeddedDict)
+                                    {
+                                        return embeddedDict.Stream;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             return null;
+        }
+
+        public void Dispose()
+        {
+            _pdfFileStream?.Dispose();
+            _pdfDocument?.Close();
         }
     }
 }

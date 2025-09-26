@@ -5,8 +5,11 @@ namespace Securibox.FacturX.Models.EN16931
     public class LineItemDetails : Basic.LineItemDetails
     {
         public string? SellerAssignedId { get; private set; }
+
         public string? BuyerAssignedId { get; private set; }
+
         public string? Description { get; private set; }
+
         public string? OriginCountry { get; private set; }
 
         public LineItemDetails(string name, GlobalIdentification? standardIdentification) 
