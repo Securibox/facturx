@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Securibox.FacturX.Models.EN16931.Enum;
 using System;
@@ -24,153 +24,153 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Avoir_FR_type380_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("AV-2017-0005", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20171116", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("AV-2017-0005"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20171116"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.IsNotNull(noteList);
-            Assert.AreEqual("Avoir suite à bidon 10L d'huile d'olive percé et carton de nougat renversé", noteList?.ElementAt(0).Content);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("Avoir suite à bidon 10L d'huile d'olive percé et carton de nougat renversé"));
 
-            Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter is null);
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.NotNull(line1.SpecifiedTradeProduct);
-            Assert.AreEqual("3518370400049", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("Nougat de l'Abbaye 250g", line1!.SpecifiedTradeProduct.Name);
+            Assert.That(line1.SpecifiedTradeProduct is not null);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(4.55, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge);
-            Assert.IsFalse(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator);
-            Assert.AreEqual(-0.45, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value);
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.55));
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge is not null);
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value, Is.EqualTo(-0.45));
 
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(4.10, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.10));
 
-            Assert.AreEqual(-5.000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(-5.000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(-20.48, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(-20.48));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.NotNull(line2.SpecifiedTradeProduct);
-            Assert.AreEqual("HOLANCL", line2!.SpecifiedTradeProduct.SellerAssignedID);
-            Assert.AreEqual("Huile d'olive à l'ancienne", line2!.SpecifiedTradeProduct.Name);
+            Assert.That(line2.SpecifiedTradeProduct is not null);
+            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("Huile d'olive à l'ancienne"));
 
-            Assert.NotNull(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(19.80, line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.NotNull(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(19.80, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.AreEqual(-10.000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("LTR", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(-10.000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("LTR"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(5.50, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(5.50));
 
-            Assert.AreEqual(-198.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(-198.00));
 
-            Assert.AreEqual("Au bon moulin", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("Au bon moulin"));
 
-            Assert.AreEqual("99999999800010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("99999999800010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Tony Dubois", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 56", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("tony.dubois@aubonmoulin.fr", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("Tony Dubois"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 56"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("tony.dubois@aubonmoulin.fr"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("84340"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("1242 chemin de l'olive"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("Malaucène"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11999999998"));
 
-            Assert.AreEqual("Ma jolie boutique", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("Ma jolie boutique"));
 
-            Assert.AreEqual("78787878400035", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("78787878400035"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Alexandre Payet", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 67", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("alexandre.payet@majolieboutique.net", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Alexandre Payet"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 67"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("alexandre.payet@majolieboutique.net"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("69001"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue de la République"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Lyon"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR19787878784", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR19787878784"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference is null);
 
-            Assert.AreEqual("PO445", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO445"));
 
-            Assert.AreEqual("MSPE2017", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("MSPE2017"));
 
-            Assert.AreEqual("AV-2017-0005", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("AV-2017-0005"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(-4.10, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(-20.48, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("5", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(-4.10));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(-20.48));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("5"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(-10.89, taxDistributionList?.ElementAt(1).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(1).TypeCode);
-            Assert.AreEqual(-198.00, taxDistributionList?.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(1).CategoryCode);
-            Assert.AreEqual("5", taxDistributionList?.ElementAt(1).DueDateTypeCode);
-            Assert.AreEqual(5.50, taxDistributionList?.ElementAt(1).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(1).CalculatedAmount.Value, Is.EqualTo(-10.89));
+            Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(-198.00));
+            Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("5"));
+            Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(5.50));
 
-            Assert.AreEqual("Paiement immédiat", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description);
-            Assert.AreEqual("20171116", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description, Is.EqualTo("Paiement immédiat"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20171116"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(-218.48, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(-218.48));
 
-            Assert.AreEqual(-233.47, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(-233.47));
 
-            Assert.AreEqual(-218.48, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(-218.48));
 
-            Assert.AreEqual(-14.99, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(-14.99));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(-0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(-0.00));
 
-            Assert.AreEqual(-233.47, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(-233.47));
 
-            Assert.AreEqual("FA-2017-0010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20171113", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("FA-2017-0010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20171113"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
         }
 
         [Test]
@@ -179,161 +179,161 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Avoir_FR_type381_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("AV-2017-0005", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20171116", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("381", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("AV-2017-0005"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20171116"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("381"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.IsNotNull(noteList);
-            Assert.AreEqual("Avoir suite à bidon 10L d'huile d'olive percé et carton de nougat renversé", noteList?.ElementAt(0).Content);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("Avoir suite à bidon 10L d'huile d'olive percé et carton de nougat renversé"));
 
-            Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter is null);
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.NotNull(line1.SpecifiedTradeProduct);
-            Assert.AreEqual("3518370400049", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("Nougat de l'Abbaye 250g", line1!.SpecifiedTradeProduct.Name);
+            Assert.That(line1.SpecifiedTradeProduct is not null);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(4.55, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.55));
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge is not null);
 
-            Assert.IsFalse(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator);
-            Assert.AreEqual(0.45, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value);
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value, Is.EqualTo(0.45));
 
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(4.10, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.10));
 
-            Assert.AreEqual(5.000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(5.000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(20.48, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(20.48));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.NotNull(line2.SpecifiedTradeProduct);
-            Assert.AreEqual("HOLANCL", line2!.SpecifiedTradeProduct.SellerAssignedID);
-            Assert.AreEqual("Huile d'olive à l'ancienne", line2!.SpecifiedTradeProduct.Name);
+            Assert.That(line2.SpecifiedTradeProduct is not null);
+            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("Huile d'olive à l'ancienne"));
 
-            Assert.NotNull(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(19.80, line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.NotNull(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(19.80, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.AreEqual(10.000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("LTR", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(10.000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("LTR"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(5.50, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(5.50));
 
-            Assert.AreEqual(198.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(198.00));
 
-            Assert.AreEqual("Au bon moulin", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("Au bon moulin"));
 
-            Assert.AreEqual("99999999800010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("99999999800010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Tony Dubois", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 56", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("tony.dubois@aubonmoulin.fr", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("Tony Dubois"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 56"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("tony.dubois@aubonmoulin.fr"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("84340"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("1242 chemin de l'olive"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("Malaucène"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11999999998"));
 
-            Assert.AreEqual("Ma jolie boutique", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("Ma jolie boutique"));
 
-            Assert.AreEqual("78787878400035", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("78787878400035"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Alexandre Payet", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 67", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("alexandre.payet@majolieboutique.net", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Alexandre Payet"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 67"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("alexandre.payet@majolieboutique.net"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("69001"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue de la République"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Lyon"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR19787878784", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR19787878784"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference is null);
 
-            Assert.AreEqual("PO445", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("MSPE2017", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO445"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("MSPE2017"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("69001"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue de la République"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Lyon"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent is null);
 
-            Assert.AreEqual("AV-2017-0005", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("AV-2017-0005"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(4.10, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(20.48, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("5", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(4.10));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(20.48));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("5"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(10.89, taxDistributionList?.ElementAt(1).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(1).TypeCode);
-            Assert.AreEqual(198.00, taxDistributionList?.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(1).CategoryCode);
-            Assert.AreEqual("5", taxDistributionList?.ElementAt(1).DueDateTypeCode);
-            Assert.AreEqual(5.50, taxDistributionList?.ElementAt(1).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(1).CalculatedAmount.Value, Is.EqualTo(10.89));
+            Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(198.00));
+            Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("5"));
+            Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(5.50));
 
-            Assert.AreEqual("Paiement immédiat", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description);
-            Assert.AreEqual("20171116", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description, Is.EqualTo("Paiement immédiat"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20171116"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(218.48, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(218.48));
 
-            Assert.AreEqual(233.47, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(233.47));
 
-            Assert.AreEqual(218.48, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(218.48));
 
-            Assert.AreEqual(14.99, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(14.99));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(0.00));
 
-            Assert.AreEqual(233.47, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(233.47));
 
-            Assert.AreEqual("FA-2017-0010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20171113", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("FA-2017-0010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20171113"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
         }
 
@@ -343,168 +343,168 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_FR_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("FA-2017-0010", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20171113", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("FA-2017-0010"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20171113"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("Franco de port (commande > 300 € HT)", noteList?.ElementAt(0).Content);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("Franco de port (commande > 300 € HT)"));
 
-            Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter is null);
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
-            Assert.AreEqual("3518370400049", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("NOUG250", line1!.SpecifiedTradeProduct.SellerAssignedID);
-            Assert.AreEqual("Nougat de l'Abbaye 250g", line1!.SpecifiedTradeProduct.Name);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line1!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("NOUG250"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
-            Assert.AreEqual(4.55, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.IsFalse(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator);
-            Assert.AreEqual(0.45, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.55));
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value, Is.EqualTo(0.45));
 
-            Assert.AreEqual(4.10, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.10));
 
-            Assert.AreEqual(20.000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(20.000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(81.90, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(81.90));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("3518370200090", line2!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line2!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("Biscuits aux raisins 300g", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("BRAIS300", line2!.SpecifiedTradeProduct.SellerAssignedID);
+            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370200090"));
+            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("Biscuits aux raisins 300g"));
+            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("BRAIS300"));
 
-            Assert.AreEqual(3.20, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(3.20));
 
-            Assert.AreEqual(15.000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(15.000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(5.50, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(5.50));
 
-            Assert.AreEqual(48.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(48.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
-            Assert.AreEqual("Huile d'olive à l'ancienne", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("HOLANCL", line3!.SpecifiedTradeProduct.SellerAssignedID);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("Huile d'olive à l'ancienne"));
+            Assert.That(line3!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
 
-            Assert.AreEqual(19.80, line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(19.80, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.AreEqual(25.000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("LTR", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(25.000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("LTR"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(5.50, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(5.50));
 
-            Assert.AreEqual(495.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(495.00));
 
-            Assert.AreEqual("Au bon moulin", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("Au bon moulin"));
 
-            Assert.AreEqual("99999999800010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("99999999800010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("84340"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("1242 chemin de l'olive"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("Malaucène"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11999999998"));
 
-            Assert.AreEqual("Tony Dubois", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 56", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("tony.dubois@aubonmoulin.fr", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("Tony Dubois"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 56"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("tony.dubois@aubonmoulin.fr"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("Ma jolie boutique", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("Ma jolie boutique"));
 
-            Assert.AreEqual("78787878400035", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("78787878400035"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("69001"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue de la République"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Lyon"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.AreEqual("Alexandre Payet", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 67", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("alexandre.payet@majolieboutique.net", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Alexandre Payet"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 67"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("alexandre.payet@majolieboutique.net"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR19787878784", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR19787878784"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference is null);
 
-            Assert.AreEqual("PO445", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("MSPE2017", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO445"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("MSPE2017"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("69001"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue de la République"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Lyon"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent is null);
 
-            Assert.AreEqual("FA-2017-0010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("FA-2017-0010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("Virement sur compte Banque Fiducial", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.Information);
-            Assert.AreEqual("FIDCFR21XXX", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value);
-            Assert.AreEqual("FR2012421242124212421242124", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.Information, Is.EqualTo("Virement sur compte Banque Fiducial"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value, Is.EqualTo("FIDCFR21XXX"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(16.38, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(81.90, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("5", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReasonCode);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(16.38));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(81.90));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("5"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason is null);
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode is null);
 
-            Assert.AreEqual("30% d'acompte, solde à 30 j", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description);
-            Assert.AreEqual("20171213", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description, Is.EqualTo("30% d'acompte, solde à 30 j"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20171213"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(624.90, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(624.90));
 
-            Assert.AreEqual(624.90, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(624.90));
 
-            Assert.AreEqual(46.25, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(46.25));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(671.15, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(671.15));
 
-            Assert.AreEqual(201.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(470.15, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(201.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(470.15));
         }
 
         [Test]
@@ -513,164 +513,164 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_UE_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("FA-2017-0008", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20171103", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("FA-2017-0008"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20171103"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("Free shipping (amount > 300 €)", noteList?.ElementAt(0).Content);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("Free shipping (amount > 300 €)"));
 
-            Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter is null);
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
-            Assert.AreEqual("3518370400049", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("Nougat de l'Abbaye 250g", line1!.SpecifiedTradeProduct.Name);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
-            Assert.AreEqual(4.55, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.IsFalse(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator);
-            Assert.AreEqual(0.45, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.55));
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value, Is.EqualTo(0.45));
 
-            Assert.AreEqual(4.10, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.10));
 
-            Assert.AreEqual(8.000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(8.000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(32.76, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(32.76));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("3518370200090", line2!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line2!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("Biscuits aux raisins 300g", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("BRAIS300", line2!.SpecifiedTradeProduct.SellerAssignedID);
+            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370200090"));
+            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("Biscuits aux raisins 300g"));
+            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("BRAIS300"));
 
-            Assert.AreEqual(3.20, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(3.20));
 
-            Assert.AreEqual(20.000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(20.000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(64.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(64.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
-            Assert.AreEqual("Huile d'olive à l'ancienne", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("HOLANCL", line3!.SpecifiedTradeProduct.SellerAssignedID);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("Huile d'olive à l'ancienne"));
+            Assert.That(line3!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
 
-            Assert.AreEqual(19.80, line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(19.80, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.AreEqual(100.000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("LTR", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(100.000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("LTR"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(1980.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(1980.00));
 
-            Assert.AreEqual("Au bon moulin", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("Au bon moulin"));
 
-            Assert.AreEqual("99999999800010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("99999999800010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("84340"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("1242 chemin de l'olive"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("Malaucène"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11999999998"));
 
-            Assert.AreEqual("Tony Dubois", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 56", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("tony.dubois@aubonmoulin.fr", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("Tony Dubois"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 56"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("tony.dubois@aubonmoulin.fr"));
 
-            Assert.AreEqual("Me gusta olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("Me gusta olive"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization is null);
 
-            Assert.AreEqual("41700", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("87 camino de la calor", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Dos Hermanas", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("ES", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("41700"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("87 camino de la calor"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Dos Hermanas"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("ES"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("ESA12345674", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("ESA12345674"));
 
-            Assert.AreEqual("Pedro Sanchez", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+34 978 23 41 23", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("pedro@megustaolive.es", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Pedro Sanchez"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+34 978 23 41 23"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("pedro@megustaolive.es"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference is null);
 
-            Assert.AreEqual("COMPRA0832", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("FROLIVE2017", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("COMPRA0832"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("FROLIVE2017"));
 
-            Assert.AreEqual("Me gusta olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("41700", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("87 camino de la calor", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Dos Hermanas", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("ES", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("Me gusta olive"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("41700"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("87 camino de la calor"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Dos Hermanas"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("ES"));
 
-            Assert.AreEqual("20170311", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20170311"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("FA-2017-0008", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("FA-2017-0008"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("Credit transfer Banque Fiducial", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.Information);
-            Assert.AreEqual("FIDCFR21XXX", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value);
-            Assert.AreEqual("FR2012421242124212421242124", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.Information, Is.EqualTo("Credit transfer Banque Fiducial"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value, Is.EqualTo("FIDCFR21XXX"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(2076.76, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("K", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
-            Assert.AreEqual("French VAT exemption according to articles 262 ter I (for products) and/or 283-2 (for services) of \"CGI\"", taxDistributionList?.ElementAt(0).ExemptionReason);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(2076.76));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("K"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode is null);
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason, Is.EqualTo("French VAT exemption according to articles 262 ter I (for products) and/or 283-2 (for services) of \"CGI\""));
 
-            Assert.AreEqual("30% advance payment, balance at 30 days", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description);
-            Assert.AreEqual("20171203", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description, Is.EqualTo("30% advance payment, balance at 30 days"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20171203"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(2076.76, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(2076.76));
 
-            Assert.AreEqual(2076.76, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(2076.76));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(2076.76, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(2076.76));
 
-            Assert.AreEqual(623.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(1453.76, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(623.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(1453.76));
         }
 
         [Test]
@@ -679,189 +679,189 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_DOM_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("FA-2017-0009", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20171105", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("FA-2017-0009"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20171105"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.IsNotNull(noteList);
-            Assert.AreEqual("Franco de port (Commande > 300 € HT)", noteList?.ElementAt(0).Content);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("Franco de port (Commande > 300 € HT)"));
 
-            Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter is null);
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.NotNull(line1.SpecifiedTradeProduct);
-            Assert.AreEqual("3518370400049", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("NOUG250", line1!.SpecifiedTradeProduct.SellerAssignedID);
-            Assert.AreEqual("Nougat de l'Abbaye 250g", line1!.SpecifiedTradeProduct.Name);
+            Assert.That(line1.SpecifiedTradeProduct is not null);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line1!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("NOUG250"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(4.55, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge);
-            Assert.IsFalse(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator);
-            Assert.AreEqual(0.45, line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value);
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.55));
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge is not null);
+            Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge.ActualAmount.Value, Is.EqualTo(0.45));
 
-            Assert.NotNull(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(4.10, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(4.10));
 
-            Assert.AreEqual(50.000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(50.000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("G", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("G"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(204.75, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(204.75));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.NotNull(line2.SpecifiedTradeProduct);
-            Assert.AreEqual("3518370200090", line2!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0160", line2!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("BRAIS300", line2!.SpecifiedTradeProduct.SellerAssignedID);
-            Assert.AreEqual("Biscuits aux raisins 300g", line2!.SpecifiedTradeProduct.Name);
+            Assert.That(line2.SpecifiedTradeProduct is not null);
+            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370200090"));
+            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
+            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("BRAIS300"));
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("Biscuits aux raisins 300g"));
 
-            Assert.NotNull(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(3.20, line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(3.20));
 
-            Assert.NotNull(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(3.20, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(3.20));
 
-            Assert.AreEqual(40.000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(40.000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("G", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("G"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(128.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(128.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.NotNull(line3.SpecifiedTradeProduct);
-            Assert.AreEqual("HOLANCL", line3!.SpecifiedTradeProduct.SellerAssignedID);
-            Assert.AreEqual("Huile d'olive à l'ancienne", line3!.SpecifiedTradeProduct.Name);
+            Assert.That(line3.SpecifiedTradeProduct is not null);
+            Assert.That(line3!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("Huile d'olive à l'ancienne"));
 
-            Assert.NotNull(line3.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice);
-            Assert.AreEqual(19.80, line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.NotNull(line3.SpecifiedLineTradeAgreement.NetPriceProductTradePrice);
-            Assert.AreEqual(19.80, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(19.80));
 
-            Assert.AreEqual(10.000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("LTR", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(10.000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("LTR"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("G", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("G"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(198.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(198.00));
 
-            Assert.AreEqual("Au bon moulin", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("Au bon moulin"));
 
-            Assert.AreEqual("99999999800010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("99999999800010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Tony Dubois", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 4 72 07 08 56", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("tony.dubois@aubonmoulin.fr", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("Tony Dubois"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 4 72 07 08 56"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("tony.dubois@aubonmoulin.fr"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("84340"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("1242 chemin de l'olive"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("Malaucène"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11999999998"));
 
-            Assert.AreEqual("Hôtel Saint Denis", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("Hôtel Saint Denis"));
 
-            Assert.AreEqual("34343434600010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("34343434600010"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Stéphanie Hoarau", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("+33 2 62 94 26 01", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("achats@hotelsaintdenis.re", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("SMTP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Stéphanie Hoarau"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("+33 2 62 94 26 01"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("achats@hotelsaintdenis.re"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.SchemeID, Is.EqualTo("SMTP"));
 
-            Assert.AreEqual("RE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("97400", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("42 rue du stade", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Saint Denis", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("RE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("97400"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("42 rue du stade"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Saint Denis"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR90343434346", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR90343434346"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference is null);
 
-            Assert.AreEqual("BC543", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("BC543"));
 
-            Assert.AreEqual("WELCOME_PACK_2017", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("WELCOME_PACK_2017"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name is null);
 
-            Assert.AreEqual("97400", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("42 rue du stade", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("Saint Denis de la réunion", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("RE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("97400"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("42 rue du stade"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("Saint Denis de la réunion"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("RE"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod is null);
 
-            Assert.AreEqual("FA-2017-0009", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("FA-2017-0009"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("Virement sur compte Banque Fiducial", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.Information);
-            Assert.AreEqual("FIDCFR21XXX", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value);
-            Assert.AreEqual("FR2012421242124212421242124", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.Information, Is.EqualTo("Virement sur compte Banque Fiducial"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeeSpecifiedCreditorFinancialInstitution.BICID.Value, Is.EqualTo("FIDCFR21XXX"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual("Exonération de TVA selon article 262 I du Code général des impôts", taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(530.75, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("G", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason, Is.EqualTo("Exonération de TVA selon article 262 I du Code général des impôts"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(530.75));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("G"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode is null);
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("30% d'acompte, solde à 30 j", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description);
-            Assert.AreEqual("20171205", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.Description, Is.EqualTo("30% d'acompte, solde à 30 j"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20171205"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(530.75, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(530.75));
 
-            Assert.AreEqual(530.75, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
-            Assert.AreEqual(530.75, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(530.75));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(530.75));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(147.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(147.00));
 
-            Assert.AreEqual(383.75, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(383.75));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument is null);
         }
 
         [Test]
@@ -870,454 +870,454 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220023", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220023"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("E", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("E"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual(100.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("100", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("100"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(30.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(30.0000));
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220101", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(2.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(2.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("100", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("100"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("ADL", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.AreEqual(28.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(28.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("2", line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual(7.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(7.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(7.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(7.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.AreEqual("123", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault(), Is.EqualTo("123"));
 
-            Assert.AreEqual(4, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(4));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("12345678200077", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).Value);
-            Assert.AreEqual("0009", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).Value, Is.EqualTo("12345678200077"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).SchemeID, Is.EqualTo("0009"));
 
-            Assert.AreEqual("DUNS1235487", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).Value);
-            Assert.AreEqual("0060", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).Value, Is.EqualTo("DUNS1235487"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).SchemeID, Is.EqualTo("0060"));
 
-            Assert.AreEqual("ODETTE254879", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).Value);
-            Assert.AreEqual("0177", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).Value, Is.EqualTo("ODETTE254879"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).SchemeID, Is.EqualTo("0177"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Seller line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree, Is.EqualTo("Seller line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.AreEqual("M. CONTACT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("DEP SELLER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 02 03 54 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("seller@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("M. CONTACT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName, Is.EqualTo("DEP SELLER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 02 03 54 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("seller@seller.com"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("MON ADRESSE LIGNE 1", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Buyer line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("MA VILLE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("MON ADRESSE LIGNE 1"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree, Is.EqualTo("Buyer line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("MA VILLE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.AreEqual("Buyer contact name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("Buyer dep", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 01 25 45 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("buyer@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Buyer contact name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName, Is.EqualTo("Buyer dep"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 01 25 45 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("buyer@buyer.com"));
 
-            Assert.AreEqual("SELLER TAX REP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.Name, Is.EqualTo("SELLER TAX REP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Seller line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineThree, Is.EqualTo("Seller line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("IT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).ReferenceTypeCode);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).ReferenceTypeCode, Is.EqualTo("IT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.AreEqual("PRIVATE_ID_DEL", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID.FirstOrDefault());
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID.FirstOrDefault(), Is.EqualTo("PRIVATE_ID_DEL"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
 
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL ADRESSE LIGNE 1", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL ADRESSE LIGNE 1"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("CREDID", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID, Is.EqualTo("CREDID"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("PAYEE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name, Is.EqualTo("PAYEE NAME"));
 
-            Assert.AreEqual("587451236586", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("587451236586"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.AreEqual("LOC BANK ACCOUNT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID.Value);
-            Assert.AreEqual("FRDEBIT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount.IBANID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(2.20, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(11.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(2.20));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(11.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(1).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(1).TypeCode);
-            Assert.AreEqual(60.00, taxDistributionList?.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual("E", taxDistributionList?.ElementAt(1).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(1).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(1).RateApplicablePercent);
-            Assert.AreEqual("DEBOURS", taxDistributionList?.ElementAt(1).ExemptionReason);
-            Assert.AreEqual("VATEX-EU-79-C", taxDistributionList?.ElementAt(1).ExemptionReasonCode);
+            Assert.That(taxDistributionList?.ElementAt(1).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(60.00));
+            Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("E"));
+            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(1).ExemptionReason, Is.EqualTo("DEBOURS"));
+            Assert.That(taxDistributionList?.ElementAt(1).ExemptionReasonCode, Is.EqualTo("VATEX-EU-79-C"));
 
-            Assert.AreEqual(2.70, taxDistributionList?.ElementAt(2).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(2).TypeCode);
-            Assert.AreEqual(27.00, taxDistributionList?.ElementAt(2).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(2).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(2).DueDateTypeCode);
-            Assert.AreEqual(10.00, taxDistributionList?.ElementAt(2).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(2).CalculatedAmount.Value, Is.EqualTo(2.70));
+            Assert.That(taxDistributionList?.ElementAt(2).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(2).BasisAmount.Value, Is.EqualTo(27.00));
+            Assert.That(taxDistributionList?.ElementAt(2).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(2).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(2).RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(3).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(3).TypeCode);
-            Assert.AreEqual(2.00, taxDistributionList?.ElementAt(3).BasisAmount.Value);
-            Assert.AreEqual("K", taxDistributionList?.ElementAt(3).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(3).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(3).RateApplicablePercent);
-            Assert.AreEqual("LIVRAISON INTRACOMMUNAUTAIRE", taxDistributionList?.ElementAt(3).ExemptionReason);
-            Assert.AreEqual("VATEX-EU-IC", taxDistributionList?.ElementAt(3).ExemptionReasonCode);
+            Assert.That(taxDistributionList?.ElementAt(3).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(3).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(3).BasisAmount.Value, Is.EqualTo(2.00));
+            Assert.That(taxDistributionList?.ElementAt(3).CategoryCode, Is.EqualTo("K"));
+            Assert.That(taxDistributionList?.ElementAt(3).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(3).RateApplicablePercent, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(3).ExemptionReason, Is.EqualTo("LIVRAISON INTRACOMMUNAUTAIRE"));
+            Assert.That(taxDistributionList?.ElementAt(3).ExemptionReasonCode, Is.EqualTo("VATEX-EU-IC"));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("95", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("95"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("100", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("100"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).BasisAmount.Value);
-            Assert.AreEqual("100", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CalculationPercent, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("100"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(2.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).BasisAmount.Value);
-            Assert.AreEqual(2.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CalculationPercent, Is.EqualTo(2.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(2.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).BasisAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("FC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CalculationPercent, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode, Is.EqualTo("FC"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(4).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).BasisAmount.Value);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("ADR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CalculationPercent, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).ReasonCode, Is.EqualTo("ADR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(5).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(2.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).BasisAmount.Value);
-            Assert.AreEqual(2.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("FC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("K", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CalculationPercent, Is.EqualTo(2.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(2.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).ReasonCode, Is.EqualTo("FC"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CategoryTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(6).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).BasisAmount.Value);
-            Assert.AreEqual(1.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value);
-            Assert.AreEqual("FC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CalculationPercent, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).ReasonCode, Is.EqualTo("FC"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(7).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.AreEqual("MANDATE PT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID.Value, Is.EqualTo("MANDATE PT"));
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(14.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(9.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(14.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(9.00));
 
-            Assert.AreEqual(100.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.0));
 
-            Assert.AreEqual(4.90, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(4.90));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(104.90, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(104.90));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(104.90, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(104.90));
 
-            Assert.AreEqual("F20220003", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("F20220003"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -1326,347 +1326,347 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220024", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220024"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("E", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("E"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod);
+            Assert.That(line1.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod is null);
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("100", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("100"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("ADL", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("ADL", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ReasonCode);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value);
-            Assert.AreEqual("ADL", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ReasonCode);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(30.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(30.0000));
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod);
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod is null);
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(2.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(2.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("100", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("100"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("ADL", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("ADL", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("ADL", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.AreEqual(28.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(28.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("2", line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual(7.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(7.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(7.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(7.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.AreEqual("123", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault(), Is.EqualTo("123"));
 
-            Assert.AreEqual(1, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(1));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Seller line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree, Is.EqualTo("Seller line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.AreEqual("M. CONTACT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("DEP SELLER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 02 03 54 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("seller@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("M. CONTACT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName, Is.EqualTo("DEP SELLER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 02 03 54 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("seller@seller.com"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Buyer contact name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("Buyer dep", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 01 25 45 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("buyer@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Buyer contact name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName, Is.EqualTo("Buyer dep"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 01 25 45 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("buyer@buyer.com"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Buyer line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree, Is.EqualTo("Buyer line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.AreEqual("Buyer contact name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("Buyer dep", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 01 25 45 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("buyer@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Buyer contact name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName, Is.EqualTo("Buyer dep"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 01 25 45 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("buyer@buyer.com"));
 
-            Assert.AreEqual("SELLER TAX REP", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.Name, Is.EqualTo("SELLER TAX REP"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Seller line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.LineThree, Is.EqualTo("Seller line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty is null);
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod is null);
 
-            Assert.AreEqual("CREDID", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID, Is.EqualTo("CREDID"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("123", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.ID.FirstOrDefault());
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.ID.FirstOrDefault(), Is.EqualTo("123"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID is null);
 
-            Assert.AreEqual("PAYEE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name, Is.EqualTo("PAYEE NAME"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.AreEqual("LOC BANK ACCOUNT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID.Value);
-            Assert.AreEqual("FRDEBIT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount.IBANID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(8.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(40.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(8.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(40.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(1).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(1).TypeCode);
-            Assert.AreEqual(60.00, taxDistributionList?.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual("E", taxDistributionList?.ElementAt(1).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(1).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(1).RateApplicablePercent);
-            Assert.AreEqual("VAT EXEMP", taxDistributionList?.ElementAt(1).ExemptionReason);
-            Assert.AreEqual("VATEX-EU-D", taxDistributionList?.ElementAt(1).ExemptionReasonCode);
+            Assert.That(taxDistributionList?.ElementAt(1).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(60.00));
+            Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("E"));
+            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(1).ExemptionReason, Is.EqualTo("VAT EXEMP"));
+            Assert.That(taxDistributionList?.ElementAt(1).ExemptionReasonCode, Is.EqualTo("VATEX-EU-D"));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("95", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("95"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("FC"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.AreEqual("MANDATE PT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID.Value, Is.EqualTo("MANDATE PT"));
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual(100.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.0));
 
-            Assert.AreEqual(8.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(8.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(108.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(108.00));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(108.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(108.00));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument is null);
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -1675,254 +1675,254 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220025", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220025"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod);
+            Assert.That(line1.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod is null);
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(10.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(10.0000));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod);
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod is null);
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(30.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(30.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("2", line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual(5.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(5.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(5.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID is null);
 
-            Assert.AreEqual(1, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(1));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact is null);
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty is null);
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject is null);
 
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL ADRESSE LIGNE 1", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL ADRESSE LIGNE 1"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.ID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.ID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID is null);
 
-            Assert.AreEqual("PAYEE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name, Is.EqualTo("PAYEE NAME"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual(100.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(20.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID is null);
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual(100.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.0));
 
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(20.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(120.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(120.00));
 
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(20.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(100.00));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument is null);
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -1931,279 +1931,279 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220026", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220026"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(10.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(10.0000));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220101", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime is null);
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(30.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(30.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.IsNull(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument);
+            Assert.That(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument is null);
 
-            Assert.AreEqual(5.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(5.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime);
-            Assert.AreEqual("20220131", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime is null);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(5.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID is null);
 
-            Assert.AreEqual(1, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(1));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact is null);
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.AreEqual("DE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("DE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty is null);
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual(3, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count(), Is.EqualTo(3));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL 58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("BERLIN", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("DE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL 58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("BERLIN"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("DE"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual("LIVRAISON INTRACOMMUNAUTAIRE", taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(100.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("K", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("VATEX-EU-IC", taxDistributionList?.ElementAt(0).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason, Is.EqualTo("LIVRAISON INTRACOMMUNAUTAIRE"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("K"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode, Is.EqualTo("VATEX-EU-IC"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("K", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("K", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID is null);
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(90.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(90.00));
 
-            Assert.AreEqual("F20220003", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("F20220003"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -2212,278 +2212,278 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220027", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220027"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(10.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(10.0000));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220101", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime is null);
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(30.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(30.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.IsNull(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument);
+            Assert.That(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument is null);
 
-            Assert.AreEqual(5.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(5.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime);
-            Assert.AreEqual("20220131", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime is null);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(5.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID is null);
 
-            Assert.AreEqual(1, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(1));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact is null);
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty is null);
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual(3, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count(), Is.EqualTo(3));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL 58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL 58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(10.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(100.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(10.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(10.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason is null);
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode is null);
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID is null);
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(110.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(110.00));
 
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual("F20220003", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("F20220003"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -2492,278 +2492,278 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220028", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("381", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220028"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("381"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(10.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(10.0000));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220101", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime is null);
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(30.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(30.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.IsNull(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument);
+            Assert.That(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument is null);
 
-            Assert.AreEqual(5.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(5.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime);
-            Assert.AreEqual("20220131", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime is null);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(5.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID is null);
 
-            Assert.AreEqual(1, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(1));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact is null);
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty is null);
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual(3, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count(), Is.EqualTo(3));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL 58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL 58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(10.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(100.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(10.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(10.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason is null);
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode is null);
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID is null);
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(110.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(110.00));
 
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual("F20220003", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("F20220003"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -2772,275 +2772,275 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220029", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220029"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(-1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(-1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(-60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(-60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(10.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(10.0000));
 
-            Assert.AreEqual(-3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(-3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220101", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime is null);
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(-30.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(-30.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.IsNull(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument);
+            Assert.That(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument is null);
 
-            Assert.AreEqual(5.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(5.0000));
 
-            Assert.AreEqual(-1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(-1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("K", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime);
-            Assert.AreEqual("20220131", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime is null);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(-5.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(-5.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID is null);
 
-            Assert.AreEqual(1, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(1));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact is null);
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.AreEqual("DE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("DE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
-            Assert.AreEqual("FR 05 987 654 321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR 05 987 654 321"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty is null);
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual(3, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.Count(), Is.EqualTo(3));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL 58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("BERLIN", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("DE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL 58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("BERLIN"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("DE"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(-100.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("K", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("VATEX-EU-IC", taxDistributionList?.ElementAt(0).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason is null);
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(-100.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("K"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode, Is.EqualTo("VATEX-EU-IC"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(-5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("K", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(-5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(-10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("K", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(-10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("K"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID is null);
 
-            Assert.AreEqual(-95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(-10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(-5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(-95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(-10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(-5.00));
 
-            Assert.AreEqual(-100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(-100.00));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(-100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(-100.00));
 
-            Assert.AreEqual(-10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(-90.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(-10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(-90.00));
 
-            Assert.AreEqual("F20220003", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("F20220003"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -3049,292 +3049,292 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220030", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220030"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("PRESTATION SUPPORT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("PRESTATION SUPPORT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("O", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("O"));
+            Assert.That(line1.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent is null);
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(10.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(10.0000));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("O", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("O"));
+            Assert.That(line2.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent is null);
 
-            Assert.AreEqual("20220101", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime is null);
 
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge is null);
 
-            Assert.AreEqual(30.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(30.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.IsNull(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument);
+            Assert.That(line3.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument is null);
 
-            Assert.AreEqual(5.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(5.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("O", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("O"));
+            Assert.That(line3.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent is null);
 
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime);
-            Assert.AreEqual("20220131", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime is null);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual(5.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.AreEqual("123", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault(), Is.EqualTo("123"));
 
-            Assert.AreEqual(4, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(4));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("12345678200077", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).Value);
-            Assert.AreEqual("0009", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).Value, Is.EqualTo("12345678200077"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).SchemeID, Is.EqualTo("0009"));
 
-            Assert.AreEqual("DUNS1235487", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).Value);
-            Assert.AreEqual("0060", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).Value, Is.EqualTo("DUNS1235487"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).SchemeID, Is.EqualTo("0060"));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Seller line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree, Is.EqualTo("Seller line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration is null);
 
-            Assert.AreEqual("M. CONTACT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("DEP SELLER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 02 03 54 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("seller@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("M. CONTACT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName, Is.EqualTo("DEP SELLER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 02 03 54 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("seller@seller.com"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("DE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("DE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedTaxRegistration is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact is null);
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTaxRepresentativeTradeParty is null);
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.SchemeID is null);
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID);
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL 58 rue de la mer", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("BERLIN", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("DE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL 58 rue de la mer"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("BERLIN"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("DE"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("PAYEE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name, Is.EqualTo("PAYEE NAME"));
 
-            Assert.AreEqual("587451236586", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("587451236586"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.AreEqual("HORS SCOPE TVA", taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(100.00, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("O", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.AreEqual("VATEX-EU-O", taxDistributionList?.ElementAt(0).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason, Is.EqualTo("HORS SCOPE TVA"));
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("O"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode, Is.EqualTo("VATEX-EU-O"));
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent is null);
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(0.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("O", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(0.0));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("O"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.0));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(0.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("O", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(0.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent, Is.EqualTo(0.0));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("O"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(0.0));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID is null);
 
-            Assert.AreEqual(95.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(95.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(5.00));
 
-            Assert.AreEqual(100.0, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.0));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(100.00));
 
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(90.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(90.00));
 
-            Assert.AreEqual("F20220003", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value);
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.FirstOrDefault()?.IssuerAssignedID.Value, Is.EqualTo("F20220003"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument.ElementAt(0).FormattedIssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
 
         [Test]
@@ -3343,396 +3343,396 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
-            Assert.NotNull(crossIndustryInvoice);
+            Assert.That(crossIndustryInvoice is not null);
 
             var invoice = crossIndustryInvoice as FacturX.SpecificationModels.EN16931.CrossIndustryInvoice;
 
-            Assert.AreEqual("F20220031", invoice?.ExchangedDocument.ID.Value);
-            Assert.AreEqual("20220131", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format);
-            Assert.AreEqual("380", invoice?.ExchangedDocument.TypeCode);
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220031"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
-            Assert.NotNull(noteList);
-            Assert.AreEqual("FOURNISSEUR F SARL au capital de 50 000 EUR", noteList?.ElementAt(0).Content);
-            Assert.AreEqual("REG", noteList?.ElementAt(0).SubjectCode);
-            Assert.AreEqual("RCS MAVILLE 123 456 782", noteList?.ElementAt(1).Content);
-            Assert.AreEqual("ABL", noteList?.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList?.ElementAt(2).Content);
-            Assert.AreEqual("AAI", noteList?.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList?.ElementAt(3).Content);
-            Assert.AreEqual("PMD", noteList?.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList?.ElementAt(4).Content);
-            Assert.AreEqual("PMT", noteList?.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList?.ElementAt(5).Content);
-            Assert.AreEqual("AAB", noteList?.ElementAt(5).SubjectCode);
+            Assert.That(noteList is not null);
+            Assert.That(noteList?.ElementAt(0).Content, Is.EqualTo("FOURNISSEUR F SARL au capital de 50 000 EUR"));
+            Assert.That(noteList?.ElementAt(0).SubjectCode, Is.EqualTo("REG"));
+            Assert.That(noteList?.ElementAt(1).Content, Is.EqualTo("RCS MAVILLE 123 456 782"));
+            Assert.That(noteList?.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
+            Assert.That(noteList?.ElementAt(2).Content, Is.EqualTo("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789"));
+            Assert.That(noteList?.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
+            Assert.That(noteList?.ElementAt(3).Content, Is.EqualTo("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. "));
+            Assert.That(noteList?.ElementAt(3).SubjectCode, Is.EqualTo("PMD"));
+            Assert.That(noteList?.ElementAt(4).Content, Is.EqualTo("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €."));
+            Assert.That(noteList?.ElementAt(4).SubjectCode, Is.EqualTo("PMT"));
+            Assert.That(noteList?.ElementAt(5).Content, Is.EqualTo("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte."));
+            Assert.That(noteList?.ElementAt(5).SubjectCode, Is.EqualTo("AAB"));
 
-            Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("A1"));
 
-            Assert.AreEqual("urn:cen.eu:en16931:2017", invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value);
+            Assert.That(invoice?.ExchangedDocumentContext.GuidelineSpecifiedDocumentContextParameter.ID.Value, Is.EqualTo("urn:cen.eu:en16931:2017"));
 
             var line1 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(0);
 
-            Assert.AreEqual("1", line1!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual("598785412598745", line1!.SpecifiedTradeProduct.GlobalID.Value);
-            Assert.AreEqual("0088", line1!.SpecifiedTradeProduct.GlobalID.SchemeID);
-            Assert.AreEqual("REMBOURSEMENT AFFRANCHISSEMENT", line1!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line1!.SpecifiedTradeProduct.Description);
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("598785412598745"));
+            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0088"));
+            Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("REMBOURSEMENT AFFRANCHISSEMENT"));
+            Assert.That(line1!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("1", line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("1"));
 
-            Assert.AreEqual(60.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(60.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(1.0000, line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line1!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("E", line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(0.00, line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("E"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual("20220101", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual(100.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("71", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("100", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("100"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).Reason);
+            Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ChargeIndicator.Indicator is true);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(7).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.AreEqual(60.00, line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(60.00));
 
             var line2 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(1);
 
-            Assert.AreEqual("2", line2!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual("FOURNITURES DIVERSES", line2!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line2!.SpecifiedTradeProduct.Description);
+            Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("FOURNITURES DIVERSES"));
+            Assert.That(line2!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("3", line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual(30.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(30.0000));
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.BasisQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual(3.0000, line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(3.0000));
+            Assert.That(line2!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual("20220131", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20220131", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20220131"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(2.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.IsNull(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount);
-            Assert.AreEqual(0.0, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(2.00));
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount is null);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(0.0));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("71", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("REMISE VOLUME", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("71"));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("REMISE VOLUME"));
 
-            Assert.IsFalse(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("100", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is false);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("100"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value);
-            Assert.AreEqual("ADL", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(4).ReasonCode, Is.EqualTo("ADL"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(5).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.IsTrue(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator);
-            Assert.AreEqual(1.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value);
-            Assert.AreEqual("FRAIS PALETTE", line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason);
+            Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ChargeIndicator.Indicator is true);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).ActualAmount.Value, Is.EqualTo(1.00));
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(6).Reason, Is.EqualTo("FRAIS PALETTE"));
 
-            Assert.AreEqual(28.00, line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(28.00));
 
             var line3 = invoice?.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem.ElementAt(2);
 
-            Assert.AreEqual("3", line3!.AssociatedDocumentLineDocument.LineID.Value);
+            Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
-            Assert.AreEqual("APPEL", line3!.SpecifiedTradeProduct.Name);
-            Assert.AreEqual("Description", line3!.SpecifiedTradeProduct.Description);
+            Assert.That(line3!.SpecifiedTradeProduct.Name, Is.EqualTo("APPEL"));
+            Assert.That(line3!.SpecifiedTradeProduct.Description, Is.EqualTo("Description"));
 
-            Assert.AreEqual("2", line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.BuyerOrderReferencedDocument.LineID.Value, Is.EqualTo("2"));
 
-            Assert.AreEqual(12.0000, line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value, Is.EqualTo(12.0000));
 
-            Assert.AreEqual(1.0000, line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value);
-            Assert.AreEqual("C62", line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode);
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.Value, Is.EqualTo(1.0000));
+            Assert.That(line3!.SpecifiedLineTradeDelivery.BilledQuantity.UnitCode, Is.EqualTo("C62"));
 
-            Assert.AreEqual("VAT", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode);
-            Assert.AreEqual("S", line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(line3!.SpecifiedLineTradeSettlement.ApplicableTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsNull(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod);
+            Assert.That(line3.SpecifiedLineTradeSettlement.BillingSpecifiedPeriod is null);
 
-            Assert.AreEqual(12.00, line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value);
+            Assert.That(line3!.SpecifiedLineTradeSettlement.SpecifiedTradeSettlementLineMonetarySummation.LineTotalAmount.Value, Is.EqualTo(12.00));
 
-            Assert.AreEqual("SERVEXEC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerReference, Is.EqualTo("SERVEXEC"));
 
-            Assert.AreEqual("LE FOURNISSEUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.Name, Is.EqualTo("LE FOURNISSEUR"));
 
-            Assert.AreEqual("123", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.ID.FirstOrDefault(), Is.EqualTo("123"));
 
-            Assert.AreEqual(4, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count());
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.Count(), Is.EqualTo(4));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(0).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("12345678200077", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).Value);
-            Assert.AreEqual("0009", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).Value, Is.EqualTo("12345678200077"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(1).SchemeID, Is.EqualTo("0009"));
 
-            Assert.AreEqual("DUNS1235487", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).Value);
-            Assert.AreEqual("0060", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).Value, Is.EqualTo("DUNS1235487"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(2).SchemeID, Is.EqualTo("0060"));
 
-            Assert.AreEqual("587451236587", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).Value, Is.EqualTo("587451236587"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.GlobalID.ElementAt(3).SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID);
-            Assert.AreEqual("SELLER TRADE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedLegalOrganization.TradingBusinessName, Is.EqualTo("SELLER TRADE NAME"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID);
-            Assert.AreEqual("75018", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue d'ici", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Seller line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Seller line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree);
-            Assert.AreEqual("PARIS", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.PostcodeCode, Is.EqualTo("75018"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineOne, Is.EqualTo("35 rue d'ici"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineTwo, Is.EqualTo("Seller line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.LineThree, Is.EqualTo("Seller line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.PostalTradeAddress.CityName, Is.EqualTo("PARIS"));
 
-            Assert.AreEqual("moi@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.Value, Is.EqualTo("moi@seller.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
 
-            Assert.AreEqual("M. CONTACT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName);
-            Assert.AreEqual("DEP SELLER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 02 03 54 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("seller@seller.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.PersonName, Is.EqualTo("M. CONTACT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.DepartmentName, Is.EqualTo("DEP SELLER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 02 03 54 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("seller@seller.com"));
 
-            Assert.AreEqual("3654789851", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("3654789851"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("LE CLIENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.Name, Is.EqualTo("LE CLIENT"));
 
-            Assert.AreEqual("987654321", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("987654321"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("Buyer contact name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName);
-            Assert.AreEqual("Buyer dep", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName);
-            Assert.AreEqual("01 01 25 45 87", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber);
-            Assert.AreEqual("buyer@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.PersonName, Is.EqualTo("Buyer contact name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.DepartmentName, Is.EqualTo("Buyer dep"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.TelephoneUniversalCommunication.CompleteNumber, Is.EqualTo("01 01 25 45 87"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.DefinedTradeContact.EmailURIUniversalCommunication.URIID.Value, Is.EqualTo("buyer@buyer.com"));
 
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("MON ADRESSE LIGNE 1", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Buyer line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("Buyer line 3", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree);
-            Assert.AreEqual("MA VILLE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("MON ADRESSE LIGNE 1"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("Buyer line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.LineThree, Is.EqualTo("Buyer line 3"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.PostalTradeAddress.CityName, Is.EqualTo("MA VILLE"));
 
-            Assert.AreEqual("me@buyer.com", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value);
-            Assert.AreEqual("EM", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.Value, Is.EqualTo("me@buyer.com"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerTradeParty.URIUniversalCommunication.URIID.SchemeID, Is.EqualTo("EM"));
 
-            Assert.AreEqual("FR11123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value);
-            Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.Value, Is.EqualTo("FR11123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerTradeParty?.SpecifiedTaxRegistration?.FirstOrDefault()?.ID.SchemeID, Is.EqualTo("VA"));
 
-            Assert.AreEqual("PO201925478", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("CT2018120802", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value);
-            Assert.AreEqual("SALES REF 2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.BuyerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("PO201925478"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.ContractReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("CT2018120802"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SellerOrderReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("SALES REF 2547"));
 
-            Assert.AreEqual("SUPPort doc", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value);
-            Assert.AreEqual("url:gffter", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value);
-            Assert.AreEqual("support descript", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name);
-            Assert.AreEqual("916", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).IssuerAssignedID.Value, Is.EqualTo("SUPPort doc"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).URIID.Value, Is.EqualTo("url:gffter"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).Name, Is.EqualTo("support descript"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(0).TypeCode, Is.EqualTo("916"));
 
-            Assert.AreEqual("TENDER-002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value);
-            Assert.AreEqual("50", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).IssuerAssignedID.Value, Is.EqualTo("TENDER-002"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(1).TypeCode, Is.EqualTo("50"));
 
-            Assert.AreEqual("REFCLI0215", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value);
-            Assert.AreEqual("IT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).ReferenceTypeCode);
-            Assert.AreEqual("130", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).IssuerAssignedID.Value, Is.EqualTo("REFCLI0215"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).ReferenceTypeCode, Is.EqualTo("IT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.AdditionalReferencedDocument.ElementAt(2).TypeCode, Is.EqualTo("130"));
 
-            Assert.AreEqual("PROJET2547", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value);
-            Assert.AreEqual("Project reference", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.ID.Value, Is.EqualTo("PROJET2547"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement?.SpecifiedProcuringProject.Name, Is.EqualTo("Project reference"));
 
-            Assert.AreEqual("PRIVATE_ID_DEL", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID.FirstOrDefault());
-            Assert.AreEqual("DEL Name", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name);
-            Assert.AreEqual("06000", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("DEL ADRESSE LIGNE 1", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("DEL line 2", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo);
-            Assert.AreEqual("NICE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName);
-            Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID.FirstOrDefault(), Is.EqualTo("PRIVATE_ID_DEL"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.PostcodeCode, Is.EqualTo("06000"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineOne, Is.EqualTo("DEL ADRESSE LIGNE 1"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.LineTwo, Is.EqualTo("DEL line 2"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CityName, Is.EqualTo("NICE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.PostalTradeAddress.CountryID, Is.EqualTo("FR"));
 
-            Assert.AreEqual("20220128", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime.DateTimeString.Value, Is.EqualTo("20220128"));
 
-            Assert.AreEqual("DESPADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.DespatchAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("DESPADV002"));
 
-            Assert.AreEqual("RECEIV-ADV002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ReceivingAdviceReferencedDocument.IssuerAssignedID.Value, Is.EqualTo("RECEIV-ADV002"));
 
-            Assert.AreEqual("20220101", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format);
-            Assert.AreEqual("20221231", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Value, Is.EqualTo("20220101"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.StartDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Value, Is.EqualTo("20221231"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.BillingSpecifiedPeriod.EndDateTime.DateTimeString.Format, Is.EqualTo("102"));
 
-            Assert.AreEqual("CREDID", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID);
-            Assert.AreEqual("F20180023BUYER", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.CreditorReferenceID, Is.EqualTo("CREDID"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("F20180023BUYER"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.AreEqual("PAYEE NAME", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.Name, Is.EqualTo("PAYEE NAME"));
 
-            Assert.AreEqual("587451236586", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.Value);
-            Assert.AreEqual("0088", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.Value, Is.EqualTo("587451236586"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.GlobalID.FirstOrDefault()?.SchemeID, Is.EqualTo("0088"));
 
-            Assert.AreEqual("123456782", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value);
-            Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.AreEqual("30", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode);
-            Assert.AreEqual("FR76 1254 2547 2569 8542 5874 698", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value);
-            Assert.AreEqual("LOC BANK ACCOUNT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID.Value);
-            Assert.AreEqual("FRDEBIT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount.IBANID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.FirstOrDefault()?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans.PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
-            Assert.IsNotNull(taxDistributionList);
+            Assert.That(taxDistributionList is not null);
 
-            Assert.AreEqual(5.88, taxDistributionList?.ElementAt(0).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(0).TypeCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReason);
-            Assert.AreEqual(29.40, taxDistributionList?.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(0).CategoryCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(0).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(0).DueDateTypeCode);
-            Assert.AreEqual(20.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(5.88));
+            Assert.That(taxDistributionList?.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReason is null);
+            Assert.That(taxDistributionList?.ElementAt(0).BasisAmount.Value, Is.EqualTo(29.40));
+            Assert.That(taxDistributionList?.ElementAt(0).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(0).ExemptionReasonCode is null);
+            Assert.That(taxDistributionList?.ElementAt(0).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(0).RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(1).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(1).TypeCode);
-            Assert.AreEqual("DEBOURS", taxDistributionList?.ElementAt(1).ExemptionReason);
-            Assert.AreEqual(60.00, taxDistributionList?.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual("E", taxDistributionList?.ElementAt(1).CategoryCode);
-            Assert.AreEqual("VATEX-EU-79-C", taxDistributionList?.ElementAt(1).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(1).DueDateTypeCode);
-            Assert.AreEqual(0.00, taxDistributionList?.ElementAt(1).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(1).CalculatedAmount.Value, Is.EqualTo(0.00));
+            Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(1).ExemptionReason, Is.EqualTo("DEBOURS"));
+            Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(60.00));
+            Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("E"));
+            Assert.That(taxDistributionList?.ElementAt(1).ExemptionReasonCode, Is.EqualTo("VATEX-EU-79-C"));
+            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
 
-            Assert.AreEqual(1.14, taxDistributionList?.ElementAt(2).CalculatedAmount.Value);
-            Assert.AreEqual("VAT", taxDistributionList?.ElementAt(2).TypeCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(2).ExemptionReason);
-            Assert.AreEqual(11.40, taxDistributionList?.ElementAt(2).BasisAmount.Value);
-            Assert.AreEqual("S", taxDistributionList?.ElementAt(2).CategoryCode);
-            Assert.IsNull(taxDistributionList?.ElementAt(2).ExemptionReasonCode);
-            Assert.AreEqual("72", taxDistributionList?.ElementAt(2).DueDateTypeCode);
-            Assert.AreEqual(10.00, taxDistributionList?.ElementAt(2).RateApplicablePercent);
+            Assert.That(taxDistributionList?.ElementAt(2).CalculatedAmount.Value, Is.EqualTo(1.14));
+            Assert.That(taxDistributionList?.ElementAt(2).TypeCode, Is.EqualTo("VAT"));
+            Assert.That(taxDistributionList?.ElementAt(2).ExemptionReason is null);
+            Assert.That(taxDistributionList?.ElementAt(2).BasisAmount.Value, Is.EqualTo(11.40));
+            Assert.That(taxDistributionList?.ElementAt(2).CategoryCode, Is.EqualTo("S"));
+            Assert.That(taxDistributionList?.ElementAt(2).ExemptionReasonCode is null);
+            Assert.That(taxDistributionList?.ElementAt(2).DueDateTypeCode, Is.EqualTo("72"));
+            Assert.That(taxDistributionList?.ElementAt(2).RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent);
-            Assert.AreEqual(28.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value);
-            Assert.AreEqual(1.40, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value);
-            Assert.AreEqual("100", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(28.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(1.40));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("100"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(0).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsFalse(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent);
-            Assert.AreEqual(12.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount.Value);
-            Assert.AreEqual(1.20, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value);
-            Assert.AreEqual("100", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode);
-            Assert.AreEqual("REMISE COMMERCIALE", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ChargeIndicator.Indicator is false);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CalculationPercent, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).BasisAmount.Value, Is.EqualTo(12.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ActualAmount.Value, Is.EqualTo(1.20));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).ReasonCode, Is.EqualTo("100"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).Reason, Is.EqualTo("REMISE COMMERCIALE"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(1).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CalculationPercent);
-            Assert.AreEqual(28.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).BasisAmount.Value);
-            Assert.AreEqual(2.80, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value);
-            Assert.AreEqual("FC", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(20.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CalculationPercent, Is.EqualTo(10.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).BasisAmount.Value, Is.EqualTo(28.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ActualAmount.Value, Is.EqualTo(2.80));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).ReasonCode, Is.EqualTo("FC"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(2).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(20.00));
 
-            Assert.IsTrue(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator);
-            Assert.AreEqual(5.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CalculationPercent);
-            Assert.AreEqual(12.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).BasisAmount.Value);
-            Assert.AreEqual(0.60, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value);
-            Assert.AreEqual("ADR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode);
-            Assert.AreEqual("FRAIS DEPLACEMENT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).Reason);
-            Assert.AreEqual("VAT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.TypeCode);
-            Assert.AreEqual("S", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.CategoryCode);
-            Assert.AreEqual(10.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.RateApplicablePercent);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ChargeIndicator.Indicator is true);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CalculationPercent, Is.EqualTo(5.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).BasisAmount.Value, Is.EqualTo(12.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ActualAmount.Value, Is.EqualTo(0.60));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).ReasonCode, Is.EqualTo("ADR"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.TypeCode, Is.EqualTo("VAT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.CategoryCode, Is.EqualTo("S"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeAllowanceCharge.ElementAt(3).CategoryTradeTax.RateApplicablePercent, Is.EqualTo(10.00));
 
-            Assert.AreEqual("20220302", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);
-            Assert.AreEqual("102", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format);
-            Assert.AreEqual("MANDATE PT", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20220302"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DirectDebitMandateID.Value, Is.EqualTo("MANDATE PT"));
 
-            Assert.AreEqual(100.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value);
-            Assert.AreEqual(3.40, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value);
-            Assert.AreEqual(2.60, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.LineTotalAmount.Value, Is.EqualTo(100.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.ChargeTotalAmount.Value, Is.EqualTo(3.40));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.AllowanceTotalAmount.Value, Is.EqualTo(2.60));
 
-            Assert.AreEqual(100.80, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxBasisTotalAmount.Value, Is.EqualTo(100.80));
 
-            Assert.AreEqual(7.02, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value);
-            Assert.AreEqual("EUR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.Value, Is.EqualTo(7.02));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TaxTotalAmount?.FirstOrDefault()?.CurrencyID, Is.EqualTo("EUR"));
 
-            Assert.AreEqual(107.82, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.GrandTotalAmount.Value, Is.EqualTo(107.82));
 
-            Assert.AreEqual(0.00, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value);
-            Assert.AreEqual(107.82, invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.TotalPrepaidAmount.Value, Is.EqualTo(0.00));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementHeaderMonetarySummation?.DuePayableAmount.Value, Is.EqualTo(107.82));
 
-            Assert.IsNull(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceReferencedDocument is null);
 
-            Assert.AreEqual("BUYER ACCOUNT REF", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ReceivableSpecifiedTradeAccountingAccount.ID.Value, Is.EqualTo("BUYER ACCOUNT REF"));
         }
     }
 }
