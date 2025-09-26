@@ -32,7 +32,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var noteList = invoice?.ExchangedDocument.IncludedNote;
             Assert.IsNotNull(noteList);
 
-            Assert.AreEqual("Franco de port (commande > 300 � HT)", invoice?.ExchangedDocument.IncludedNote.First().Content);
+            Assert.AreEqual("Franco de port (commande > 300 € HT)", invoice?.ExchangedDocument.IncludedNote.First().Content);
 
             Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
 
@@ -46,7 +46,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
             Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
             Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malauc�ne", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
 
             Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.SchemeID);
             Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.Value);
@@ -57,7 +57,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
 
             Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la R�publique", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
             Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CityName);
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CountryID);
 
@@ -121,7 +121,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
             Assert.NotNull(noteList);
-            Assert.AreEqual("Free shipping (amount > 300 �)", noteList!.ElementAt(0).Content);
+            Assert.AreEqual("Free shipping (amount > 300 €)", noteList!.ElementAt(0).Content);
 
             Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
 
@@ -135,7 +135,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
             Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
             Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malauc�ne", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
 
             Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.SchemeID);
             Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.Value);
@@ -216,13 +216,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -498,13 +498,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -684,13 +684,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -875,13 +875,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -1043,13 +1043,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -1208,13 +1208,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -1376,13 +1376,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -1547,13 +1547,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -1730,13 +1730,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("REG", noteList!.ElementAt(0).SubjectCode);
             Assert.AreEqual("RCS MAVILLE 123 456 782", noteList!.ElementAt(1).Content);
             Assert.AreEqual("ABL", noteList!.ElementAt(1).SubjectCode);
-            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays � contact@masociete.fr - www.masociete.fr  � N� TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
+            Assert.AreEqual("35 ma rue a moi, code postal Ville Pays – contact@masociete.fr - www.masociete.fr  – N° TVA : FR32 123 456 789", noteList!.ElementAt(2).Content);
             Assert.AreEqual("AAI", noteList!.ElementAt(2).SubjectCode);
-            Assert.AreEqual("Tout retard de paiement engendre une p�nalit� exigible � compter de la date d'�ch�ance, calcul�e sur la base de trois fois le taux d'int�r�t l�gal. ", noteList!.ElementAt(3).Content);
+            Assert.AreEqual("Tout retard de paiement engendre une pénalité exigible à compter de la date d'échéance, calculée sur la base de trois fois le taux d'intérêt légal. ", noteList!.ElementAt(3).Content);
             Assert.AreEqual("PMD", noteList!.ElementAt(3).SubjectCode);
-            Assert.AreEqual("Indemnit� forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 �.", noteList!.ElementAt(4).Content);
+            Assert.AreEqual("Indemnité forfaitaire pour frais de recouvrement en cas de retard de paiement : 40 €.", noteList!.ElementAt(4).Content);
             Assert.AreEqual("PMT", noteList!.ElementAt(4).SubjectCode);
-            Assert.AreEqual("Les r�glements re�us avant la date d'�ch�ance ne donneront pas lieu � escompte.", noteList!.ElementAt(5).Content);
+            Assert.AreEqual("Les réglements reçus avant la date d'échéance ne donneront pas lieu à escompte.", noteList!.ElementAt(5).Content);
             Assert.AreEqual("AAB", noteList!.ElementAt(5).SubjectCode);
 
             Assert.AreEqual("A1", invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter.ID.Value);
@@ -1949,7 +1949,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
             Assert.NotNull(noteList);
-            Assert.AreEqual("Avoir suite � bidon 10L d'huile d'olive perc� et carton de nougat renvers�", noteList!.ElementAt(0).Content);
+            Assert.AreEqual("Avoir suite à bidon 10L d'huile d'olive percé et carton de nougat renversé", noteList!.ElementAt(0).Content);
 
             Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
 
@@ -1963,7 +1963,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
             Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
             Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malauc�ne", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
 
             Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.SchemeID);
             Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.Value);
@@ -1974,7 +1974,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
 
             Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la R�publique", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
             Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CityName);
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CountryID);
 
@@ -2052,7 +2052,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
             Assert.NotNull(noteList);
-            Assert.AreEqual("Avoir suite � bidon 10L d'huile d'olive perc� et carton de nougat renvers�", noteList!.ElementAt(0).Content);
+            Assert.AreEqual("Avoir suite à bidon 10L d'huile d'olive percé et carton de nougat renversé", noteList!.ElementAt(0).Content);
 
             Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
 
@@ -2066,7 +2066,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
             Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
             Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malauc�ne", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
 
             Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.SchemeID);
             Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.Value);
@@ -2077,7 +2077,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
 
             Assert.AreEqual("69001", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.PostcodeCode);
-            Assert.AreEqual("35 rue de la R�publique", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
+            Assert.AreEqual("35 rue de la République", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.LineOne);
             Assert.AreEqual("Lyon", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CityName);
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.PostalTradeAddress.CountryID);
 
@@ -2153,7 +2153,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             var noteList = invoice?.ExchangedDocument.IncludedNote;
             Assert.NotNull(noteList);
-            Assert.AreEqual("Franco de port (Commande > 300 � HT)", noteList!.ElementAt(0).Content);
+            Assert.AreEqual("Franco de port (Commande > 300 € HT)", noteList!.ElementAt(0).Content);
 
             Assert.IsNull(invoice?.ExchangedDocumentContext.BusinessProcessSpecifiedDocumentContextParameter);
 
@@ -2167,12 +2167,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
             Assert.AreEqual("84340", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.PostcodeCode);
             Assert.AreEqual("1242 chemin de l'olive", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.LineOne);
-            Assert.AreEqual("Malauc�ne", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
+            Assert.AreEqual("Malaucène", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CityName);
 
             Assert.AreEqual("VA", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.SchemeID);
             Assert.AreEqual("FR11999999998", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.SellerTradeParty.SpecifiedTaxRegistration.ID.Value);
 
-            Assert.AreEqual("H�tel Saint Denis", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
+            Assert.AreEqual("Hôtel Saint Denis", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
 
             Assert.AreEqual("34343434600010", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
             Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
@@ -2211,7 +2211,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.AreEqual("G", taxDistributionList?.ElementAt(0).CategoryCode);
             Assert.IsNull(taxDistributionList?.ElementAt(0).DueDateTypeCode);
             Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
-            Assert.AreEqual("Exon�ration de TVA selon article 262 I du Code g�n�ral des imp�ts", taxDistributionList?.ElementAt(0).ExemptionReason);
+            Assert.AreEqual("Exonération de TVA selon article 262 I du Code général des impôts", taxDistributionList?.ElementAt(0).ExemptionReason);
             Assert.AreEqual(0.00, taxDistributionList?.ElementAt(0).RateApplicablePercent);
 
             Assert.AreEqual("20171205", invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value);

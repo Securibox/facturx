@@ -702,7 +702,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.AreEqual("FR", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.SellerTradeParty.PostalTradeAddress.CountryID);
 
-            Assert.AreEqual("H�tel Saint Denis", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
+            Assert.AreEqual("Hôtel Saint Denis", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.Name);
             Assert.AreEqual("34343434600010", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.Value);
             Assert.AreEqual("0002", invoice?.SupplyChainTradeTransaction.ApplicableHeaderTradeAgreement.BuyerTradeParty.SpecifiedLegalOrganization.ID.SchemeID);
 
