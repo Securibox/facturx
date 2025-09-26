@@ -1,5 +1,4 @@
-﻿using Securibox.FacturX.Models.BasicWL;
-using Securibox.FacturX.Models.Minimum;
+﻿using Securibox.FacturX.Models.Minimum;
 
 namespace Securibox.FacturX.Models.Extended
 {

@@ -26,7 +26,7 @@ namespace Securibox.FacturX.Schematron.Xslt
 
         private static XPathNodeIterator? ResolveDocumentFunction(XsltContext xsltContext, string externalFilePath, string path, XPathNavigator navigator)
         {
-            externalFilePath = externalFilePath.Replace(".xml", string.Empty).Replace("-", "_");
+            externalFilePath = externalFilePath.Replace(".xml", string.Empty);
             var codedbFile = Resources.ResourceManager.GetString(externalFilePath);
 
             if (codedbFile != null)

@@ -3,6 +3,7 @@
     public class QuantityUnit
     {
         public decimal Quantity { get; internal set; }
+
         public string? UnitCode { get; internal set; }
 
         public QuantityUnit() { }
@@ -18,6 +19,7 @@
         }
 
         internal void AddQuantity(decimal quantity) => Quantity = quantity;
+
         internal void AddUnitCode(string? unitCode) => UnitCode = unitCode;
     }
 }

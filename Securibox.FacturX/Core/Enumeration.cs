@@ -25,7 +25,7 @@ namespace Securibox.FacturX.Core
 
         public override bool Equals(object? obj)
         {
-            if(obj == null)
+            if (obj == null)
                 return false;
 
             if (!(obj is Enumeration otherValue))
@@ -94,8 +94,9 @@ namespace Securibox.FacturX.Core
         {
             if (other == null)
             {
-
+            
             }
+
             return Id.CompareTo(((Enumeration)other).Id);
         }
     }

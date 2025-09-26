@@ -2,6 +2,7 @@
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Extended;
 using System.Xml;
+
 namespace Securibox.FacturX.Core
 {
     internal class ActorConverter : TradePartyConverter

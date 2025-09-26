@@ -1,4 +1,5 @@
-﻿using System.Xml.XPath;
+﻿using Securibox.FacturX.Schematron.Types;
+using System.Xml.XPath;
 using System.Xml.Xsl;
 
 namespace Securibox.FacturX.Schematron.Types
@@ -9,7 +10,12 @@ namespace Securibox.FacturX.Schematron.Types
         public override EvaluationResult Evaluate(Schema schema, XPathNavigator navigator, XsltContext context)
         {
             var res = base.Evaluate(schema, navigator, context);
-            return res;
+            return new EvaluationResult
+            {
+                Assertion = this,
+                IsWarning = !res.IsError,
+                AssertInnerText = this.EvaluateDescriptionFragment(context)
+            };
         }
     }
 }
