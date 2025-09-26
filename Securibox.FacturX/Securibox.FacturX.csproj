@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<Title>Securibox Factur-X Library</Title>
-	<Version>0.3.0</Version>
+	<Version>0.5.0</Version>
 	<Company>Securibox</Company>
 	<RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
