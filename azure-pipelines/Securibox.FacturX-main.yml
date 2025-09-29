@@ -1,0 +1,107 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    exclude:
+      - '*'
+
+name: Securibox.FacturX-main
+
+variables:
+  - group: SigningConfig
+  - name: vmImageName
+    value: 'windows-latest'
+  - name: workingDirectory
+    value : '$(System.DefaultWorkingDirectory)'
+  - name: projectName
+    value: 'Securibox.FacturX'
+  - name: version.MajorMinor
+    value: '1.0' # Manually adjust the version number as needed for semantic versioning. Patch is auto-incremented.
+  - name: version.Patch
+    value: $[counter(variables['version.MajorMinor'], 1)]
+  - name: versionNumber
+    value: '$(version.MajorMinor).$(version.Patch)'
+  - name: publishFeedCredentials
+    value: 'Securibox.FacturX.Nuget'
+
+stages:
+- stage: Build
+  displayName: Build stage
+
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: sbx-security-devopspool
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: PowerShell@2
+      displayName: Set the name of the build (i.e. the Build.BuildNumber)
+      inputs:
+        targetType: 'inline'
+        script: |
+          [string] $buildName = "$(versionNumber)_$(Build.SourceBranchName)"
+          Write-Host "Setting the name of the build to '$buildName'."
+          Write-Host "##vso[build.updatebuildnumber]$buildName"  
+
+    - task: NuGetAuthenticate@1
+      displayName: 'Nuget Authenticate'
+
+    - task: DotNetCoreCLI@2
+      displayName: Install NuGetKeyVaultSignTool
+      inputs:
+        command: 'custom'
+        custom: 'tool'
+        arguments: 'install --tool-path . NuGetKeyVaultSignTool'
+
+    - task: VersionDotNetCoreAssemblies@3
+      inputs:
+        Path: '$(workingDirectory)/$(projectName)'
+        VersionNumber: '$(versionNumber)'
+        Field : 'version'
+        Injectversion: true
+        FilenamePattern: '.csproj'
+        OutputVersion: 'OutputedVersion'
+  
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: restore
+        projects: '$(workingDirectory)/$(projectName)/*.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Pack'
+      inputs:
+        command: pack
+        packagesToPack: '$(workingDirectory)/$(projectName)/*.csproj'
+        arguments: '--configuration Release'
+  
+    - task: PowerShell@2
+      displayName: Running NuGetKeyVaultSign
+      inputs:
+        targetType: 'inline'
+        script: |
+          $packagesToSign = '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+          $timestamper = 'https://timestamp.sectigo.com'
+          .\NuGetKeyVaultSignTool sign $packagesToSign --file-digest "sha256" --timestamp-rfc3161 $timestamper --timestamp-digest "sha256" `
+          --azure-key-vault-url "$(azure-key-vault-url)" `
+          --azure-key-vault-tenant-id "$(azure-key-vault-tenant-id)" `
+          --azure-key-vault-client-id "$(azure-key-vault-client-id)" `
+          --azure-key-vault-client-secret "$(azure-key-vault-client-secret)" `
+          --azure-key-vault-certificate "$(azure-key-vault-certificate)"
+    
+    - task: NuGetCommand@2
+      displayName: 'Push'
+      inputs:
+        command: push
+        nuGetFeedType: external
+        publishFeedCredentials: '$(publishFeedCredentials)'
