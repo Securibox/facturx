@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -59,88 +59,6 @@
 		<Pack>True</Pack>
 		<PackagePath>\</PackagePath>
 	</None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-    </None>
-    <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-    </None>
-    <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Basic WL\Factur-X_1.07.3_BASICWL_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-    </None>
-    <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-    </None>
-    <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Basic\Factur-X_1.07.3_BASIC_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\EN 16931\Factur-X_1.07.3_EN16931_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Extended\Factur-X_1.07.3_EXTENDED_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM_urn_un_unece_uncefact_data_standard_QualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM_urn_un_unece_uncefact_data_standard_ReusableAggregateBusinessInformationEntity_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-    <None Update="Xsd\FacturX\Minimum\Factur-X_1.07.3_MINIMUM_urn_un_unece_uncefact_data_standard_UnqualifiedDataType_100.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  <Pack>true</Pack>
-	</None>
-  </ItemGroup>
-
-</Project>
+    <EmbeddedResource Include="Xsd\**\*.*" />
+	</ItemGroup>
+  </Project>

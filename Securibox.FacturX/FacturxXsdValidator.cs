@@ -1,4 +1,5 @@
 ﻿using Securibox.FacturX.Models.Enums;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 
@@ -15,22 +16,25 @@ namespace Securibox.FacturX
 
         public static void ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
         {
-            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            ArgumentException.ThrowIfNullOrWhiteSpace(path);
-            path = Path.Combine(path, "Xsd", "FacturX", conformanceLevel.Name);
-            var XsdDirectory = new DirectoryInfo(path);
-            foreach (FileInfo file in XsdDirectory.GetFiles("*.xsd"))
-            {
-                using (FileStream fileStream = File.OpenRead(file.FullName))
-                {
-                    XmlSchema schema = XmlSchema.Read(fileStream, null);
-                    xmlDocument.Schemas.Add(schema);
-                }
-            }
+            var asm = Assembly.GetExecutingAssembly();
+            var resourcePrefix = $"{asm.GetName().Name}.Xsd.FacturX.{conformanceLevel.Name}.";
 
+            var resourceNames = asm.GetManifestResourceNames()
+                                   .Where(r => r.StartsWith(resourcePrefix, StringComparison.OrdinalIgnoreCase)
+                                               && r.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase));
+
+            foreach (var resourceName in resourceNames)
+            {
+                using var stream = asm.GetManifestResourceStream(resourceName)
+                                   ?? throw new FileNotFoundException($"Resource not found: {resourceName}");
+
+                var schema = XmlSchema.Read(stream, null);
+                xmlDocument.Schemas.Add(schema);
+            }
 
             xmlDocument.Validate(ValidationEventHandler!);
         }
+
 
         static void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
