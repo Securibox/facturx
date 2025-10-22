@@ -13,7 +13,6 @@ namespace Securibox.FacturX.Models.Minimum.Enum
         public static InvoiceTypeCode PrePaymentInvoice = new InvoiceTypeCode(386, "Prepayment Invoice");
         public static InvoiceTypeCode InvoiceInformation = new InvoiceTypeCode(751, "Invoice Information");
 
-
         private InvoiceTypeCode(int id, string name) : base(id, name) { }
     }
 }

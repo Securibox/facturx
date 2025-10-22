@@ -27,8 +27,10 @@ namespace Securibox.FacturX.Schematron.Helpers
                 var ruleResults = patternResult.RuleResults.ToList();
                 foreach (var ruleResult in ruleResults)
                 {
-                    if (ruleResult.ExecutedAssertions.Any(x => x.IsError == true))
+                    if (ruleResult.ExecutedAssertions.Any(x => x.IsError == true || x.IsWarning == true))
+                    {
                         return false;
+                    }
                 }
             }
 
@@ -58,6 +60,7 @@ namespace Securibox.FacturX.Schematron.Helpers
                         validationReport.ContextPosition = executedAssertion.ContextPosition;
                         validationReport.Description = executedAssertion.AssertInnerText;
                         validationReport.IsError = executedAssertion.IsError;
+                        validationReport.IsWarning = executedAssertion.IsWarning;
                         validationReport.BusinessRuleCode = executedAssertion.Assertion.Id;
                         validationReport.Test = executedAssertion.Assertion.Test;
 

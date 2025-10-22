@@ -10,11 +10,7 @@ namespace Securibox.FacturX.Core
         private FacturXConformanceLevelType _conformanceLevelType;
         private ILogger<Xml2ModelConverter> _logger;
         private readonly IList<ErrorReport> _errorReports;
-
-       
-
         private int _version;
-
 
         internal Xml2ModelConverter(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevelType, ILogger<Xml2ModelConverter> logger = null)
         {
@@ -86,5 +82,3 @@ namespace Securibox.FacturX.Core
         }
     }
 }
-
-

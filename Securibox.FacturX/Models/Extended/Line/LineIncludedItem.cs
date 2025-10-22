@@ -6,12 +6,19 @@ namespace Securibox.FacturX.Models.Extended
     public class LineIncludedItem
     {
         public string? Id { get; private set; }
+
         public IEnumerable<GlobalIdentification>? GlobalIdentificationList { get; private set; }
+
         public string? SellerAssignedId { get; private set; }
+
         public string? BuyerAssignedId { get; private set; }
+
         public string? IndustryAssignedId { get; private set; }
+
         public string Name { get; private set; }
+
         public string? Description { get; private set; }
+
         public QuantityUnit? UnitQuantity { get; private set; }
 
         internal LineIncludedItem(string name) => Name = name;

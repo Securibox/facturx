@@ -10,6 +10,5 @@
 
         internal void AddType(string? type) => Type = type;
         internal void AddValueMeasure(LineAttributeValueMeasure? valueMeasure) => ValueMeasure = valueMeasure;
-
     }
 }

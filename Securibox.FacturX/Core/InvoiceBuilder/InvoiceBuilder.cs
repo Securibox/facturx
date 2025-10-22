@@ -4,7 +4,6 @@ using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Extended;
 using Securibox.FacturX.Models.Extended.Payment;
 using Securibox.FacturX.Models.Minimum;
-using SixLabors.Fonts;
 using System.Xml;
 
 namespace Securibox.FacturX.Core
@@ -32,7 +31,7 @@ namespace Securibox.FacturX.Core
         protected readonly XmlNodeList? TaxDistributionNodeList;
 
         protected readonly XmlNodeList? LineNodeList;
-        
+
         protected InvoiceBuilder(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument)
         {
             _conformanceLevelType = conformanceLevelType;
@@ -48,7 +47,7 @@ namespace Securibox.FacturX.Core
             TradeAgreementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeAgreement']")!;
             TradeSettlementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeSettlement']")!;
             TradeDeliveryNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeDelivery']");
-            
+
             TradePaymentTermsNode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'SpecifiedTradePaymentTerms']");
             TradePaymentMeansNode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'SpecifiedTradeSettlementPaymentMeans']");
 
@@ -101,7 +100,7 @@ namespace Securibox.FacturX.Core
                     var testIndicator = testIndicatorNode
                         .SelectSingleNode("*[local-name() = 'Indicator']")!
                         .InnerText;
-                   
+
                     bool.TryParse(testIndicator, out bool indicator);
 
                     proccessControl.TestIndicator = indicator;
@@ -144,7 +143,7 @@ namespace Securibox.FacturX.Core
             var noteList = new List<Models.BasicWL.Note>();
             foreach (XmlNode noteNode in ExchangedDocumentNoteList)
                 noteList.Add(GetNote(noteNode));
-            
+
             return noteList;
         }
 
@@ -217,7 +216,7 @@ namespace Securibox.FacturX.Core
         internal Models.Minimum.DirectDebit GetDirectDebit()
         {
             var currencyCode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'InvoiceCurrencyCode']")!.InnerText;
-        
+
             if (_conformanceLevelType == FacturXConformanceLevelType.Minimum)
             {
                 return new Models.Minimum.DirectDebit(currencyCode);
@@ -309,7 +308,7 @@ namespace Securibox.FacturX.Core
             {
                 var occurrenceDateTimeNode = actualDeliveryEventNode.SelectSingleNode("*[local-name() = 'OccurrenceDateTime']");
                 if (occurrenceDateTimeNode != null)
-                { 
+                {
                     var actualDeliveryDateNode = occurrenceDateTimeNode.SelectSingleNode("*[local-name() = 'DateTimeString']")!;
                     actualDeliveryDate = XmlParsingHelpers.ExtractDateTime(actualDeliveryDateNode);
                 }
@@ -368,7 +367,7 @@ namespace Securibox.FacturX.Core
             var basisDateTime = XmlParsingHelpers.ExtractDateTime(basisDateTimeNode);
 
             var paymentDiscountBaseAmountNode = paymentPenaltyDiscountNode.SelectSingleNode("*[local-name() = 'BasisAmount']");
-            var paymentDiscountBaseAmount =  XmlParsingHelpers.ExtractDecimal(paymentDiscountBaseAmountNode);
+            var paymentDiscountBaseAmount = XmlParsingHelpers.ExtractDecimal(paymentDiscountBaseAmountNode);
 
             var paymentDiscountCalculationPercentNode = paymentPenaltyDiscountNode.SelectSingleNode("*[local-name() = 'CalculationPercent']");
             var paymentDiscountCalculationPercent = XmlParsingHelpers.ExtractDecimal(paymentDiscountCalculationPercentNode);
@@ -425,7 +424,7 @@ namespace Securibox.FacturX.Core
             var dueDateNode = TradePaymentTermsNode?
               .SelectSingleNode("*[local-name() = 'DueDateDateTime']")?
               .SelectSingleNode("*[local-name() = 'DateTimeString']");
-            
+
             if (dueDateNode != null)
             {
                 dueDate = XmlParsingHelpers.ExtractDateTime(dueDateNode);
@@ -504,7 +503,7 @@ namespace Securibox.FacturX.Core
             var paymentTypeCode = TradePaymentMeansNode
                 .SelectSingleNode("*[local-name() = 'TypeCode']")!
                 .InnerText;
-            
+
             var creditTransferList = GetCreditTransferList();
 
             if (_conformanceLevelType == FacturXConformanceLevelType.BasicWL || _conformanceLevelType == FacturXConformanceLevelType.Basic)
@@ -725,7 +724,7 @@ namespace Securibox.FacturX.Core
         protected Models.Minimum.Totals GetTotals(string invoiceCurrency)
         {
             var amount = default(decimal?);
-            var currency = default(string); 
+            var currency = default(string);
             var totalVatAmountNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'TaxTotalAmount']");
             if (totalVatAmountNode != null)
             {
@@ -738,7 +737,7 @@ namespace Securibox.FacturX.Core
                 Amount = amount,
                 Currency = currency,
             };
-            
+
             var amountToBePaid = default(decimal);
             var amountToBePaidNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'DuePayableAmount']");
             if (amountToBePaidNode != null)
@@ -756,7 +755,7 @@ namespace Securibox.FacturX.Core
                     AmountToBePaid = amountToBePaid
                 };
             }
-            else 
+            else
             {
                 var netAmountSum = default(decimal?);
                 var lineTotalAmountNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'LineTotalAmount']");

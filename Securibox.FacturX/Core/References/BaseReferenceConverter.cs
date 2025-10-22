@@ -1,5 +1,4 @@
-﻿using Securibox.FacturX.Core.References;
-using Securibox.FacturX.Models;
+﻿using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.EN16931;
 using Securibox.FacturX.Models.Enums;
 using System.Xml;
@@ -26,7 +25,6 @@ namespace Securibox.FacturX.Core
         protected readonly IEnumerable<XmlNode>? SupportingDocumentReferenceNodeList;
         protected readonly XmlNodeList? UltimateCustomerOrderReferenceNodeList;
 
-
         protected BaseReferenceConverter(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument)
         {
             ConformanceLevelType = conformanceLevelType;
@@ -35,7 +33,7 @@ namespace Securibox.FacturX.Core
             BuyerReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerReference']");
             ContractReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'ContractReferencedDocument']");
             ProjectReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SpecifiedProcuringProject']");
-            PurchaseOrderReference  = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerOrderReferencedDocument']");
+            PurchaseOrderReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerOrderReferencedDocument']");
             QuotationReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'QuotationReferencedDocument']");
             SalesOrderReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SellerOrderReferencedDocument']");
 
@@ -55,8 +53,6 @@ namespace Securibox.FacturX.Core
                 .Cast<XmlNode>()
                 .FirstOrDefault(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "50");
 
-
-
             var tradeSettlementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeSettlement']")!;
 
             BuyerAccountingReference = tradeSettlementNode.SelectSingleNode("*[local-name() = 'ReceivableSpecifiedTradeAccountingAccount']");
@@ -67,7 +63,6 @@ namespace Securibox.FacturX.Core
             DeliveryNoteReference = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'DeliveryNoteReferencedDocument']");
             DespatchAdviceReference = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'DespatchAdviceReferencedDocument']");
             ReceivingAdviceReference = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'ReceivingAdviceReferencedDocument']");
-
         }
 
         internal virtual IReference? GetReference()
@@ -75,7 +70,7 @@ namespace Securibox.FacturX.Core
             return null;
         }
 
-        internal virtual IEnumerable<IReference>? GetReferenceList() 
+        internal virtual IEnumerable<IReference>? GetReferenceList()
         {
             return null;
         }
