@@ -4,6 +4,7 @@
 Factur-X is a new French and German standard for electronic invoicing, expanding the German ZUGFeRD standard. 
 It represents the first implementation of the European Commission’s European Semantic Standard EN 16931, introduced in 2017 by the [FNFE-MPE](http://fnfe-mpe.org/factur-x/). 
 Factur-X belongs to a class of e-invoices known as mixed or hybrid invoices, that combine PDFs for users and XML data for automated processing.
+This library uses Factur-X version 1.07.3, applicable as of May 15th 2025.
 
 Several standard data profiles are available with more or less information:
 - Minimum: Does not contain all of the invoicing information necessary for use in Germany
