@@ -7,7 +7,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 {
     internal class MinimumInvoiceTests
     {
-        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory()?.Split("bin").First()!, "Invoices", "Custom");
+        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Invoices", "Custom");
         private readonly string _invoiceName = "2023-6026_facture_facturx_minimum.pdf";
 
         [SetUp]
