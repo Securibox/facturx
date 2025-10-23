@@ -7,7 +7,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 {
     public class BasicInvoiceTests
     {
-        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory()?.Split("bin").First()!, "Invoices", "Basic");
+        private readonly string _mainDir = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Invoices", "Basic");
 
         [SetUp]
         public void Setup()
