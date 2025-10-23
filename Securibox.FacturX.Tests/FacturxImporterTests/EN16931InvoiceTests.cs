@@ -21,7 +21,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Avoir_FR_type380_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Avoir_FR_type380_EN16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Avoir_FR_type380_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -176,7 +176,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Avoir_FR_type381_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Avoir_FR_type381_EN16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Avoir_FR_type381_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -340,7 +340,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_FACTURE_FR_type380_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_FR_EN16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_FR_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -510,7 +510,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_FACTURE_EU_type380_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_UE_EN16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_UE_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -676,7 +676,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_DOM_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_DOM_EN16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_DOM_EN16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -867,7 +867,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220023_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -1323,7 +1323,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220024_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -1672,7 +1672,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220025_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -1928,7 +1928,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220026_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -2209,7 +2209,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220027_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -2489,7 +2489,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220028_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -2769,7 +2769,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220029_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -3046,7 +3046,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220030_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
@@ -3340,7 +3340,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         [Test]
         public void ExtractData_Facture_F20220031_EN16931_SUCCESS()
         {
-            var importer = new FacturxImporter(string.Format("{0}\\{1}", _mainDir, "Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
+            var importer = new FacturxImporter(Path.Combine( _mainDir, "Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf"));
 
             var crossIndustryInvoice = importer.ImportDataWithDeserialization();
             Assert.That(crossIndustryInvoice is not null);
