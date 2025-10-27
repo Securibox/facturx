@@ -21,3 +21,7 @@ jobs:
       run: dotnet test --configuration Release --no-build /p:Version=${{ inputs.version }}
     - name: Pack
       run: dotnet pack --configuration Release --no-build /p:Version=${{ inputs.version }} --no-build --output .
+    - name: Push
+      run: dotnet nuget push Securibox.FacturX.${{ inputs.version }}.nupkg --source https://api.nuget.org/v39/index.json --api-key ${NUGET_ORG_API_KEY}
+      env:
+        NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
