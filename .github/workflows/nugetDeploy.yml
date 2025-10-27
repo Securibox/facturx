@@ -15,8 +15,13 @@ jobs:
       run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
         git branch --remote --contains | grep origin/main
-
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release /p:Version=${{ inputs.version }}
     - name: Test
-      run: dotnet test --configuration Release --no-build
+      run: dotnet test --configuration Release --no-build /p:Version=${{ inputs.version }}
+    - name: Pack
+      run: dotnet pack --configuration Release --no-build /p:Version=${{ inputs.version }} --no-build --output .
+    - name: Push
+      run: dotnet nuget push Securibox.FacturX.${{ inputs.version }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_ORG_API_KEY}
+      env:
+        NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
