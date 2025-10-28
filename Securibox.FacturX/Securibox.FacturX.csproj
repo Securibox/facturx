@@ -4,15 +4,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<Title>Securibox Factur-X Library</Title>
-	<Version>0.5.2</Version>
-	<Company>Securibox</Company>
-	<RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
-	<PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<Authors>securibox</Authors>
-	<Description>Open Source .NET library to read, create and validate Factur-X e-invoices.</Description>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>Securibox Factur-X Library</Title>
+	  <Version>0.5.2</Version>
+	  <Company>Securibox</Company>
+	  <RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	  <Authors>securibox</Authors>
+	  <Description>Open Source .NET library to read, create and validate Factur-X e-invoices.</Description>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <IncludeSymbols>False</IncludeSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
