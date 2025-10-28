@@ -22,11 +22,29 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release --no-build /p:Version=${{ inputs.version }} --no-build --output .
     - name: Install dotnet-validate
-      run: dotnet tool install --global dotnet-validate
+      shell: pwsh
+      run: |
+        $ToolName = "dotnet-validate"
+        $toolList = dotnet tool list -g | Select-String -SimpleMatch $ToolName
+        if (-not $toolList) {
+            Write-Host "Installing $ToolName globally..."
+            dotnet tool install --global dotnet-validate --version 0.0.1-preview.537
+          } else {
+            Write-Host "$ToolName already installed globally."
+          }
     - name: Validate NuGet package
       run: dotnet-validate package local ./*.nupkg
     - name: Install NuGetKeyVaultSignTool
-      run: dotnet tool install --global NuGetKeyVaultSignTool
+      shell: pwsh
+      run: |
+        $ToolName = "NuGetKeyVaultSignTool"
+        $toolList = dotnet tool list -g | Select-String -SimpleMatch $ToolName
+        if (-not $toolList) {
+            Write-Host "Installing $ToolName globally..."
+            dotnet tool install --global $ToolName
+          } else {
+            Write-Host "$ToolName already installed globally."
+          }
     - name: Sign Nuget Package
       run: NuGetKeyVaultSignTool.exe sign Securibox.FacturX.${{ inputs.version }}.nupkg --file-digest sha256 --timestamp-rfc3161 http://timestamp.digicert.com --timestamp-digest sha256 --azure-key-vault-url ${CODE_SIGNING_AZURE_KEYVAULT_URL} --azure-key-vault-client-id ${CODE_SIGNING_AZURE_KEYVAULT_CLIENT_ID} --azure-key-vault-client-secret ${CODE_SIGNING_AZURE_KEYVAULT_CLIENT_SECRET} --azure-key-vault-certificate ${CODE_SIGNING_AZURE_KEYVAULT_CERTIFICATE}    
     - name: Push
