@@ -1,5 +1,7 @@
 ﻿using Securibox.FacturX.Schematron.Xslt;
+using Securibox.FacturX.Utils;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
@@ -348,7 +350,7 @@ namespace Securibox.FacturX.Schematron.Types
                     var exprPart = parts[1].Trim();
                     foreach (var kvp in variables)
                     {
-                        exprPart = exprPart.Replace("$" + kvp.Key, kvp.Value?.ToString());
+                        exprPart = exprPart.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
                     }
 
                     var value = navigator.XPath2Evaluate(exprPart, context);
@@ -364,7 +366,10 @@ namespace Securibox.FacturX.Schematron.Types
                     var exprPart = parts[1].Trim();
 
                     foreach (var kvp in variables)
-                        exprPart = exprPart.Replace("$" + kvp.Key, kvp.Value?.ToString());
+                    {
+                        exprPart = exprPart.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
+                    }
+                        
 
                     var value = navigator.XPath2Evaluate(exprPart, context);
                     variables[varName] = value;
@@ -377,7 +382,7 @@ namespace Securibox.FacturX.Schematron.Types
 
             foreach (var kvp in variables)
             {
-                returnExpr = returnExpr.Replace("$" + kvp.Key, kvp.Value?.ToString());
+                returnExpr = returnExpr.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
             }
 
             return returnExpr;
