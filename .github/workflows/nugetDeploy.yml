@@ -46,12 +46,6 @@ jobs:
             Write-Host "$ToolName already installed globally."
           }
     - name: Sign Nuget Package
-      run: NuGetKeyVaultSignTool.exe sign Securibox.FacturX.${{ inputs.version }}.nupkg --file-digest sha256 --timestamp-rfc3161 http://timestamp.digicert.com --timestamp-digest sha256 --azure-key-vault-url ${CODE_SIGNING_AZURE_KEYVAULT_URL} --azure-key-vault-client-id ${CODE_SIGNING_AZURE_KEYVAULT_CLIENT_ID} --azure-key-vault-client-secret ${CODE_SIGNING_AZURE_KEYVAULT_CLIENT_SECRET} --azure-key-vault-certificate ${CODE_SIGNING_AZURE_KEYVAULT_CERTIFICATE}    
+      run: NuGetKeyVaultSignTool.exe sign Securibox.FacturX.${{ inputs.version }}.nupkg --file-digest sha256 --timestamp-rfc3161 http://timestamp.digicert.com --timestamp-digest sha256 --azure-key-vault-url ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_URL }} --azure-key-vault-client-id ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_CLIENT_ID }} --azure-key-vault-client-secret ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_CLIENT_SECRET }} --azure-key-vault-certificate ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_CERTIFICATE }}
     - name: Push
-      run: dotnet nuget push Securibox.FacturX.${{ inputs.version }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_ORG_API_KEY}
-      env:
-        NUGET_ORG_API_KEY: ${{ secrets.NUGET_ORG_API_KEY }}
-        CODE_SIGNING_AZURE_KEYVAULT_CERTIFICATE: ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_CERTIFICATE }}
-        CODE_SIGNING_AZURE_KEYVAULT_CLIENT_ID: ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_CLIENT_ID }}
-        CODE_SIGNING_AZURE_KEYVAULT_CLIENT_SECRET: ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_CLIENT_SECRET }}
-        CODE_SIGNING_AZURE_KEYVAULT_URL: ${{ secrets.CODE_SIGNING_AZURE_KEYVAULT_URL }}
+      run: dotnet nuget push Securibox.FacturX.${{ inputs.version }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_ORG_API_KEY }}
