@@ -65,7 +65,7 @@
             var sortedProps = lets.OrderBy(kv => kv.Key.ToString())
                                  .Select(kv => $"{kv.Key}:{(kv.Value?.GetType().FullName ?? "object")}");
 
-            return string.Join("|", sortedProps);
+            return string.Join('|', sortedProps);
         }
 
         private static TypeBuilder CreateTypeBuilder(string typeName)
