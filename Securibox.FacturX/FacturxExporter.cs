@@ -35,7 +35,7 @@ namespace Securibox.FacturX
             return CreateFacturXStream(File.OpenRead(pdfPath), File.OpenRead(xmlPath), conformanceLevel, documentTitle, documentDescription);
         }
 
-        public Stream CreateFacturXStream(string pdfPath, Invoice invoice, string documentTitle = "Invoice", string documentDescription = "Invoice description")
+        public Stream CreateFacturXStream(string pdfPath, string xmlPath, Invoice invoice, string documentTitle = "Invoice", string documentDescription = "Invoice description")
         {
             if (!File.Exists(pdfPath))
             {
@@ -45,10 +45,7 @@ namespace Securibox.FacturX
             {
                 throw new ArgumentNullException(nameof(invoice));
             }
-
-            var xmlPath = @"C:\Temp\FacturX\New folder\Lavarin\2023-6013 - Jappera - BASIC.xml";
-
-
+            
             var invoiceType = invoice.GetType();
             var conformanceLevel = FacturXConformanceLevelType.Minimum;
             if (invoiceType == typeof(Models.BasicWL.Invoice))
