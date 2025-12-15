@@ -85,7 +85,7 @@ namespace Securibox.FacturX.Schematron.Types
             var result = fragment.DocumentElement?.InnerXml.Trim().Split('\n');
             if (result != null && result.Length > 0)
             {
-                return String.Join("\n", result.Select(x => x.Trim()));
+                return String.Join('\n', result.Select(x => x.Trim()));
             }
             else
             {
@@ -96,7 +96,7 @@ namespace Securibox.FacturX.Schematron.Types
         public virtual EvaluationResult Evaluate(Schema schema, XPathNavigator navigator, XsltContext context)
         {
             var result = false;
-            var assert = this.Test.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Trim();
+            var assert = this.Test.Replace("\r\n", " ").Replace('\n', ' ').Replace('\r', ' ').Trim();
             assert = System.Text.RegularExpressions.Regex.Replace(assert, @"\s+", " ");
             result = EvaluateLogicalExpression(context, navigator, assert);
 
@@ -202,7 +202,7 @@ namespace Securibox.FacturX.Schematron.Types
                 }
 
                 string condition = everyMatch.Groups[2].ToString().Trim();
-                if (condition.StartsWith("(") && condition.EndsWith(")"))
+                if (condition.StartsWith('(') && condition.EndsWith(')'))
                     condition = condition.Substring(1, condition.Length - 2);
 
                 if (variablesDictionary is null)
@@ -243,7 +243,7 @@ namespace Securibox.FacturX.Schematron.Types
                 }
 
                 string condition = someMatch.Groups[2].ToString().Trim();
-                if (condition.StartsWith("(") && condition.EndsWith(")"))
+                if (condition.StartsWith('(') && condition.EndsWith(')'))
                     condition = condition.Substring(1, condition.Length - 2);
 
                 foreach (var value in varValues)
@@ -330,7 +330,7 @@ namespace Securibox.FacturX.Schematron.Types
 
             var bindingParts = bindings.Split(',')
                 .Select(b => b.Trim())
-                .Where(b => b.StartsWith("$"))
+                .Where(b => b.StartsWith('$'))
                 .ToArray();
 
             if (variables is null)
@@ -447,7 +447,7 @@ namespace Securibox.FacturX.Schematron.Types
         private static string TrimOuterParentheses(string expr)
         {
             expr = expr.Trim();
-            while (expr.StartsWith("(") && expr.EndsWith(")"))
+            while (expr.StartsWith('(') && expr.EndsWith(')'))
             {
                 int depth = 0;
                 bool matched = false;
