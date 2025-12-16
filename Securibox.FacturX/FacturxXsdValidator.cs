@@ -17,7 +17,7 @@ namespace Securibox.FacturX
         public static void ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
         {
             var asm = Assembly.GetExecutingAssembly();
-            var resourcePrefix = $"{asm.GetName().Name}.Xsd.FacturX.{conformanceLevel.Name.Replace(" ","_")}.";
+            var resourcePrefix = $"{asm.GetName().Name}.Xsd.FacturX.{conformanceLevel.Name.Replace(' ', '_')}.";
 
             var resourceNames = asm.GetManifestResourceNames()
                                    .Where(r => r.StartsWith(resourcePrefix, StringComparison.OrdinalIgnoreCase)
