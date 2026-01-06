@@ -354,6 +354,11 @@ namespace Securibox.FacturX.Schematron.Types
                     }
 
                     var value = navigator.XPath2Evaluate(exprPart, context);
+                    if (value == null || (value is string s && string.IsNullOrWhiteSpace(s)) || value.ToString() == "()")
+                    {
+                        value = 0;
+                    }
+
                     variables[varName] = value;
                 }
                 else if (binding.Contains(":="))
@@ -370,8 +375,12 @@ namespace Securibox.FacturX.Schematron.Types
                         exprPart = exprPart.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
                     }
                         
-
                     var value = navigator.XPath2Evaluate(exprPart, context);
+                    if (value == null || (value is string s && string.IsNullOrWhiteSpace(s)) || value.ToString() == "()")
+                    {
+                        value = 0;
+                    }
+
                     variables[varName] = value;
                 }
                 else
