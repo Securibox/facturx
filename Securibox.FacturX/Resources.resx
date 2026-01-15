@@ -118,40 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Factur-X_1.07.3_EN16931" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_EN16931.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Factur-X_1.08_BASIC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_BASIC.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Factur-X_1.07.3_BASICWL" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_BASICWL.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Factur-X_1.08_BASICWL" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_BASICWL.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Factur-X_1.07.3_BASICWL_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_BASICWL_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="Factur-X_1.08_BASICWL_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_BASICWL_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="Factur-X_1.07.3_EXTENDED" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_EXTENDED.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Factur-X_1.08_BASIC_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_BASIC_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="Factur-X_1.07.3_EXTENDED_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_EXTENDED_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="Factur-X_1.08_EN16931" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_EN16931.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Factur-X_1.07.3_MINIMUM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_MINIMUM.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Factur-X_1.08_EN16931_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_EN16931_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="Factur-X_1.07.3_MINIMUM_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_MINIMUM_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="Factur-X_1.08_EXTENDED" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_EXTENDED.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Factur-X_1.08_EXTENDED_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_EXTENDED_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Factur-X_1.08_MINIMUM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_MINIMUM.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Factur-X_1.08_MINIMUM_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Factur-X_1.08_MINIMUM_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="PdfMetadataTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\PdfMetadataTemplate.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="sRGB_IEC61966_2_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\sRGB-IEC61966-2.1.icc;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Factur-X_1.07.3_BASIC" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_BASIC.sch;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Factur-X_1.07.3_EN16931_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_EN16931_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Factur-X_1.07.3_BASIC_codedb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Factur-X_1.07.3_BASIC_codedb.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>
