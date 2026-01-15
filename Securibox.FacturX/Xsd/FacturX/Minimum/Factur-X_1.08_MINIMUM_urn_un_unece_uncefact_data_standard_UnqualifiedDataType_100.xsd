@@ -6,13 +6,8 @@
   <xs:complexType name="AmountType">
     <xs:simpleContent>
       <xs:extension base="xs:decimal">
-        <xs:attribute name="currencyID" type="xs:token" use="optional"/>
+        <xs:attribute name="currencyID" type="xs:token"/>
       </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-  <xs:complexType name="CodeType">
-    <xs:simpleContent>
-      <xs:extension base="xs:token"/>
     </xs:simpleContent>
   </xs:complexType>
   <xs:complexType name="DateTimeType">
@@ -33,16 +28,6 @@
       <xs:extension base="xs:token">
         <xs:attribute name="schemeID" type="xs:token"/>
       </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
-  <xs:complexType name="IndicatorType">
-    <xs:choice>
-      <xs:element name="Indicator" type="xs:boolean"/>
-    </xs:choice>
-  </xs:complexType>
-  <xs:complexType name="PercentType">
-    <xs:simpleContent>
-      <xs:extension base="xs:decimal"/>
     </xs:simpleContent>
   </xs:complexType>
   <xs:complexType name="TextType">

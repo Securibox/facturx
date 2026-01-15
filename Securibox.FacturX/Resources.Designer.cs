@@ -19,7 +19,7 @@ namespace Securibox.FacturX {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -63,9 +63,9 @@ namespace Securibox.FacturX {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_07_3_BASIC {
+        public static byte[] Factur_X_1_08_BASIC {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.07.3_BASIC", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_1.08_BASIC", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -87,18 +87,18 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;102&quot;/&gt;
         ///    &lt;enumeration value=&quot;130&quot;/&gt; [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_07_3_BASIC_codedb {
+        public static string Factur_X_1_08_BASIC_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.07.3_BASIC_codedb", resourceCulture);
+                return ResourceManager.GetString("Factur-X_1.08_BASIC_codedb", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_07_3_BASICWL {
+        public static byte[] Factur_X_1_08_BASICWL {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.07.3_BASICWL", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_1.08_BASICWL", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -122,18 +122,18 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;202&quot;/&gt;
         ///    &lt;enumeration value=&quot;203&quot;/&gt; [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_07_3_BASICWL_codedb {
+        public static string Factur_X_1_08_BASICWL_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.07.3_BASICWL_codedb", resourceCulture);
+                return ResourceManager.GetString("Factur-X_1.08_BASICWL_codedb", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_07_3_EN16931 {
+        public static byte[] Factur_X_1_08_EN16931 {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.07.3_EN16931", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_1.08_EN16931", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -158,18 +158,18 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;204&quot;/&gt;
         ///    &lt;enumeration value=&quot;2 [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_07_3_EN16931_codedb {
+        public static string Factur_X_1_08_EN16931_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.07.3_EN16931_codedb", resourceCulture);
+                return ResourceManager.GetString("Factur-X_1.08_EN16931_codedb", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_07_3_EXTENDED {
+        public static byte[] Factur_X_1_08_EXTENDED {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.07.3_EXTENDED", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_1.08_EXTENDED", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -191,18 +191,18 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;102&quot;/&gt;
         ///    &lt;enumeration value [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_07_3_EXTENDED_codedb {
+        public static string Factur_X_1_08_EXTENDED_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.07.3_EXTENDED_codedb", resourceCulture);
+                return ResourceManager.GetString("Factur-X_1.08_EXTENDED_codedb", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_07_3_MINIMUM {
+        public static byte[] Factur_X_1_08_MINIMUM {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.07.3_MINIMUM", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_1.08_MINIMUM", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -226,9 +226,9 @@ namespace Securibox.FacturX {
         ///    &lt;enumeration value=&quot;202&quot;/&gt;
         ///    &lt;enumeration value=&quot;203&quot;/&gt; [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_07_3_MINIMUM_codedb {
+        public static string Factur_X_1_08_MINIMUM_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.07.3_MINIMUM_codedb", resourceCulture);
+                return ResourceManager.GetString("Factur-X_1.08_MINIMUM_codedb", resourceCulture);
             }
         }
         
