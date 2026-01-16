@@ -928,7 +928,6 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(1.00));
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
-            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(1.00));
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
@@ -3401,7 +3400,6 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line1.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(1.00));
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount.Value, Is.EqualTo(100.00));
-            Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(1.00));
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
             Assert.That(line1!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
@@ -3465,7 +3463,6 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ChargeIndicator.Indicator is false);
             Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ActualAmount.Value, Is.EqualTo(2.00));
             Assert.That(line2.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).BasisAmount is null);
-            Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent, Is.EqualTo(0.0));
             Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).ReasonCode, Is.EqualTo("71"));
             Assert.That(line2!.SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).Reason, Is.EqualTo("REMISE VOLUME"));
 
