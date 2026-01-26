@@ -65,23 +65,23 @@ namespace Securibox.FacturX
         {
             if(conformanceLevel.Id == FacturXConformanceLevelType.Minimum.Id)
             {
-                return new MemoryStream(Resources.Factur_X_1_07_3_MINIMUM);
+                return new MemoryStream(Resources.Factur_X_1_08_MINIMUM);
             }
             else if (conformanceLevel.Id == FacturXConformanceLevelType.BasicWL.Id)
             {
-                return new MemoryStream(Resources.Factur_X_1_07_3_BASICWL);
+                return new MemoryStream(Resources.Factur_X_1_08_BASICWL);
             }
             else if (conformanceLevel.Id == FacturXConformanceLevelType.Basic.Id)
             {
-                return new MemoryStream(Resources.Factur_X_1_07_3_BASIC);
+                return new MemoryStream(Resources.Factur_X_1_08_BASIC);
             }
             else if (conformanceLevel.Id == FacturXConformanceLevelType.EN16931.Id)
             {
-                return new MemoryStream(Resources.Factur_X_1_07_3_EN16931);
+                return new MemoryStream(Resources.Factur_X_1_08_EN16931);
             }
             else if (conformanceLevel.Id == FacturXConformanceLevelType.Extended.Id)
             {
-                return new MemoryStream(Resources.Factur_X_1_07_3_EXTENDED);
+                return new MemoryStream(Resources.Factur_X_1_08_EXTENDED);
             }
             else
             {
