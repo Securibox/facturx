@@ -9,11 +9,11 @@ namespace Securibox.FacturX
     public class FacturxSchematronValidator
     {
 
-        public static void ValidateXml(Stream xmlDocumentStream, FacturXConformanceLevelType conformanceLevel)
+        public static ValidationResult ValidateXml(Stream xmlDocumentStream, FacturXConformanceLevelType conformanceLevel)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlDocumentStream);
-            ValidateXml(xmlDocument, conformanceLevel);
+            return ValidateXml(xmlDocument, conformanceLevel);
         }
 
         public static ValidationResult ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
