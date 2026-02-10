@@ -8,8 +8,8 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
         public string Information { get; set; }
         public TradeSettlementFinancialCard ApplicableTradeSettlementFinancialCard { get; set; }
         public BasicWL.DebtorFinancialAccount PayerPartyDebtorFinancialAccount { get; set; }
-        [XmlElement]
-        public CreditorFinancialAccount[] PayeePartyCreditorFinancialAccount { get; set; }
+        
+        public CreditorFinancialAccount PayeePartyCreditorFinancialAccount { get; set; }
         public CreditorFinancialInstitution PayeeSpecifiedCreditorFinancialInstitution { get; set; }
     }
 }

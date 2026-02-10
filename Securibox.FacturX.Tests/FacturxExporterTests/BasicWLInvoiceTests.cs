@@ -153,17 +153,17 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                     ApplicableHeaderTradeSettlement = new SpecificationModels.BasicWL.HeaderTradeSettlement()
                     {
                         InvoiceCurrencyCode = "EUR",
-                        SpecifiedTradeSettlementPaymentMeans = new SpecificationModels.BasicWL.TradeSettlementPaymentMeans()
-                        {
-                            TypeCode = "30",
-                            PayeePartyCreditorFinancialAccount = new SpecificationModels.BasicWL.CreditorFinancialAccount[]
+                        SpecifiedTradeSettlementPaymentMeans = 
+                        [
+                            new()
                             {
-                                new SpecificationModels.BasicWL.CreditorFinancialAccount()
+                            TypeCode = "30",
+                            PayeePartyCreditorFinancialAccount = new ()                            
                                 {
                                     IBANID = new SpecificationModels.Minimum.ID { Value = "FR7430003000402964223654P78" },
-                                }
-                            },
-                        },
+                                }                            
+                            }
+                        ],
                         ApplicableTradeTax = new SpecificationModels.BasicWL.TradeTax[]
                         {
                             new SpecificationModels.BasicWL.TradeTax()
@@ -297,10 +297,8 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
-
-            Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.Count(), Is.EqualTo(1));
-            Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.ElementAt(0).IBANID.Value, Is.EqualTo("FR7430003000402964223654P78"));
+            Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.ElementAt(0).TypeCode, Is.EqualTo("30"));                        
+            Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.ElementAt(0).PayeePartyCreditorFinancialAccount.IBANID.Value, Is.EqualTo("FR7430003000402964223654P78"));
 
             Assert.That(basicWLInvoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.Count(), Is.EqualTo(2));
 

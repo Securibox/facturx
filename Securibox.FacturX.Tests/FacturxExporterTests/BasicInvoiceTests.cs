@@ -249,17 +249,17 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                     ApplicableHeaderTradeSettlement = new SpecificationModels.BasicWL.HeaderTradeSettlement()
                     {
                         InvoiceCurrencyCode = "EUR",
-                        SpecifiedTradeSettlementPaymentMeans = new SpecificationModels.BasicWL.TradeSettlementPaymentMeans()
-                        {
-                            TypeCode = "30",
-                            PayeePartyCreditorFinancialAccount = new SpecificationModels.BasicWL.CreditorFinancialAccount[]
-                             {
-                                new SpecificationModels.BasicWL.CreditorFinancialAccount()
-                                {
-                                    IBANID = new SpecificationModels.Minimum.ID { Value = "FR7430003000402964223654P78" },
-                                }
-                             },
-                        },
+                        SpecifiedTradeSettlementPaymentMeans =
+                        [
+                            new ()
+                            {
+                                TypeCode = "30",
+                                PayeePartyCreditorFinancialAccount = new ()
+                                 {
+                                        IBANID = new SpecificationModels.Minimum.ID { Value = "FR7430003000402964223654P78" }
+                                 }
+                            }
+                        ],
                         ApplicableTradeTax = new SpecificationModels.BasicWL.TradeTax[]
                          {
                             new SpecificationModels.BasicWL.TradeTax()
@@ -353,7 +353,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             Assert.That(basicInvoice!.ExchangedDocument.IncludedNote.ElementAt(1).Content, Is.EqualTo("R.C.S Paris 123 456 789"));
             Assert.That(basicInvoice!.ExchangedDocument.IncludedNote.ElementAt(1).SubjectCode, Is.EqualTo("ABL"));
 
-            Assert.That(basicInvoice!.ExchangedDocument.IncludedNote.ElementAt(2).Content, Is.EqualTo("2, rue de la Paix – 75000 Paris – Tel: +33 1 01 12 34 56")   );
+            Assert.That(basicInvoice!.ExchangedDocument.IncludedNote.ElementAt(2).Content, Is.EqualTo("2, rue de la Paix – 75000 Paris – Tel: +33 1 01 12 34 56"));
             Assert.That(basicInvoice!.ExchangedDocument.IncludedNote.ElementAt(2).SubjectCode, Is.EqualTo("AAI"));
 
             Assert.That(basicInvoice!.ExchangedDocument.IncludedNote.ElementAt(3).Content, Is.EqualTo("APE 5510Z – TVA FR40123456824"));
@@ -416,25 +416,23 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.TypeCode, Is.EqualTo("30"));
-
-            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.Count(), Is.EqualTo(1));
-            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans.PayeePartyCreditorFinancialAccount.ElementAt(0).IBANID.Value, Is.EqualTo("FR7430003000402964223654P78"));
+            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR7430003000402964223654P78"));
 
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.Count(), Is.EqualTo(2));
 
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).CalculatedAmount.Value, Is.EqualTo(123.54m));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).TypeCode, Is.EqualTo("VAT"));
-            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).BasisAmount.Value, Is.EqualTo(1235.40m)                                                                       );
+            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).BasisAmount.Value, Is.EqualTo(1235.40m));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).CategoryCode, Is.EqualTo("S"));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(0).RateApplicablePercent, Is.EqualTo(10.00));
 
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).CalculatedAmount.Value, Is.EqualTo(0.00));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).BasisAmount.Value, Is.EqualTo(9.90));
-            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).CategoryCode, Is.EqualTo("Z")                     );
+            Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).CategoryCode, Is.EqualTo("Z"));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
-    
+
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Value, Is.EqualTo("20231019"));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.DueDateDateTime.DateTimeString.Format, Is.EqualTo("102"));
             Assert.That(basicInvoice!.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradePaymentTerms.Description, Is.EqualTo("30 jours net"));

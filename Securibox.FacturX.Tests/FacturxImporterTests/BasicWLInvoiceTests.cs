@@ -69,8 +69,8 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("FA-2017-0010"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -167,8 +167,8 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("FA-2017-0008"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -332,10 +332,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
 
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
@@ -596,10 +596,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -770,10 +770,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.ProprietaryID is null);
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.ID is null);
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeDelivery.ShipToTradeParty.Name, Is.EqualTo("DEL Name"));
@@ -799,10 +799,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.ProprietaryID is null);
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -965,9 +965,9 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -1132,10 +1132,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.ProprietaryID is null);
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -1297,10 +1297,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.ProprietaryID is null);
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -1469,10 +1469,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty is null);
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.ProprietaryID is null);
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -1652,10 +1652,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.ElementAtOrDefault(0)?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.ProprietaryID is null);
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID is null);
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount is null);
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -1836,10 +1836,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.Value, Is.EqualTo("123456782"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PayeeTradeParty.SpecifiedLegalOrganization.ID.SchemeID, Is.EqualTo("0002"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR76 1254 2547 2569 8542 5874 698"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.ProprietaryID.Value, Is.EqualTo("LOC BANK ACCOUNT"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayerPartyDebtorFinancialAccount.IBANID.Value, Is.EqualTo("FRDEBIT"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
@@ -2199,8 +2199,8 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.PaymentReference, Is.EqualTo("FA-2017-0009"));
             Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.InvoiceCurrencyCode, Is.EqualTo("EUR"));
 
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.TypeCode, Is.EqualTo("30"));
-            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.PayeePartyCreditorFinancialAccount?.FirstOrDefault()?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).TypeCode, Is.EqualTo("30"));
+            Assert.That(invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(0).PayeePartyCreditorFinancialAccount?.IBANID.Value, Is.EqualTo("FR2012421242124212421242124"));
 
             var taxDistributionList = invoice?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.ApplicableTradeTax;
             Assert.That(taxDistributionList is not null);
