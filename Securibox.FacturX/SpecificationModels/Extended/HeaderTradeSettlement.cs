@@ -14,7 +14,8 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public TradeParty PayeeTradeParty { get; set; }
         public TradeParty PayerTradeParty { get; set; }
         public TradeCurrencyExchange TaxApplicableTradeCurrencyExchange { get; set; }
-        public EN16931.TradeSettlementPaymentMeans SpecifiedTradeSettlementPaymentMeans { get; set; }
+        [XmlElement]
+        public EN16931.TradeSettlementPaymentMeans[] SpecifiedTradeSettlementPaymentMeans { get; set; }
         [XmlElement]
         public TradeTaxExtended[] ApplicableTradeTax { get; set; }
         public BasicWL.SpecifiedPeriod BillingSpecifiedPeriod { get; set; }

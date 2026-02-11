@@ -6,7 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.BasicWL
     {
         public string TypeCode { get; set; }
         public DebtorFinancialAccount PayerPartyDebtorFinancialAccount { get; set; }
-        [XmlElement]
-        public CreditorFinancialAccount[] PayeePartyCreditorFinancialAccount { get; set; }
+        
+        public CreditorFinancialAccount PayeePartyCreditorFinancialAccount { get; set; }
     }
 }
