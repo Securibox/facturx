@@ -9,7 +9,8 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
         public string TaxCurrencyCode { get; set; }
         public string InvoiceCurrencyCode { get; set; }
         public TradePartyEN16931 PayeeTradeParty { get; set; }
-        public TradeSettlementPaymentMeans SpecifiedTradeSettlementPaymentMeans { get; set; }
+        [XmlElement]
+        public TradeSettlementPaymentMeans[] SpecifiedTradeSettlementPaymentMeans { get; set; }
         [XmlElement]
         public TradeTaxEN16931[] ApplicableTradeTax { get; set; }
         public BasicWL.SpecifiedPeriod BillingSpecifiedPeriod { get; set; }
