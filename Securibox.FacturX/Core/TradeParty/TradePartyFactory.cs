@@ -1,6 +1,6 @@
 ﻿using System.Xml;
-using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models;
+using Securibox.FacturX.Models.Enums;
 
 namespace Securibox.FacturX.Core
 {
@@ -8,7 +8,10 @@ namespace Securibox.FacturX.Core
     {
         private readonly ActorConverter _actorConverter;
 
-        internal TradePartyFactory(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument)
+        internal TradePartyFactory(
+            FacturXConformanceLevelType conformanceLevelType,
+            XmlDocument xmlDocument
+        )
         {
             _actorConverter = new ActorConverter(conformanceLevelType, xmlDocument);
         }
@@ -64,7 +67,6 @@ namespace Securibox.FacturX.Core
 
                 default:
                     return null;
-
             }
         }
 
@@ -80,7 +82,6 @@ namespace Securibox.FacturX.Core
 
                 default:
                     return null;
-
             }
         }
     }

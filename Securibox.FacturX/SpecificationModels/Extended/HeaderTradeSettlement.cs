@@ -14,20 +14,26 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public TradeParty PayeeTradeParty { get; set; }
         public TradeParty PayerTradeParty { get; set; }
         public TradeCurrencyExchange TaxApplicableTradeCurrencyExchange { get; set; }
+
         [XmlElement]
         public EN16931.TradeSettlementPaymentMeans[] SpecifiedTradeSettlementPaymentMeans { get; set; }
+
         [XmlElement]
         public TradeTaxExtended[] ApplicableTradeTax { get; set; }
         public BasicWL.SpecifiedPeriod BillingSpecifiedPeriod { get; set; }
+
         [XmlElement]
         public TradeAllowanceChargeExtended[] SpecifiedTradeAllowanceCharge { get; set; }
+
         [XmlElement]
         public LogisticsServiceCharge[] SpecifiedLogisticsServiceCharge { get; set; }
         public TradePaymentTerms SpecifiedTradePaymentTerms { get; set; }
         public EN16931.TradeSettlementHeaderMonetarySummation SpecifiedTradeSettlementHeaderMonetarySummation { get; set; }
+
         [XmlElement]
         public EN16931.ReferencedDocumentEN16931[] InvoiceReferencedDocument { get; set; }
         public TradeAccountingAccount ReceivableSpecifiedTradeAccountingAccount { get; set; }
+
         [XmlElement]
         public AdvancePayment[] SpecifiedAdvancePayment { get; set; }
     }

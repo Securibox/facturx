@@ -1,9 +1,9 @@
-﻿using Securibox.FacturX.Models.Basic;
+﻿using System.Globalization;
+using System.Xml;
+using Securibox.FacturX.Models.Basic;
 using Securibox.FacturX.Models.BasicWL;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Extended;
-using System.Globalization;
-using System.Xml;
 
 namespace Securibox.FacturX.Core.Line
 {
@@ -29,7 +29,11 @@ namespace Securibox.FacturX.Core.Line
         protected XmlNodeList? IncludedItemNodeList { get; private set; }
         protected XmlNode MonetarySummationNode { get; private set; }
 
-        internal LineBuilder(FacturXConformanceLevelType conformanceLevelType, TradePartyFactory tradePartyFactory, ReferenceFactory referenceFactory)
+        internal LineBuilder(
+            FacturXConformanceLevelType conformanceLevelType,
+            TradePartyFactory tradePartyFactory,
+            ReferenceFactory referenceFactory
+        )
         {
             _conformanceLevelType = conformanceLevelType;
 
@@ -41,27 +45,53 @@ namespace Securibox.FacturX.Core.Line
         {
             LineNode = lineNode;
 
-            AssociatedDocumentNode = lineNode.SelectSingleNode("*[local-name() = 'AssociatedDocumentLineDocument']")!;
+            AssociatedDocumentNode = lineNode.SelectSingleNode(
+                "*[local-name() = 'AssociatedDocumentLineDocument']"
+            )!;
 
-            var tradeAgreementNode = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeAgreement']")!;
+            var tradeAgreementNode = lineNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedLineTradeAgreement']"
+            )!;
 
-            GrossPriceNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'GrossPriceProductTradePrice']");
-            NetPriceNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'NetPriceProductTradePrice']")!;
+            GrossPriceNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'GrossPriceProductTradePrice']"
+            );
+            NetPriceNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'NetPriceProductTradePrice']"
+            )!;
 
             ItemNode = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedTradeProduct']")!;
 
-            ItemAttributeNodeList = ItemNode.SelectNodes("*[local-name() = 'ApplicableProductCharacteristic']");
-            ItemInstanceNodeList = ItemNode.SelectNodes("*[local-name() = 'IndividualTradeProductInstance']");
-            ItemClassificationNodeList = ItemNode.SelectNodes("*[local-name() = 'DesignatedProductClassification']");
-            IncludedItemNodeList = ItemNode.SelectNodes("*[local-name() = 'IncludedReferencedProduct']");
+            ItemAttributeNodeList = ItemNode.SelectNodes(
+                "*[local-name() = 'ApplicableProductCharacteristic']"
+            );
+            ItemInstanceNodeList = ItemNode.SelectNodes(
+                "*[local-name() = 'IndividualTradeProductInstance']"
+            );
+            ItemClassificationNodeList = ItemNode.SelectNodes(
+                "*[local-name() = 'DesignatedProductClassification']"
+            );
+            IncludedItemNodeList = ItemNode.SelectNodes(
+                "*[local-name() = 'IncludedReferencedProduct']"
+            );
 
-            TradeDeliveryNode = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")!;
+            TradeDeliveryNode = lineNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedLineTradeDelivery']"
+            )!;
 
-            TradeSettlementNode = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeSettlement']")!;
+            TradeSettlementNode = lineNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedLineTradeSettlement']"
+            )!;
 
-            AllowanceChargeNodeList = TradeSettlementNode.SelectNodes("*[local-name() = 'SpecifiedTradeAllowanceCharge']");
-            VatDetailsNode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'ApplicableTradeTax']")!;
-            MonetarySummationNode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'SpecifiedTradeSettlementLineMonetarySummation']")!;
+            AllowanceChargeNodeList = TradeSettlementNode.SelectNodes(
+                "*[local-name() = 'SpecifiedTradeAllowanceCharge']"
+            );
+            VatDetailsNode = TradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'ApplicableTradeTax']"
+            )!;
+            MonetarySummationNode = TradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedTradeSettlementLineMonetarySummation']"
+            )!;
         }
 
         internal abstract void BuildLineDetails();
@@ -72,23 +102,33 @@ namespace Securibox.FacturX.Core.Line
         internal abstract void BuildLineDeliveryDetails();
         internal abstract void BuildLineVatDetails();
         internal abstract void BuildLineTotals();
-        internal virtual void BuildLineItemAttributeList() { }
-        internal virtual void BuildLineItemClassificationList() { }
-        internal virtual void BuildLineReferences() { }
-        internal virtual void BuildLineIncludedItemList() { }
-        internal virtual void BuildLineItemInstanceList() { }
 
+        internal virtual void BuildLineItemAttributeList() { }
+
+        internal virtual void BuildLineItemClassificationList() { }
+
+        internal virtual void BuildLineReferences() { }
+
+        internal virtual void BuildLineIncludedItemList() { }
+
+        internal virtual void BuildLineItemInstanceList() { }
 
         #region LineDetails
         private Models.Basic.LineNote? GetLineNote()
         {
-            var noteNode = AssociatedDocumentNode.SelectSingleNode("*[local-name() = 'IncludedNote']");
+            var noteNode = AssociatedDocumentNode.SelectSingleNode(
+                "*[local-name() = 'IncludedNote']"
+            );
             if (noteNode == null)
                 return null;
 
             var content = noteNode.SelectSingleNode("*[local-name() = 'Content']")?.InnerText;
-            var subjectCode = noteNode.SelectSingleNode("*[local-name() = 'SubjectCode']")?.InnerText;
-            var contentCode = noteNode.SelectSingleNode("*[local-name() = 'ContentCode']")?.InnerText;
+            var subjectCode = noteNode
+                .SelectSingleNode("*[local-name() = 'SubjectCode']")
+                ?.InnerText;
+            var contentCode = noteNode
+                .SelectSingleNode("*[local-name() = 'ContentCode']")
+                ?.InnerText;
 
             if (_conformanceLevelType == FacturXConformanceLevelType.Extended)
                 return new Models.Extended.LineNote(content, contentCode, subjectCode);
@@ -98,15 +138,28 @@ namespace Securibox.FacturX.Core.Line
 
         protected Models.Basic.LineDetails GetLineDetails()
         {
-            var lineId = AssociatedDocumentNode.SelectSingleNode("*[local-name() = 'LineID']")!.InnerText;
+            var lineId = AssociatedDocumentNode
+                .SelectSingleNode("*[local-name() = 'LineID']")!
+                .InnerText;
 
             if (_conformanceLevelType == FacturXConformanceLevelType.Extended)
             {
-                var parentLineId = AssociatedDocumentNode.SelectSingleNode("*[local-name() = 'ParentLineID']")?.InnerText;
-                var statusCode = AssociatedDocumentNode.SelectSingleNode("*[local-name() = 'LineStatusCode']")?.InnerText;
-                var statusReasonCode = AssociatedDocumentNode?.SelectSingleNode("*[local-name() = 'LineStatusReasonCode']")?.InnerText;
+                var parentLineId = AssociatedDocumentNode
+                    .SelectSingleNode("*[local-name() = 'ParentLineID']")
+                    ?.InnerText;
+                var statusCode = AssociatedDocumentNode
+                    .SelectSingleNode("*[local-name() = 'LineStatusCode']")
+                    ?.InnerText;
+                var statusReasonCode = AssociatedDocumentNode
+                    ?.SelectSingleNode("*[local-name() = 'LineStatusReasonCode']")
+                    ?.InnerText;
 
-                var extendedLineDetails = new Models.Extended.LineDetails(lineId, parentLineId, statusCode, statusReasonCode);
+                var extendedLineDetails = new Models.Extended.LineDetails(
+                    lineId,
+                    parentLineId,
+                    statusCode,
+                    statusReasonCode
+                );
                 extendedLineDetails.AddExtendedNote(GetLineNote() as Models.Extended.LineNote);
 
                 return extendedLineDetails;
@@ -120,7 +173,9 @@ namespace Securibox.FacturX.Core.Line
         #endregion
 
         #region GrossPriceDetails
-        private Models.Basic.PriceAllowanceCharge GetGrossPriceAllowanceCharge(XmlNode priceAllowanceCharge)
+        private Models.Basic.PriceAllowanceCharge GetGrossPriceAllowanceCharge(
+            XmlNode priceAllowanceCharge
+        )
         {
             var chargeIndicatorString = priceAllowanceCharge
                 .SelectSingleNode("*[local-name() = 'ChargeIndicator']")!
@@ -130,35 +185,60 @@ namespace Securibox.FacturX.Core.Line
             bool.TryParse(chargeIndicatorString, out bool chargeIndicator);
 
             var actualAmount = default(decimal?);
-            var actualAmountNode = priceAllowanceCharge.SelectSingleNode("*[local-name() = 'ActualAmount']");
+            var actualAmountNode = priceAllowanceCharge.SelectSingleNode(
+                "*[local-name() = 'ActualAmount']"
+            );
             if (actualAmountNode != null)
             {
-                decimal.TryParse(actualAmountNode.InnerText, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal actualAmountValue);
+                decimal.TryParse(
+                    actualAmountNode.InnerText,
+                    NumberStyles.Currency,
+                    CultureInfo.InvariantCulture,
+                    out decimal actualAmountValue
+                );
                 actualAmount = actualAmountValue;
             }
 
             if (_conformanceLevelType == FacturXConformanceLevelType.Extended)
             {
                 var percentage = default(decimal?);
-                var percentageNode = priceAllowanceCharge.SelectSingleNode("*[local-name() = 'CalculationPercent']");
+                var percentageNode = priceAllowanceCharge.SelectSingleNode(
+                    "*[local-name() = 'CalculationPercent']"
+                );
                 if (percentageNode != null)
                 {
-                    decimal.TryParse(percentageNode.InnerText, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal percentageValue);
+                    decimal.TryParse(
+                        percentageNode.InnerText,
+                        NumberStyles.Currency,
+                        CultureInfo.InvariantCulture,
+                        out decimal percentageValue
+                    );
                     percentage = percentageValue;
                 }
 
                 var baseAmount = default(decimal?);
-                var baseAmountNode = priceAllowanceCharge.SelectSingleNode("*[local-name() = 'BasisAmount']");
+                var baseAmountNode = priceAllowanceCharge.SelectSingleNode(
+                    "*[local-name() = 'BasisAmount']"
+                );
                 if (baseAmountNode != null)
                 {
-                    decimal.TryParse(baseAmountNode.InnerText, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal baseAmountValue);
+                    decimal.TryParse(
+                        baseAmountNode.InnerText,
+                        NumberStyles.Currency,
+                        CultureInfo.InvariantCulture,
+                        out decimal baseAmountValue
+                    );
                     baseAmount = baseAmountValue;
                 }
 
                 var reason = new Reason
                 {
-                    Text = priceAllowanceCharge.SelectSingleNode("*[local-name() = 'Reason']")?.InnerText,
-                    Code = priceAllowanceCharge.SelectSingleNode("*[local-name() = 'ReasonCode']")?.InnerText,
+                    Text = priceAllowanceCharge
+                        .SelectSingleNode("*[local-name() = 'Reason']")
+                        ?.InnerText,
+                    Code = priceAllowanceCharge
+                        .SelectSingleNode("*[local-name() = 'ReasonCode']")
+                        ?.InnerText,
                 };
 
                 return new Models.Extended.PriceAllowanceCharge
@@ -180,7 +260,9 @@ namespace Securibox.FacturX.Core.Line
 
         internal IEnumerable<Models.Basic.PriceAllowanceCharge>? GetGrossPriceAllowanceChargeList()
         {
-            var allowanceChargeNodeList = GrossPriceNode!.SelectNodes("*[local-name() = 'AppliedTradeAllowanceCharge']");
+            var allowanceChargeNodeList = GrossPriceNode!.SelectNodes(
+                "*[local-name() = 'AppliedTradeAllowanceCharge']"
+            );
             if (allowanceChargeNodeList == null)
                 return null;
 
@@ -206,7 +288,9 @@ namespace Securibox.FacturX.Core.Line
             }
 
             var baseQuantity = default(QuantityUnit);
-            var baseQuantityNode = GrossPriceNode.SelectSingleNode("*[local-name() = 'BasisQuantity']");
+            var baseQuantityNode = GrossPriceNode.SelectSingleNode(
+                "*[local-name() = 'BasisQuantity']"
+            );
             if (baseQuantityNode != null)
             {
                 baseQuantity = new QuantityUnit();
@@ -216,14 +300,19 @@ namespace Securibox.FacturX.Core.Line
 
             if (_conformanceLevelType == FacturXConformanceLevelType.Extended)
             {
-                var extendedAllowanceChargeList = GetGrossPriceAllowanceChargeList()?.Cast<Models.Extended.PriceAllowanceCharge>();
+                var extendedAllowanceChargeList = GetGrossPriceAllowanceChargeList()
+                    ?.Cast<Models.Extended.PriceAllowanceCharge>();
 
                 return new Models.Extended.LineGrossPriceDetails
                 {
                     BaseQuantity = baseQuantity,
                     GrossPrice = price,
-                    PriceDiscount = extendedAllowanceChargeList?.FirstOrDefault(x => x.ChargeIndicator == false),
-                    PriceCharge = extendedAllowanceChargeList?.FirstOrDefault(x => x.ChargeIndicator == true),
+                    PriceDiscount = extendedAllowanceChargeList?.FirstOrDefault(x =>
+                        x.ChargeIndicator == false
+                    ),
+                    PriceCharge = extendedAllowanceChargeList?.FirstOrDefault(x =>
+                        x.ChargeIndicator == true
+                    ),
                 };
             }
 
@@ -233,7 +322,9 @@ namespace Securibox.FacturX.Core.Line
             {
                 BaseQuantity = baseQuantity,
                 GrossPrice = price,
-                PriceDiscount = allowanceChargeList?.FirstOrDefault(x => x.ChargeIndicator == false),
+                PriceDiscount = allowanceChargeList?.FirstOrDefault(x =>
+                    x.ChargeIndicator == false
+                ),
             };
         }
         #endregion
@@ -247,23 +338,24 @@ namespace Securibox.FacturX.Core.Line
 
         internal QuantityUnit? GetNetPriceBaseQuantity()
         {
-            var baseQuantityNode = NetPriceNode?.SelectSingleNode("*[local-name() = 'BasisQuantity']");
+            var baseQuantityNode = NetPriceNode?.SelectSingleNode(
+                "*[local-name() = 'BasisQuantity']"
+            );
             if (baseQuantityNode == null)
                 return null;
 
             var baseQuantity = XmlParsingHelpers.ExtractDecimal(baseQuantityNode);
 
             var unitCode = default(string);
-            if (baseQuantityNode.Attributes != null && baseQuantityNode.Attributes["unitCode"] != null)
+            if (
+                baseQuantityNode.Attributes != null
+                && baseQuantityNode.Attributes["unitCode"] != null
+            )
             {
                 unitCode = baseQuantityNode.Attributes["unitCode"]!.Value;
             }
 
-            return new QuantityUnit
-            {
-                Quantity = baseQuantity,
-                UnitCode = unitCode
-            };
+            return new QuantityUnit { Quantity = baseQuantity, UnitCode = unitCode };
         }
         #endregion
 
@@ -285,19 +377,28 @@ namespace Securibox.FacturX.Core.Line
             {
                 return new Models.Basic.LineItemDetails(name, globalIdentification);
             }
-             
-            var description = ItemNode.SelectSingleNode("*[local-name() = 'Description']")?.InnerText;
-            var buyerAssignedId = ItemNode.SelectSingleNode("*[local-name() = 'BuyerAssignedID']")?.InnerText;
-            var sellerAssignedId = ItemNode.SelectSingleNode("*[local-name() = 'SellerAssignedID']")?.InnerText;
+
+            var description = ItemNode
+                .SelectSingleNode("*[local-name() = 'Description']")
+                ?.InnerText;
+            var buyerAssignedId = ItemNode
+                .SelectSingleNode("*[local-name() = 'BuyerAssignedID']")
+                ?.InnerText;
+            var sellerAssignedId = ItemNode
+                .SelectSingleNode("*[local-name() = 'SellerAssignedID']")
+                ?.InnerText;
 
             var originCountry = ItemNode
-                .SelectSingleNode("*[local-name() = 'OriginTradeCountry']")?
-                .SelectSingleNode("*[local-name() = 'ID']")?
-                .InnerText;
-                
+                .SelectSingleNode("*[local-name() = 'OriginTradeCountry']")
+                ?.SelectSingleNode("*[local-name() = 'ID']")
+                ?.InnerText;
+
             if (_conformanceLevelType == FacturXConformanceLevelType.EN16931)
             {
-                var en16931ItemDetails = new Models.EN16931.LineItemDetails(name, globalIdentification);
+                var en16931ItemDetails = new Models.EN16931.LineItemDetails(
+                    name,
+                    globalIdentification
+                );
                 en16931ItemDetails.AddDescription(description);
                 en16931ItemDetails.AddBuyerAssignedId(buyerAssignedId);
                 en16931ItemDetails.AddSellerAssignedId(sellerAssignedId);
@@ -306,8 +407,10 @@ namespace Securibox.FacturX.Core.Line
                 return en16931ItemDetails;
             }
 
-
-            var extendedItemDetails = new Models.Extended.LineItemDetails(name, globalIdentification);
+            var extendedItemDetails = new Models.Extended.LineItemDetails(
+                name,
+                globalIdentification
+            );
             extendedItemDetails.AddDescription(description);
             extendedItemDetails.AddBuyerAssignedId(buyerAssignedId);
             extendedItemDetails.AddSellerAssignedId(sellerAssignedId);
@@ -323,7 +426,9 @@ namespace Securibox.FacturX.Core.Line
         #region ItemAttribute
         private Models.EN16931.LineItemAttribute GetItemAttribute(XmlNode itemAttributeNode)
         {
-            var name = itemAttributeNode.SelectSingleNode("*[local-name() = 'Description']")!.InnerText;
+            var name = itemAttributeNode
+                .SelectSingleNode("*[local-name() = 'Description']")!
+                .InnerText;
             var value = itemAttributeNode.SelectSingleNode("*[local-name() = 'Value']")!.InnerText;
 
             if (_conformanceLevelType == FacturXConformanceLevelType.EN16931)
@@ -333,16 +438,27 @@ namespace Securibox.FacturX.Core.Line
 
             var itemAttribute = new Models.Extended.LineItemAttribute(name, value);
 
-            var type = itemAttributeNode.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText;
+            var type = itemAttributeNode
+                .SelectSingleNode("*[local-name() = 'TypeCode']")
+                ?.InnerText;
             itemAttribute.AddType(type);
 
-            var valueMeasureNode = itemAttributeNode.SelectSingleNode("*[local-name() = 'ValueMeasure']");
+            var valueMeasureNode = itemAttributeNode.SelectSingleNode(
+                "*[local-name() = 'ValueMeasure']"
+            );
             if (valueMeasureNode != null)
             {
-                decimal.TryParse(valueMeasureNode.InnerText, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal valueMeasure);
+                decimal.TryParse(
+                    valueMeasureNode.InnerText,
+                    NumberStyles.Currency,
+                    CultureInfo.InvariantCulture,
+                    out decimal valueMeasure
+                );
                 var unitCode = valueMeasureNode.Attributes!["unitCode"]!.Value;
 
-                itemAttribute.AddValueMeasure(new LineAttributeValueMeasure(valueMeasure, unitCode));
+                itemAttribute.AddValueMeasure(
+                    new LineAttributeValueMeasure(valueMeasure, unitCode)
+                );
             }
 
             return itemAttribute;
@@ -362,16 +478,24 @@ namespace Securibox.FacturX.Core.Line
         #endregion
 
         #region ItemClassification
-        private Models.EN16931.LineItemClassification GetItemClassification(XmlNode classificationNode)
+        private Models.EN16931.LineItemClassification GetItemClassification(
+            XmlNode classificationNode
+        )
         {
             var classificationIdentifier = default(Models.EN16931.LineItemClassificationIdentifier);
-            var classificationIdNode = classificationNode.SelectSingleNode("*[local-name() = 'ClassCode']");
+            var classificationIdNode = classificationNode.SelectSingleNode(
+                "*[local-name() = 'ClassCode']"
+            );
             if (classificationIdNode != null)
             {
                 var classificationId = classificationIdNode.InnerText;
                 var schemeId = classificationIdNode.Attributes!["listID"]!.Value;
                 var schemeVersionId = classificationIdNode.Attributes["listVersionID"]?.Value;
-                classificationIdentifier = new Models.EN16931.LineItemClassificationIdentifier(classificationId, schemeId, schemeVersionId);
+                classificationIdentifier = new Models.EN16931.LineItemClassificationIdentifier(
+                    classificationId,
+                    schemeId,
+                    schemeVersionId
+                );
             }
 
             if (_conformanceLevelType == FacturXConformanceLevelType.EN16931)
@@ -379,8 +503,13 @@ namespace Securibox.FacturX.Core.Line
                 return new Models.EN16931.LineItemClassification(classificationIdentifier);
             }
 
-            var classificationName = classificationNode.SelectSingleNode("*[local-name() = 'ClassName']")?.InnerText;
-            return new Models.Extended.LineItemClassification(classificationIdentifier, classificationName);
+            var classificationName = classificationNode
+                .SelectSingleNode("*[local-name() = 'ClassName']")
+                ?.InnerText;
+            return new Models.Extended.LineItemClassification(
+                classificationIdentifier,
+                classificationName
+            );
         }
 
         protected IEnumerable<Models.EN16931.LineItemClassification>? GetItemClassificationList()
@@ -406,9 +535,10 @@ namespace Securibox.FacturX.Core.Line
 
             var chargeIndicator = XmlParsingHelpers.ExtractBool(chargeIndicatorNode);
 
-
             var actualAmount = default(decimal?);
-            var actualAmountNode = allowanceChargeNode.SelectSingleNode("*[local-name() = 'ActualAmount']");
+            var actualAmountNode = allowanceChargeNode.SelectSingleNode(
+                "*[local-name() = 'ActualAmount']"
+            );
             if (actualAmountNode != null)
             {
                 actualAmount = XmlParsingHelpers.ExtractDecimal(actualAmountNode);
@@ -416,8 +546,12 @@ namespace Securibox.FacturX.Core.Line
 
             var reason = new Reason
             {
-                Text = allowanceChargeNode.SelectSingleNode("*[local-name() = 'Reason']")?.InnerText,
-                Code = allowanceChargeNode.SelectSingleNode("*[local-name() = 'ReasonCode']")?.InnerText,
+                Text = allowanceChargeNode
+                    .SelectSingleNode("*[local-name() = 'Reason']")
+                    ?.InnerText,
+                Code = allowanceChargeNode
+                    .SelectSingleNode("*[local-name() = 'ReasonCode']")
+                    ?.InnerText,
             };
 
             if (_conformanceLevelType == FacturXConformanceLevelType.Basic)
@@ -431,19 +565,22 @@ namespace Securibox.FacturX.Core.Line
             }
 
             var percentage = default(decimal?);
-            var percentageNode = allowanceChargeNode.SelectSingleNode("*[local-name() = 'CalculationPercent']");
+            var percentageNode = allowanceChargeNode.SelectSingleNode(
+                "*[local-name() = 'CalculationPercent']"
+            );
             if (percentageNode != null)
             {
                 percentage = XmlParsingHelpers.ExtractDecimal(percentageNode);
             }
 
             var baseAmount = default(decimal?);
-            var baseAmountNode = allowanceChargeNode.SelectSingleNode("*[local-name() = 'BasisAmount']");
+            var baseAmountNode = allowanceChargeNode.SelectSingleNode(
+                "*[local-name() = 'BasisAmount']"
+            );
             if (baseAmountNode != null)
             {
                 baseAmount = XmlParsingHelpers.ExtractDecimal(baseAmountNode);
             }
-
 
             return new Models.EN16931.LineAllowanceCharge
             {
@@ -453,7 +590,6 @@ namespace Securibox.FacturX.Core.Line
                 Percentage = percentage,
                 BaseAmount = baseAmount,
             };
-
         }
 
         protected IEnumerable<Models.Basic.LineAllowanceCharge>? GetAllowanceAndChargeList()
@@ -474,11 +610,17 @@ namespace Securibox.FacturX.Core.Line
         #region VatDetails
         protected Models.Basic.LineVatDetails GetVatDetails()
         {
-            var vatType = VatDetailsNode.SelectSingleNode("*[local-name() = 'TypeCode']")!.InnerText;
-            var vatCategoryCode = VatDetailsNode.SelectSingleNode("*[local-name() = 'CategoryCode']")!.InnerText;
+            var vatType = VatDetailsNode
+                .SelectSingleNode("*[local-name() = 'TypeCode']")!
+                .InnerText;
+            var vatCategoryCode = VatDetailsNode
+                .SelectSingleNode("*[local-name() = 'CategoryCode']")!
+                .InnerText;
 
             var vatRate = default(decimal?);
-            var vatRateNode = VatDetailsNode.SelectSingleNode("*[local-name() = 'RateApplicablePercent']");
+            var vatRateNode = VatDetailsNode.SelectSingleNode(
+                "*[local-name() = 'RateApplicablePercent']"
+            );
             if (vatRateNode != null)
             {
                 vatRate = XmlParsingHelpers.ExtractDecimal(vatRateNode);
@@ -487,7 +629,9 @@ namespace Securibox.FacturX.Core.Line
             if (_conformanceLevelType == FacturXConformanceLevelType.Extended)
             {
                 var vatAmount = default(decimal?);
-                var vatAmountNode = VatDetailsNode.SelectSingleNode("*[local-name() = 'CalculatedAmount']");
+                var vatAmountNode = VatDetailsNode.SelectSingleNode(
+                    "*[local-name() = 'CalculatedAmount']"
+                );
                 if (vatAmountNode != null)
                 {
                     vatAmount = XmlParsingHelpers.ExtractDecimal(vatAmountNode);
@@ -495,8 +639,12 @@ namespace Securibox.FacturX.Core.Line
 
                 var reason = new Reason
                 {
-                    Text = VatDetailsNode.SelectSingleNode("*[local-name() = 'ExemptionReason']")?.InnerText,
-                    Code = VatDetailsNode.SelectSingleNode("*[local-name() = 'ExemptionReasonCode']")?.InnerText,
+                    Text = VatDetailsNode
+                        .SelectSingleNode("*[local-name() = 'ExemptionReason']")
+                        ?.InnerText,
+                    Code = VatDetailsNode
+                        .SelectSingleNode("*[local-name() = 'ExemptionReasonCode']")
+                        ?.InnerText,
                 };
 
                 return new Models.Extended.LineVatDetails
@@ -521,39 +669,46 @@ namespace Securibox.FacturX.Core.Line
         #region Delivery
         protected QuantityUnit GetInvoicedQuantity()
         {
-            var lineInvoicedQuantityNode = TradeDeliveryNode
-                .SelectSingleNode("*[local-name() = 'BilledQuantity']")!;
+            var lineInvoicedQuantityNode = TradeDeliveryNode.SelectSingleNode(
+                "*[local-name() = 'BilledQuantity']"
+            )!;
 
             var quantity = XmlParsingHelpers.ExtractDecimal(lineInvoicedQuantityNode);
             var unitCode = lineInvoicedQuantityNode.Attributes!["unitCode"]!.Value;
 
-            return new QuantityUnit
-            {
-                Quantity = quantity,
-                UnitCode = unitCode,
-            };
+            return new QuantityUnit { Quantity = quantity, UnitCode = unitCode };
         }
 
         protected Models.BasicWL.DeliveryPeriod? GetDeliveryPeriod()
         {
-            var deliveryPeriodNode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'BillingSpecifiedPeriod']");
+            var deliveryPeriodNode = TradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'BillingSpecifiedPeriod']"
+            );
 
             if (deliveryPeriodNode == null)
                 return null;
 
             var startDate = default(DateTime?);
-            var startDateNode = deliveryPeriodNode.SelectSingleNode("*[local-name() = 'StartDateTime']");
+            var startDateNode = deliveryPeriodNode.SelectSingleNode(
+                "*[local-name() = 'StartDateTime']"
+            );
             if (startDateNode != null)
             {
-                var dateStringNode = startDateNode.SelectSingleNode("*[local-name() = 'DateTimeString']")!;
+                var dateStringNode = startDateNode.SelectSingleNode(
+                    "*[local-name() = 'DateTimeString']"
+                )!;
                 startDate = XmlParsingHelpers.ExtractDateTime(dateStringNode);
             }
 
             var endDate = default(DateTime?);
-            var endDateNode = deliveryPeriodNode.SelectSingleNode("*[local-name() = 'EndDateTime']");
+            var endDateNode = deliveryPeriodNode.SelectSingleNode(
+                "*[local-name() = 'EndDateTime']"
+            );
             if (endDateNode != null)
             {
-                var dateStringNode = endDateNode.SelectSingleNode("*[local-name() = 'DateTimeString']")!;
+                var dateStringNode = endDateNode.SelectSingleNode(
+                    "*[local-name() = 'DateTimeString']"
+                )!;
                 endDate = XmlParsingHelpers.ExtractDateTime(dateStringNode);
             }
 
@@ -564,7 +719,9 @@ namespace Securibox.FacturX.Core.Line
         #region Totals
         protected decimal GetNetAmount()
         {
-            var lineTotalAmountNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'LineTotalAmount']")!;
+            var lineTotalAmountNode = MonetarySummationNode.SelectSingleNode(
+                "*[local-name() = 'LineTotalAmount']"
+            )!;
             return XmlParsingHelpers.ExtractDecimal(lineTotalAmountNode);
         }
         #endregion

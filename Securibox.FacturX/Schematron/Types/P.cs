@@ -22,6 +22,7 @@ namespace Securibox.FacturX.Schematron.Types
         public string Icon { get; set; }
 
         public string FormattedText { get; set; }
+
         public XmlSchema GetSchema()
         {
             throw new NotImplementedException();

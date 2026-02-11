@@ -6,6 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
     {
         [XmlText]
         public decimal Value { get; set; }
+
         [XmlAttribute("unitCode")]
         public string UnitCode { get; set; }
     }

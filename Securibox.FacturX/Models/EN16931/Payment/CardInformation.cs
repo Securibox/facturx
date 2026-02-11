@@ -6,7 +6,7 @@
 
         public string? CardHolderName { get; private set; }
 
-        public CardInformation(string primaryAccountNumber, string? cardHolderName) 
+        public CardInformation(string primaryAccountNumber, string? cardHolderName)
         {
             PrimaryAccountNumber = primaryAccountNumber;
             CardHolderName = cardHolderName;

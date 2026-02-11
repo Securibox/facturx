@@ -4,6 +4,7 @@
     {
         public LineItemClassificationIdentifier? ClassificationIdentifier { get; internal set; }
 
-        public LineItemClassification(LineItemClassificationIdentifier? classificationIdentifier) => ClassificationIdentifier = classificationIdentifier;
+        public LineItemClassification(LineItemClassificationIdentifier? classificationIdentifier) =>
+            ClassificationIdentifier = classificationIdentifier;
     }
 }

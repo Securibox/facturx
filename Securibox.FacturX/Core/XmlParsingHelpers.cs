@@ -13,8 +13,13 @@ namespace Securibox.FacturX.Core
         public static decimal ExtractDecimal(XmlNode xmlNode)
         {
             var decimalString = xmlNode.InnerText;
-            
-            decimal.TryParse(decimalString, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal decimalValue);
+
+            decimal.TryParse(
+                decimalString,
+                NumberStyles.Currency,
+                CultureInfo.InvariantCulture,
+                out decimal decimalValue
+            );
             return decimalValue;
         }
 
@@ -51,15 +56,26 @@ namespace Securibox.FacturX.Core
             //Extract DateTime format (default should be 102)
             //TODO: Look for other formats!
             var dateTimeFormat = "102";
-            if (dateTimeNode != null && dateTimeNode.Attributes != null &&
-                dateTimeNode.Attributes["format"] != null &&
-                !string.IsNullOrEmpty(dateTimeNode.Attributes["format"]!.Value))
+            if (
+                dateTimeNode != null
+                && dateTimeNode.Attributes != null
+                && dateTimeNode.Attributes["format"] != null
+                && !string.IsNullOrEmpty(dateTimeNode.Attributes["format"]!.Value)
+            )
             {
                 dateTimeFormat = dateTimeNode.Attributes["format"]!.Value;
 
                 if (dateTimeFormat == "102")
                 {
-                    if (DateTime.TryParseExact(dateTimeNode.InnerText, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime extractedDateTime))
+                    if (
+                        DateTime.TryParseExact(
+                            dateTimeNode.InnerText,
+                            "yyyyMMdd",
+                            CultureInfo.InvariantCulture,
+                            DateTimeStyles.None,
+                            out DateTime extractedDateTime
+                        )
+                    )
                     {
                         return extractedDateTime;
                     }
@@ -67,7 +83,15 @@ namespace Securibox.FacturX.Core
 
                 if (dateTimeFormat == "203")
                 {
-                    if (DateTime.TryParseExact(dateTimeNode.InnerText, "yyyyMMddHHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime extractedDateTime))
+                    if (
+                        DateTime.TryParseExact(
+                            dateTimeNode.InnerText,
+                            "yyyyMMddHHmm",
+                            CultureInfo.InvariantCulture,
+                            DateTimeStyles.None,
+                            out DateTime extractedDateTime
+                        )
+                    )
                     {
                         return extractedDateTime;
                     }
@@ -79,14 +103,16 @@ namespace Securibox.FacturX.Core
 
         public static string? ExtractAttribute(XmlNode? currentNode, string schemeName)
         {
-            if (currentNode != null && currentNode.Attributes != null && !string.IsNullOrWhiteSpace(currentNode.Attributes[schemeName]?.Value))
+            if (
+                currentNode != null
+                && currentNode.Attributes != null
+                && !string.IsNullOrWhiteSpace(currentNode.Attributes[schemeName]?.Value)
+            )
             {
                 return currentNode.Attributes[schemeName]!.Value;
             }
 
             return null;
         }
-
-       
     }
 }

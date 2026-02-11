@@ -8,6 +8,7 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
         public Minimum.Amount ChargeTotalAmount { get; set; }
         public Minimum.Amount AllowanceTotalAmount { get; set; }
         public Minimum.Amount TaxBasisTotalAmount { get; set; }
+
         [XmlElement]
         public Minimum.Amount[] TaxTotalAmount { get; set; }
         public Minimum.Amount RoundingAmount { get; set; }

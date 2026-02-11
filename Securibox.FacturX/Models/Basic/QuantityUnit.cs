@@ -8,7 +8,8 @@
 
         public QuantityUnit() { }
 
-        public QuantityUnit(decimal quantity) {
+        public QuantityUnit(decimal quantity)
+        {
             Quantity = quantity;
         }
 

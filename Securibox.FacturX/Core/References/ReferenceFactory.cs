@@ -1,7 +1,7 @@
 ﻿using System.Xml;
-using Securibox.FacturX.Models.Enums;
-using Securibox.FacturX.Models;
 using Securibox.FacturX.Core.References;
+using Securibox.FacturX.Models;
+using Securibox.FacturX.Models.Enums;
 
 namespace Securibox.FacturX.Core
 {
@@ -11,7 +11,10 @@ namespace Securibox.FacturX.Core
         private readonly FacturXConformanceLevelType _conformanceLevelType;
         private readonly XmlDocument _xmlDocument;
 
-        public ReferenceFactory(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument)
+        public ReferenceFactory(
+            FacturXConformanceLevelType conformanceLevelType,
+            XmlDocument xmlDocument
+        )
         {
             _referenceConverter = new ReferenceConverter(conformanceLevelType, xmlDocument);
             _conformanceLevelType = conformanceLevelType;
@@ -20,7 +23,7 @@ namespace Securibox.FacturX.Core
 
         internal IReference? ConvertInvoiceReference(ReferenceType type)
         {
-            switch(type)
+            switch (type)
             {
                 case ReferenceType.BuyerReference:
                     return _referenceConverter.GetBuyerReference();
@@ -78,7 +81,6 @@ namespace Securibox.FacturX.Core
 
                 default:
                     return null;
-
             }
         }
 
@@ -115,11 +117,13 @@ namespace Securibox.FacturX.Core
 
                 default:
                     return null;
-
             }
         }
 
-        internal IEnumerable<IReference>? ConvertLineReferenceList(XmlNode lineNode, ReferenceType type)
+        internal IEnumerable<IReference>? ConvertLineReferenceList(
+            XmlNode lineNode,
+            ReferenceType type
+        )
         {
             switch (type)
             {
@@ -131,7 +135,6 @@ namespace Securibox.FacturX.Core
 
                 default:
                     return null;
-
             }
         }
     }

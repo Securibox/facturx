@@ -6,6 +6,10 @@
 
         public BuyerAccountingReference? BuyerAccountingReference { get; internal set; }
 
-        public IEnumerable<PreviousInvoiceReference>? PreviousInvoiceReferenceList { get; internal set; }
+        public IEnumerable<PreviousInvoiceReference>? PreviousInvoiceReferenceList
+        {
+            get;
+            internal set;
+        }
     }
 }

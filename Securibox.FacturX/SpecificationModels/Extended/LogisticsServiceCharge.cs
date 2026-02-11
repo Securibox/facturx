@@ -6,6 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
     {
         public string Description { get; set; }
         public Minimum.Amount AppliedAmount { get; set; }
+
         [XmlElement]
         public TradeTaxExtended[] AppliedTradeTax { get; set; }
     }

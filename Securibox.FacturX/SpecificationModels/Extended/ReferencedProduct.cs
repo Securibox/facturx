@@ -5,6 +5,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
     public class ReferencedProduct
     {
         public Minimum.ID ID { get; set; }
+
         [XmlElement]
         public Minimum.ID[] GlobalID { get; set; }
         public Minimum.ID SellerAssignedID { get; set; }

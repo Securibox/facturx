@@ -6,6 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
     {
         public TradeTaxExtended ApplicableTradeTax { get; set; }
         public BasicWL.SpecifiedPeriod BillingSpecifiedPeriod { get; set; }
+
         [XmlElement]
         public BasicWL.TradeAllowanceCharge[] SpecifiedTradeAllowanceCharge { get; set; }
         public TradeSettlementLineMonetarySummation SpecifiedTradeSettlementLineMonetarySummation { get; set; }

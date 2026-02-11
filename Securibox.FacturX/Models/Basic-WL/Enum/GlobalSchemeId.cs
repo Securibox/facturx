@@ -1,4 +1,5 @@
 ﻿using Securibox.FacturX.Core;
+
 namespace Securibox.FacturX.Models.BasicWL.Enum
 {
     public class GlobalSchemeId : Enumeration
@@ -12,9 +13,11 @@ namespace Securibox.FacturX.Models.BasicWL.Enum
         public static GlobalSchemeId ElectronicMail = new GlobalSchemeId(1000, "EM");
         public static GlobalSchemeId SimpleMailTransferProtocol = new GlobalSchemeId(1001, "SMTP");
         public static GlobalSchemeId SirenOrSiretCode = new GlobalSchemeId(2, "0002");
+
         // ISO/IEC 6523 list
         public static GlobalSchemeId GTIN = new GlobalSchemeId(160, "0160");
 
-        private GlobalSchemeId(int id, string name) : base(id, name) { }
+        private GlobalSchemeId(int id, string name)
+            : base(id, name) { }
     }
 }

@@ -8,9 +8,17 @@
 
         public IEnumerable<LineItemClassification>? ItemClassificationList { get; internal set; }
 
-        public Models.EN16931.InvoicedObjectIdentifier? InvoicedObjectIdentifier { get; internal set; }
+        public Models.EN16931.InvoicedObjectIdentifier? InvoicedObjectIdentifier
+        {
+            get;
+            internal set;
+        }
 
-        public Models.BasicWL.BuyerAccountingReference? BuyerAccountingReference { get; internal set; }
+        public Models.BasicWL.BuyerAccountingReference? BuyerAccountingReference
+        {
+            get;
+            internal set;
+        }
 
         public LinePurchaseOrderReference? PurchaseOrderReference { get; internal set; }
 

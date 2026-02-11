@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Security.Cryptography;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
+using Microsoft.Extensions.Logging;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.IO;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.SpecificationModels;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Securibox.FacturX
 {
@@ -23,7 +23,14 @@ namespace Securibox.FacturX
             validationReport = [];
         }
 
-        public Stream CreateFacturXStream(string pdfPath, string xmlPath, FacturXConformanceLevelType conformanceLevel, string documentTitle = "Invoice", string documentDescription = "Invoice description", bool failOnInvalid  = false)
+        public Stream CreateFacturXStream(
+            string pdfPath,
+            string xmlPath,
+            FacturXConformanceLevelType conformanceLevel,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
         {
             if (!File.Exists(pdfPath))
             {
@@ -35,10 +42,24 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", xmlPath);
             }
 
-            return CreateFacturXStream(File.OpenRead(pdfPath), File.OpenRead(xmlPath), conformanceLevel, documentTitle, documentDescription, failOnInvalid );
+            return CreateFacturXStream(
+                File.OpenRead(pdfPath),
+                File.OpenRead(xmlPath),
+                conformanceLevel,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
         }
 
-        public Stream CreateFacturXStream(string pdfPath, string xmlPath, Invoice invoice, string documentTitle = "Invoice", string documentDescription = "Invoice description", bool failOnInvalid  = false)
+        public Stream CreateFacturXStream(
+            string pdfPath,
+            string xmlPath,
+            Invoice invoice,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
         {
             if (!File.Exists(pdfPath))
             {
@@ -72,10 +93,23 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", xmlPath);
             }
 
-            return CreateFacturXStream(File.OpenRead(pdfPath), File.OpenRead(xmlPath), conformanceLevel, documentTitle, documentDescription, failOnInvalid );
+            return CreateFacturXStream(
+                File.OpenRead(pdfPath),
+                File.OpenRead(xmlPath),
+                conformanceLevel,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
         }
 
-        public Stream CreateFacturXStream(string pdfPath, ICrossIndustryInvoice invoice, string documentTitle = "Invoice", string documentDescription = "Invoice description", bool failOnInvalid  = false)
+        public Stream CreateFacturXStream(
+            string pdfPath,
+            ICrossIndustryInvoice invoice,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
         {
             ArgumentNullException.ThrowIfNull(invoice);
             if (!File.Exists(pdfPath))
@@ -106,7 +140,10 @@ namespace Securibox.FacturX
 
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
             namespaces.Add("qdt", "urn:un:unece:uncefact:data:standard:QualifiedDataType:100");
-            namespaces.Add("ram", "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100");
+            namespaces.Add(
+                "ram",
+                "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100"
+            );
             namespaces.Add("rsm", "urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100");
             namespaces.Add("udt", "urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100");
             namespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -125,25 +162,46 @@ namespace Securibox.FacturX
                     serializer.Serialize(xmlWriter, invoice, namespaces);
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    return CreateFacturXStream(File.OpenRead(pdfPath), stream, conformanceLevel, documentTitle, documentDescription, failOnInvalid );
+                    return CreateFacturXStream(
+                        File.OpenRead(pdfPath),
+                        stream,
+                        conformanceLevel,
+                        documentTitle,
+                        documentDescription,
+                        failOnInvalid
+                    );
                 }
             }
         }
 
-        public Stream CreateFacturXStream(Stream pdfStream, Stream xmlStream, FacturXConformanceLevelType conformanceLevel, string documentTitle = "Invoice", string documentDescription = "Invoice description", bool failOnInvalid  = false)
+        public Stream CreateFacturXStream(
+            Stream pdfStream,
+            Stream xmlStream,
+            FacturXConformanceLevelType conformanceLevel,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
         {
             ArgumentNullException.ThrowIfNull(pdfStream);
             ArgumentNullException.ThrowIfNull(xmlStream);
 
-            _logger.LogInformation($"Validating XML with XSD validation for conformance level {conformanceLevel.Name}");
+            _logger.LogInformation(
+                $"Validating XML with XSD validation for conformance level {conformanceLevel.Name}"
+            );
             FacturxXsdValidator.ValidateXml(xmlStream, conformanceLevel);
 
             bool isNotValid = false;
             xmlStream.Position = 0;
-            var schValidationResult = FacturxSchematronValidator.ValidateXml(xmlStream, conformanceLevel);
+            var schValidationResult = FacturxSchematronValidator.ValidateXml(
+                xmlStream,
+                conformanceLevel
+            );
             if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = schValidationResult._results.Where(x => x.IsError == true || x.IsWarning == true).ToList();
+                var errors = schValidationResult
+                    ._results.Where(x => x.IsError == true || x.IsWarning == true)
+                    .ToList();
                 for (int i = 0; i < errors.Count; i++)
                 {
                     if (!isNotValid && errors[i].IsError)
@@ -155,18 +213,24 @@ namespace Securibox.FacturX
                 }
             }
 
-            if (failOnInvalid  && isNotValid)
+            if (failOnInvalid && isNotValid)
             {
                 throw new Exception(
-                    "The provided XML is not valid according to the selected Factur-X conformance level. " +
-                    string.Join(Environment.NewLine, validationReport.Select(r =>
-                        $"Path: {r.Path}, Test: {r.Test}, Description: {r.Description}, BusinessRuleCode: {r.BusinessRuleCode}, " +
-                        $"ContextLine: {r.ContextLine}, ContextPosition: {r.ContextPosition}, ContextElement: {r.ContextElement}, " +
-                        $"IsError: {r.IsError}, IsWarning: {r.IsWarning}"
-                    )));
+                    "The provided XML is not valid according to the selected Factur-X conformance level. "
+                        + string.Join(
+                            Environment.NewLine,
+                            validationReport.Select(r =>
+                                $"Path: {r.Path}, Test: {r.Test}, Description: {r.Description}, BusinessRuleCode: {r.BusinessRuleCode}, "
+                                + $"ContextLine: {r.ContextLine}, ContextPosition: {r.ContextPosition}, ContextElement: {r.ContextElement}, "
+                                + $"IsError: {r.IsError}, IsWarning: {r.IsWarning}"
+                            )
+                        )
+                );
             }
 
-            _logger.LogInformation($"Success in validating XML with XSD validation for conformance level {conformanceLevel.Name}");
+            _logger.LogInformation(
+                $"Success in validating XML with XSD validation for conformance level {conformanceLevel.Name}"
+            );
 
             var pdfDocument = PdfReader.Open(pdfStream, PdfDocumentOpenMode.Import);
 
@@ -190,11 +254,16 @@ namespace Securibox.FacturX
 
             _logger.LogInformation($"Calculated the MD5 checksum for the XML file");
 
-            var xmlFileEncodedBytes = PdfSharpCore.Pdf.Filters.Filtering.FlateDecode.Encode(xmlFileBytes);
+            var xmlFileEncodedBytes = PdfSharpCore.Pdf.Filters.Filtering.FlateDecode.Encode(
+                xmlFileBytes
+            );
 
             PdfDictionary xmlParamsDict = new PdfDictionary();
             xmlParamsDict.Elements.Add("/CheckSum", new PdfString(xmlChecksum));
-            xmlParamsDict.Elements.Add("/ModDate", new PdfString("D:" + DateTime.UtcNow.ToString("yyyyMMddHHmmsszzz")));
+            xmlParamsDict.Elements.Add(
+                "/ModDate",
+                new PdfString("D:" + DateTime.UtcNow.ToString("yyyyMMddHHmmsszzz"))
+            );
             xmlParamsDict.Elements.Add("/Size", new PdfInteger(xmlFileBytes.Length));
 
             PdfDictionary fStreamDict = new PdfDictionary();
@@ -226,15 +295,20 @@ namespace Securibox.FacturX
 
             var dateTimeNow = DateTime.UtcNow;
             var conformanceLevelName = conformanceLevel.Name.ToUpperInvariant();
-            var xmpmeta = Resources.PdfMetadataTemplate
-                .Replace("{{CreationDate}}", dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz"))
+            var xmpmeta = Resources
+                .PdfMetadataTemplate.Replace(
+                    "{{CreationDate}}",
+                    dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz")
+                )
                 .Replace("{{ModificationDate}}", dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz"))
                 .Replace("{{DocumentTitle}}", documentTitle)
                 .Replace("{{DocumentDescription}}", documentDescription)
                 .Replace("{{ConformanceLevel}}", conformanceLevelName);
 
             var metadataBytes = System.Text.Encoding.UTF8.GetBytes(xmpmeta);
-            var metadataEncodedBytes = PdfSharpCore.Pdf.Filters.Filtering.FlateDecode.Encode(metadataBytes);
+            var metadataEncodedBytes = PdfSharpCore.Pdf.Filters.Filtering.FlateDecode.Encode(
+                metadataBytes
+            );
 
             PdfDictionary metadataDictionary = new PdfDictionary();
             metadataDictionary.CreateStream(metadataEncodedBytes);
@@ -242,7 +316,10 @@ namespace Securibox.FacturX
             metadataDictionary.Elements.Add("/Subtype", new PdfName("/XML"));
             metadataDictionary.Elements.Add("/Type", new PdfName("/Metadata"));
             outputDocument.Internals.AddObject(metadataDictionary);
-            outputDocument.Internals.Catalog.Elements.Add("/Metadata", metadataDictionary.Reference);
+            outputDocument.Internals.Catalog.Elements.Add(
+                "/Metadata",
+                metadataDictionary.Reference
+            );
 
             var namesPdfArray = new PdfArray();
             namesPdfArray.Elements.Add(new PdfString("factur-x.xml"));
@@ -261,7 +338,10 @@ namespace Securibox.FacturX
 
             PdfDictionary outputIntent0Dict = new PdfDictionary();
             outputIntent0Dict.Elements.Add("/DestOutputProfile", rgbProfileDict.Reference);
-            outputIntent0Dict.Elements.Add("/OutputConditionIdentifier", new PdfString("sRGB IEC61966-2.1"));
+            outputIntent0Dict.Elements.Add(
+                "/OutputConditionIdentifier",
+                new PdfString("sRGB IEC61966-2.1")
+            );
             outputIntent0Dict.Elements.Add("/S", new PdfName("/GTS_PDFA1"));
             outputIntent0Dict.Elements.Add("/Type", new PdfName("/OutputIntent"));
             outputDocument.Internals.AddObject(outputIntent0Dict);
@@ -283,10 +363,15 @@ namespace Securibox.FacturX
         {
             if (logger == null)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(delegate (ILoggingBuilder builder)
-                {
-                    builder.AddFilter("Microsoft", LogLevel.Warning).AddFilter("System", LogLevel.Warning).AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
-                });
+                using ILoggerFactory factory = LoggerFactory.Create(
+                    delegate(ILoggingBuilder builder)
+                    {
+                        builder
+                            .AddFilter("Microsoft", LogLevel.Warning)
+                            .AddFilter("System", LogLevel.Warning)
+                            .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
+                    }
+                );
 
                 _logger = factory.CreateLogger<FacturxExporter>();
             }

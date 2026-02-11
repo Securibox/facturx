@@ -8,7 +8,11 @@
 
         public string? SchemeVersionId { get; private set; }
 
-        internal LineItemClassificationIdentifier(string id, string schemeId, string? schemeVersionId)
+        internal LineItemClassificationIdentifier(
+            string id,
+            string schemeId,
+            string? schemeVersionId
+        )
         {
             Id = id;
             SchemeId = schemeId;

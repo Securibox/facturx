@@ -6,6 +6,5 @@
         public BasicWL.SupplyChainEvent ActualDeliverySupplyChainEvent { get; set; }
         public ReferencedDocumentEN16931 DespatchAdviceReferencedDocument { get; set; }
         public ReferencedDocumentEN16931 ReceivingAdviceReferencedDocument { get; set; }
-
     }
 }

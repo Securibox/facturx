@@ -18,7 +18,11 @@
 
         public new IEnumerable<Extended.LineItemAttribute>? ItemAttributeList { get; internal set; }
 
-        public new IEnumerable<Extended.LineItemClassification>? ItemClassificationList { get; internal set; }
+        public new IEnumerable<Extended.LineItemClassification>? ItemClassificationList
+        {
+            get;
+            internal set;
+        }
 
         public IEnumerable<Extended.LineItemInstance>? ItemInstanceList { get; internal set; }
 
@@ -30,8 +34,16 @@
 
         public IEnumerable<LineIncludedItem>? IncludedItemList { get; internal set; }
 
-        public IEnumerable<LineAdditionalDocument>? AdditionalDocumentReferenceList { get; internal set; }
+        public IEnumerable<LineAdditionalDocument>? AdditionalDocumentReferenceList
+        {
+            get;
+            internal set;
+        }
 
-        public IEnumerable<LineUltimateCustomerOrderReference>? UltimateCustomerOrderReferenceList { get; internal set; }
+        public IEnumerable<LineUltimateCustomerOrderReference>? UltimateCustomerOrderReferenceList
+        {
+            get;
+            internal set;
+        }
     }
 }

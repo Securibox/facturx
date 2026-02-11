@@ -1,6 +1,6 @@
 ﻿namespace Securibox.FacturX.SpecificationModels.BasicWL
 {
-    public class TradeAddress 
+    public class TradeAddress
     {
         public string PostcodeCode { get; set; }
         public string LineOne { get; set; }

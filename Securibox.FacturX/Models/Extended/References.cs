@@ -16,10 +16,22 @@
 
         public new InvoicedObjectIdentifier? InvoicedObjectIdentifier { get; internal set; }
 
-        public IEnumerable<UltimateCustomerOrderReference>? UltimateCustomerOrderReferenceList { get; internal set; }
+        public IEnumerable<UltimateCustomerOrderReference>? UltimateCustomerOrderReferenceList
+        {
+            get;
+            internal set;
+        }
 
-        public new Models.Extended.BuyerAccountingReference? BuyerAccountingReference { get; internal set; }
+        public new Models.Extended.BuyerAccountingReference? BuyerAccountingReference
+        {
+            get;
+            internal set;
+        }
 
-        public new IEnumerable<Models.Extended.PreviousInvoiceReference>? PreviousInvoiceReferenceList { get; internal set; }
+        public new IEnumerable<Models.Extended.PreviousInvoiceReference>? PreviousInvoiceReferenceList
+        {
+            get;
+            internal set;
+        }
     }
 }

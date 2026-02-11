@@ -6,7 +6,8 @@
 
         public LineTotals() { }
 
-        public LineTotals(decimal? lineNetAmount) {
+        public LineTotals(decimal? lineNetAmount)
+        {
             LineNetAmount = lineNetAmount;
         }
     }

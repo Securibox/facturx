@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using System.Xml;
 
 namespace Securibox.FacturX.Schematron.Xslt
 {
@@ -36,7 +36,11 @@ namespace Securibox.FacturX.Schematron.Xslt
             return false;
         }
 
-        public override IXsltContextFunction ResolveFunction(string prefix, string name, XPathResultType[] ArgTypes)
+        public override IXsltContextFunction ResolveFunction(
+            string prefix,
+            string name,
+            XPathResultType[] ArgTypes
+        )
         {
             if (name.Equals("document"))
             {
@@ -55,6 +59,5 @@ namespace Securibox.FacturX.Schematron.Xslt
             }
             return null;
         }
-
     }
 }

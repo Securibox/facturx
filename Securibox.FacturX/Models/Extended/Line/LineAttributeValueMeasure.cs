@@ -6,7 +6,7 @@
 
         public string Measure { get; internal set; }
 
-        public LineAttributeValueMeasure(decimal value, string measure) 
+        public LineAttributeValueMeasure(decimal value, string measure)
         {
             Value = value;
             Measure = measure;

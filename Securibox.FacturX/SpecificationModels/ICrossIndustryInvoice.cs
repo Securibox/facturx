@@ -1,9 +1,7 @@
-﻿using Securibox.FacturX.SpecificationModels.Minimum;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using Securibox.FacturX.SpecificationModels.Minimum;
 
 namespace Securibox.FacturX.SpecificationModels
 {
-    public interface ICrossIndustryInvoice
-    {
-    }
+    public interface ICrossIndustryInvoice { }
 }
