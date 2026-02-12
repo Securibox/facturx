@@ -10,8 +10,8 @@
 
         public string? CountrySubdivision { get; set; }
 
-        public PostalAddress(string[] addressLines, string postCode, string city, string country):
-            base(country)
+        public PostalAddress(string[] addressLines, string postCode, string city, string country)
+            : base(country)
         {
             AddressLines = new PostalAddressLines(addressLines[0])
             {
@@ -20,7 +20,13 @@
             };
         }
 
-        public PostalAddress(Minimum.PostalAddress postalAddress, string? postCode, PostalAddressLines? addressLines, string? city, string? countrySubdivision)
+        public PostalAddress(
+            Minimum.PostalAddress postalAddress,
+            string? postCode,
+            PostalAddressLines? addressLines,
+            string? city,
+            string? countrySubdivision
+        )
             : base(postalAddress.Country)
         {
             PostCode = postCode;

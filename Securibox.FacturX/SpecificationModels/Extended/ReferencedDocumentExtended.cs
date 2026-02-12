@@ -8,6 +8,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public Minimum.ID URIID { get; set; }
         public Minimum.ID LineID { get; set; }
         public string TypeCode { get; set; }
+
         [XmlElement]
         public string[] Name { get; set; }
         public EN16931.BinaryObject AttachmentBinaryObject { get; set; }

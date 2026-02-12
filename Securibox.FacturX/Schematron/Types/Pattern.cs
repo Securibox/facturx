@@ -29,11 +29,13 @@ namespace Securibox.FacturX.Schematron.Types
     public class Pattern
     {
         public string Documents { get; set; }
+
         [XmlElement(ElementName = "title")]
         public Title Title { get; set; }
+
         [XmlElement(ElementName = "let")]
         public Let[] Lets { get; set; }
-        
+
         [XmlElement(ElementName = "include")]
         public Inclusion[] Inclusions { get; set; }
 
@@ -65,17 +67,24 @@ namespace Securibox.FacturX.Schematron.Types
         [XmlElement(ElementName = "param")]
         public Param[] Parameters { get; set; }
 
-
         [XmlAttribute(AttributeName = "is-a")]
         public string IsA { get; set; }
 
-        public PatternResult Evaluate(Schema schema, XPathNavigator navigator, IEnumerable<Let> lets, bool evalAbstract = false)
+        public PatternResult Evaluate(
+            Schema schema,
+            XPathNavigator navigator,
+            IEnumerable<Let> lets,
+            bool evalAbstract = false
+        )
         {
-            if (this.Abstract && !evalAbstract) return PatternResult.Empty;
+            if (this.Abstract && !evalAbstract)
+                return PatternResult.Empty;
 
             List<Let> combined = new List<Let>(lets);
-            if (this.Lets != null) combined.AddRange(this.Lets);
-            if (this.Parameters != null) combined.AddRange(this.Parameters);
+            if (this.Lets != null)
+                combined.AddRange(this.Lets);
+            if (this.Parameters != null)
+                combined.AddRange(this.Parameters);
 
             var context = new Xslt.SchematronContext(new NameTable(), combined);
             var results = new List<RuleResult>();
@@ -101,13 +110,12 @@ namespace Securibox.FacturX.Schematron.Types
                 }
             }
 
-            return new PatternResult() {
+            return new PatternResult()
+            {
                 Pattern = this,
                 PatternFired = results.Any(x => x.RuleFired),
                 RuleResults = results.ToArray(),
             };
         }
-
-
     }
 }

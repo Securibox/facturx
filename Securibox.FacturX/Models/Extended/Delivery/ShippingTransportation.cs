@@ -2,6 +2,6 @@
 {
     public class ShippingTransportation
     {
-        public string? ModeCode {  get; internal set; }
+        public string? ModeCode { get; internal set; }
     }
 }

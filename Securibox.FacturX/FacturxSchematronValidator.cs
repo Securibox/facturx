@@ -1,22 +1,27 @@
-﻿using Securibox.FacturX.Models.Enums;
-using Securibox.FacturX.Schematron.Helpers;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
+using Securibox.FacturX.Models.Enums;
+using Securibox.FacturX.Schematron.Helpers;
 
 namespace Securibox.FacturX
 {
     public class FacturxSchematronValidator
     {
-
-        public static ValidationResult ValidateXml(Stream xmlDocumentStream, FacturXConformanceLevelType conformanceLevel)
+        public static ValidationResult ValidateXml(
+            Stream xmlDocumentStream,
+            FacturXConformanceLevelType conformanceLevel
+        )
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlDocumentStream);
             return ValidateXml(xmlDocument, conformanceLevel);
         }
 
-        public static ValidationResult ValidateXml(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevel)
+        public static ValidationResult ValidateXml(
+            XmlDocument xmlDocument,
+            FacturXConformanceLevelType conformanceLevel
+        )
         {
             var validationSchema = LoadValidationSchema(conformanceLevel);
 
@@ -39,31 +44,38 @@ namespace Securibox.FacturX
             }
         }
 
-        private static Schematron.Types.Schema LoadValidationSchema(FacturXConformanceLevelType conformanceLevel)
+        private static Schematron.Types.Schema LoadValidationSchema(
+            FacturXConformanceLevelType conformanceLevel
+        )
         {
             var schemaStream = GetSchemaFileByConformanceLevel(conformanceLevel);
             // check this xmlReaderSettings, is it necessary
             XmlReaderSettings readerSettings = new XmlReaderSettings()
             {
                 DtdProcessing = DtdProcessing.Parse,
-                ValidationType = ValidationType.Schema
+                ValidationType = ValidationType.Schema,
             };
 
             var reader = XmlReader.Create(schemaStream, readerSettings);
 
             XmlSerializer serializer = new XmlSerializer(typeof(Schematron.Types.Schema));
-            Schematron.Types.Schema? schema = serializer.Deserialize(xmlReader: reader) as Schematron.Types.Schema;
+            Schematron.Types.Schema? schema =
+                serializer.Deserialize(xmlReader: reader) as Schematron.Types.Schema;
             if (schema == null)
             {
-                throw new Exception($"Could not load schema for conformance level {conformanceLevel.Id}");
+                throw new Exception(
+                    $"Could not load schema for conformance level {conformanceLevel.Id}"
+                );
             }
 
             return schema;
         }
 
-        private static Stream GetSchemaFileByConformanceLevel(FacturXConformanceLevelType conformanceLevel)
+        private static Stream GetSchemaFileByConformanceLevel(
+            FacturXConformanceLevelType conformanceLevel
+        )
         {
-            if(conformanceLevel.Id == FacturXConformanceLevelType.Minimum.Id)
+            if (conformanceLevel.Id == FacturXConformanceLevelType.Minimum.Id)
             {
                 return new MemoryStream(Resources.Factur_X_1_08_MINIMUM);
             }

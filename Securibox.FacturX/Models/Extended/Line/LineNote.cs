@@ -6,7 +6,7 @@
 
         public string? SubjectCode { get; private set; }
 
-        public LineNote(string? content, string? contentCode, string? subjectCode) 
+        public LineNote(string? content, string? contentCode, string? subjectCode)
             : base(content)
         {
             ContentCode = contentCode;

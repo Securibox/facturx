@@ -11,6 +11,7 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
         public ReferencedDocumentEN16931 SellerOrderReferencedDocument { get; set; }
         public ReferencedDocumentEN16931 BuyerOrderReferencedDocument { get; set; }
         public ReferencedDocumentEN16931 ContractReferencedDocument { get; set; }
+
         [XmlElement]
         public ReferencedDocumentEN16931[] AdditionalReferencedDocument { get; set; }
         public ProcuringProject SpecifiedProcuringProject { get; set; }

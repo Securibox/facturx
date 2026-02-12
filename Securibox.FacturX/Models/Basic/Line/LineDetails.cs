@@ -6,7 +6,7 @@
 
         public LineNote? Note { get; private set; }
 
-        public LineDetails(string lineId) 
+        public LineDetails(string lineId)
         {
             LineId = lineId;
         }

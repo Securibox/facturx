@@ -1,17 +1,16 @@
-﻿using Securibox.FacturX.Models.BasicWL;
+﻿using System.Xml;
+using Securibox.FacturX.Models.BasicWL;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.Models.Minimum.Enum;
-using System.Xml;
 
 namespace Securibox.FacturX.Core
 {
     internal abstract class TradePartyConverter
     {
-
         protected readonly FacturXConformanceLevelType ConformanceLevelType;
 
-        protected TradePartyConverter(FacturXConformanceLevelType conformanceLevelType) 
+        protected TradePartyConverter(FacturXConformanceLevelType conformanceLevelType)
         {
             ConformanceLevelType = conformanceLevelType;
         }
@@ -34,17 +33,16 @@ namespace Securibox.FacturX.Core
                 return null;
 
             var id = globalIdNode.InnerText;
-          
+
             var schemeId = globalIdNode.Attributes["schemeID"]!.Value;
 
             return new GlobalIdentification(id, schemeId);
         }
 
-
         internal GlobalIdentification GetGlobalIdMandatoryScheme(XmlNode globalIdNode)
         {
             var id = globalIdNode.InnerText;
-           
+
             var schemeId = default(string);
 
             schemeId = globalIdNode.Attributes["schemeID"]!.Value;
@@ -52,10 +50,11 @@ namespace Securibox.FacturX.Core
             return new GlobalIdentification(id, schemeId);
         }
 
-
         protected GlobalIdentification? GetActorGlobalIdentification(XmlNode tradePartyNode)
         {
-            var globalIdentificationNode = tradePartyNode.SelectSingleNode("*[local-name() = 'GlobalID']");
+            var globalIdentificationNode = tradePartyNode.SelectSingleNode(
+                "*[local-name() = 'GlobalID']"
+            );
             if (globalIdentificationNode == null)
                 return null;
 
@@ -65,7 +64,9 @@ namespace Securibox.FacturX.Core
             return new Models.BasicWL.GlobalIdentification(id, scheme);
         }
 
-        protected GlobalIdentification? GetListGlobalIdentification(XmlNode globalIdentificationNode)
+        protected GlobalIdentification? GetListGlobalIdentification(
+            XmlNode globalIdentificationNode
+        )
         {
             var id = globalIdentificationNode.InnerText;
             var scheme = GetGlobalIdentificationScheme(globalIdentificationNode);
@@ -75,7 +76,7 @@ namespace Securibox.FacturX.Core
 
         protected string? GetGlobalIdentificationScheme(XmlNode? globalIdNode)
         {
-            if (globalIdNode == null)   
+            if (globalIdNode == null)
                 return null;
 
             var schemeId = XmlParsingHelpers.ExtractAttribute(globalIdNode, "schemeID");
@@ -89,9 +90,14 @@ namespace Securibox.FacturX.Core
             //return Utils.Enumeration.FromDisplayName<GlobalSchemeId>(schemeId);
         }
 
-        protected IEnumerable<GlobalIdentification>? GetGlobalIdentificationList(XmlNode tradePartyNode)
+        protected IEnumerable<GlobalIdentification>? GetGlobalIdentificationList(
+            XmlNode tradePartyNode
+        )
         {
-            var globalIdNodeList = tradePartyNode.SelectNodes("*[local-name() = 'GlobalID']")?.Cast<XmlNode>()?.ToList();
+            var globalIdNodeList = tradePartyNode
+                .SelectNodes("*[local-name() = 'GlobalID']")
+                ?.Cast<XmlNode>()
+                ?.ToList();
             if (globalIdNodeList == null || globalIdNodeList.Count == 0)
                 return null;
 
@@ -139,25 +145,33 @@ namespace Securibox.FacturX.Core
         #region PostalAddress
         protected string? GetCountryCode(XmlNode postalAddressNode)
         {
-            var countryCodeNode = postalAddressNode.SelectSingleNode("*[local-name() = 'CountryID']");
+            var countryCodeNode = postalAddressNode.SelectSingleNode(
+                "*[local-name() = 'CountryID']"
+            );
             return countryCodeNode.InnerText;
         }
 
         protected string? GetAddressLineOne(XmlNode postalAddressNode)
         {
-            var addressLineOneNode = postalAddressNode.SelectSingleNode("*[local-name() = 'LineOne']");
+            var addressLineOneNode = postalAddressNode.SelectSingleNode(
+                "*[local-name() = 'LineOne']"
+            );
             return addressLineOneNode?.InnerText;
         }
 
         protected string? GetAddressLineTwo(XmlNode postalAddressNode)
         {
-            var addressLineTwoNode = postalAddressNode.SelectSingleNode("*[local-name() = 'LineTwo']");
+            var addressLineTwoNode = postalAddressNode.SelectSingleNode(
+                "*[local-name() = 'LineTwo']"
+            );
             return addressLineTwoNode?.InnerText;
         }
 
         protected string? GetAddressLineThree(XmlNode postalAddressNode)
         {
-            var addressLineThreeNode = postalAddressNode.SelectSingleNode("*[local-name() = 'LineThree']");
+            var addressLineThreeNode = postalAddressNode.SelectSingleNode(
+                "*[local-name() = 'LineThree']"
+            );
             return addressLineThreeNode?.InnerText;
         }
 
@@ -169,25 +183,31 @@ namespace Securibox.FacturX.Core
 
         protected string? GetPostcodeCode(XmlNode postalAddressNode)
         {
-            var postCodeNode = postalAddressNode.SelectSingleNode("*[local-name() = 'PostcodeCode']");
+            var postCodeNode = postalAddressNode.SelectSingleNode(
+                "*[local-name() = 'PostcodeCode']"
+            );
             return postCodeNode?.InnerText;
         }
 
         protected string? GetCountrySubdivision(XmlNode postalAddressNode)
         {
-            var countrySubdivisionNode = postalAddressNode.SelectSingleNode("*[local-name() = 'CountrySubDivisionName']");
+            var countrySubdivisionNode = postalAddressNode.SelectSingleNode(
+                "*[local-name() = 'CountrySubDivisionName']"
+            );
             return countrySubdivisionNode?.InnerText;
         }
         #endregion
 
         protected Models.Minimum.PostalAddress? GetPostalAddress(XmlNode tradePartyNode)
         {
-            var postalTradeAddress = tradePartyNode.SelectSingleNode("*[local-name() = 'PostalTradeAddress']");
+            var postalTradeAddress = tradePartyNode.SelectSingleNode(
+                "*[local-name() = 'PostalTradeAddress']"
+            );
             if (postalTradeAddress == null)
                 return null;
 
             var countryCode = GetCountryCode(postalTradeAddress);
-            
+
             var minimumPostalAddress = new Models.Minimum.PostalAddress(countryCode);
             if (ConformanceLevelType == FacturXConformanceLevelType.Minimum)
                 return minimumPostalAddress;
@@ -201,12 +221,20 @@ namespace Securibox.FacturX.Core
             var postCode = GetPostcodeCode(postalTradeAddress);
             var countrySubdivision = GetCountrySubdivision(postalTradeAddress);
 
-            return new Models.BasicWL.PostalAddress(minimumPostalAddress, postCode, addressLines, city, countrySubdivision);
+            return new Models.BasicWL.PostalAddress(
+                minimumPostalAddress,
+                postCode,
+                addressLines,
+                city,
+                countrySubdivision
+            );
         }
 
         protected Models.Minimum.LegalRegistration? GetLegalRegistration(XmlNode tradePartyNode)
         {
-            var legalNode = tradePartyNode.SelectSingleNode("*[local-name() = 'SpecifiedLegalOrganization']");
+            var legalNode = tradePartyNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedLegalOrganization']"
+            );
             if (legalNode == null)
                 return null;
 
@@ -216,18 +244,20 @@ namespace Securibox.FacturX.Core
 
             if (ConformanceLevelType == FacturXConformanceLevelType.Minimum)
             {
-                return new Models.Minimum.LegalRegistration
-                {
-                    Id = id,
-                    Scheme = scheme,
-                };
+                return new Models.Minimum.LegalRegistration { Id = id, Scheme = scheme };
             }
 
-            var tradingNameNode = legalNode.SelectSingleNode("*[local-name() = 'TradingBusinessName']");
+            var tradingNameNode = legalNode.SelectSingleNode(
+                "*[local-name() = 'TradingBusinessName']"
+            );
             var tradingBusinessName = tradingNameNode?.InnerText;
 
-            if (ConformanceLevelType == FacturXConformanceLevelType.BasicWL || ConformanceLevelType == FacturXConformanceLevelType.Basic || ConformanceLevelType == FacturXConformanceLevelType.EN16931
-                || ConformanceLevelType == FacturXConformanceLevelType.EN16931)
+            if (
+                ConformanceLevelType == FacturXConformanceLevelType.BasicWL
+                || ConformanceLevelType == FacturXConformanceLevelType.Basic
+                || ConformanceLevelType == FacturXConformanceLevelType.EN16931
+                || ConformanceLevelType == FacturXConformanceLevelType.EN16931
+            )
             {
                 return new Models.BasicWL.LegalRegistration
                 {
@@ -250,7 +280,9 @@ namespace Securibox.FacturX.Core
 
         protected TaxRegistration? GetVatRegistration(XmlNode tradePartyNode)
         {
-            var vatNode = tradePartyNode.SelectSingleNode("*[local-name() = 'SpecifiedTaxRegistration']");
+            var vatNode = tradePartyNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedTaxRegistration']"
+            );
             if (vatNode == null)
                 return null;
 
@@ -259,7 +291,7 @@ namespace Securibox.FacturX.Core
             var id = idNode.InnerText;
             var schemeId = idNode.Attributes["schemeID"]?.Value;
 
-            return new TaxRegistration { Id = id, Scheme = TaxSchemeId.VA  };
+            return new TaxRegistration { Id = id, Scheme = TaxSchemeId.VA };
         }
 
         protected TaxRegistration GetListVatRegistration(XmlNode taxNode)
@@ -281,7 +313,9 @@ namespace Securibox.FacturX.Core
 
         protected IEnumerable<TaxRegistration>? GetVatRegistrationList(XmlNode tradePartyNode)
         {
-            var taxNodeList = tradePartyNode.SelectNodes("*[local-name() = 'SpecifiedTaxRegistration']");
+            var taxNodeList = tradePartyNode.SelectNodes(
+                "*[local-name() = 'SpecifiedTaxRegistration']"
+            );
             if (taxNodeList == null)
                 return null;
 
@@ -316,11 +350,15 @@ namespace Securibox.FacturX.Core
 
         protected virtual string? GetContactTelephoneNumber(XmlNode contactNode)
         {
-            var phoneNumberNode = contactNode.SelectSingleNode("*[local-name() = 'TelephoneUniversalCommunication']");
+            var phoneNumberNode = contactNode.SelectSingleNode(
+                "*[local-name() = 'TelephoneUniversalCommunication']"
+            );
             if (phoneNumberNode == null)
                 return null;
 
-            var completeNumber = phoneNumberNode.SelectSingleNode("*[local-name() = 'CompleteNumber']");
+            var completeNumber = phoneNumberNode.SelectSingleNode(
+                "*[local-name() = 'CompleteNumber']"
+            );
             if (completeNumber == null)
             {
                 return null;
@@ -331,7 +369,9 @@ namespace Securibox.FacturX.Core
 
         protected virtual ElectronicAddress? GetContactEmaiAddress(XmlNode contactNode)
         {
-            var emailAddress = contactNode.SelectSingleNode("*[local-name() = 'EmailURIUniversalCommunication']");
+            var emailAddress = contactNode.SelectSingleNode(
+                "*[local-name() = 'EmailURIUniversalCommunication']"
+            );
             if (emailAddress == null)
                 return null;
 
@@ -360,7 +400,9 @@ namespace Securibox.FacturX.Core
 
         protected virtual string? GetContactFaxNumber(XmlNode contactNode)
         {
-            var faxNumber = contactNode.SelectSingleNode("*[local-name() = 'FaxUniversalCommunication']");
+            var faxNumber = contactNode.SelectSingleNode(
+                "*[local-name() = 'FaxUniversalCommunication']"
+            );
             if (faxNumber == null)
                 return null;
 
@@ -375,7 +417,9 @@ namespace Securibox.FacturX.Core
 
         protected Models.EN16931.Contact? GetContact(XmlNode tradePartyNode)
         {
-            var contactNode = tradePartyNode.SelectSingleNode("*[local-name() = 'DefinedTradeContact']");
+            var contactNode = tradePartyNode.SelectSingleNode(
+                "*[local-name() = 'DefinedTradeContact']"
+            );
             if (contactNode == null)
                 return null;
 
@@ -413,19 +457,23 @@ namespace Securibox.FacturX.Core
 
         protected virtual ElectronicAddress? GetElectronicAddress(XmlNode tradePartyNode)
         {
-            var universalCommunicationURIID = tradePartyNode.SelectSingleNode("*[local-name() = 'URIUniversalCommunication']");
+            var universalCommunicationURIID = tradePartyNode.SelectSingleNode(
+                "*[local-name() = 'URIUniversalCommunication']"
+            );
             if (universalCommunicationURIID == null)
                 return null;
 
-            var urridNode = universalCommunicationURIID.SelectSingleNode("*[local-name() = 'URIID']");
+            var urridNode = universalCommunicationURIID.SelectSingleNode(
+                "*[local-name() = 'URIID']"
+            );
             if (urridNode == null)
                 return null;
 
             var id = urridNode.InnerText;
-           
+
             if (urridNode.Attributes == null)
             {
-                return new ElectronicAddress(id, null);   
+                return new ElectronicAddress(id, null);
             }
 
             var schemeId = urridNode.Attributes["schemeID"]?.Value;
@@ -434,11 +482,15 @@ namespace Securibox.FacturX.Core
 
         protected TaxRegistration? GetFiscalRegistration(XmlNode tradePartyNode)
         {
-            var vatNodes = tradePartyNode.SelectNodes("*[local-name() = 'SpecifiedTaxRegistration']")?.Cast<XmlNode>()?.ToList();
+            var vatNodes = tradePartyNode
+                .SelectNodes("*[local-name() = 'SpecifiedTaxRegistration']")
+                ?.Cast<XmlNode>()
+                ?.ToList();
             if (vatNodes == null || vatNodes.Count == 0)
                 return null;
 
-            var fiscalNode = vatNodes.Where(x => x.SelectSingleNode("*[local-name() = 'ID']") != null)
+            var fiscalNode = vatNodes
+                .Where(x => x.SelectSingleNode("*[local-name() = 'ID']") != null)
                 .Where(x => x.Attributes != null && x.Attributes["schemeID"] != null)
                 .FirstOrDefault(x => x.Attributes["schemeID"]!.Value.Equals("FC"));
 

@@ -11,6 +11,7 @@ namespace Securibox.FacturX.Models.BasicWL.Enum
         public static NoteSubjectCode LegalInformation = new NoteSubjectCode(3, "ABL");
         public static NoteSubjectCode TaxInformation = new NoteSubjectCode(4, "TXD");
         public static NoteSubjectCode CustomsInformation = new NoteSubjectCode(4, "CUS");
+
         //public static NoteSubjectCode GoodsItemDescription = new NoteSubjectCode(0, "AAA");
         //public static NoteSubjectCode PaymentTerm = new NoteSubjectCode(1, "AAB");
         //public static NoteSubjectCode DangerousGoodsAdditionalInformation = new NoteSubjectCode(2, "AAC");
@@ -116,6 +117,7 @@ namespace Securibox.FacturX.Models.BasicWL.Enum
         //public static NoteSubjectCode PMT = new NoteSubjectCode(7, "PMT");
         //public static NoteSubjectCode AAB = new NoteSubjectCode(8, "AAB");
 
-        public NoteSubjectCode(int id, string name) : base(id, name) { }
+        public NoteSubjectCode(int id, string name)
+            : base(id, name) { }
     }
 }

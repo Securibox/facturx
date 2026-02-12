@@ -27,7 +27,11 @@ namespace Securibox.FacturX.Schematron.Helpers
                 var ruleResults = patternResult.RuleResults.ToList();
                 foreach (var ruleResult in ruleResults)
                 {
-                    if (ruleResult.ExecutedAssertions.Any(x => x.IsError == true || x.IsWarning == true))
+                    if (
+                        ruleResult.ExecutedAssertions.Any(x =>
+                            x.IsError == true || x.IsWarning == true
+                        )
+                    )
                     {
                         return false;
                     }
@@ -47,10 +51,8 @@ namespace Securibox.FacturX.Schematron.Helpers
             var results = new List<ValidationReport>();
             foreach (var patternResult in _patternResults)
             {
-
                 foreach (var ruleResult in patternResult.RuleResults)
                 {
-
                     foreach (var executedAssertion in ruleResult.ExecutedAssertions)
                     {
                         var validationReport = new ValidationReport();

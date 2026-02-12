@@ -6,6 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.BasicWL
     {
         [XmlElement]
         public Minimum.ID[] ID { get; set; }
+
         [XmlElement]
         public Minimum.ID[] GlobalID { get; set; }
         public string Name { get; set; }

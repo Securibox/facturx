@@ -1,6 +1,4 @@
 ﻿namespace Securibox.FacturX.Models
 {
-    internal interface IReference
-    {
-    }
+    internal interface IReference { }
 }

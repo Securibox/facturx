@@ -1,8 +1,8 @@
-﻿using Securibox.FacturX.Schematron.Xslt;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
+using Securibox.FacturX.Schematron.Xslt;
 using Wmhelp.XPath2;
 
 namespace Securibox.FacturX.Schematron.Types
@@ -79,7 +79,12 @@ namespace Securibox.FacturX.Schematron.Types
         [XmlElement(ElementName = "extends")]
         public Extends[] Extensions { get; set; }
 
-        private EvaluationResult[] EvaluateAssertions(Schema schema, XPathNavigator navigator, Xslt.SchematronContext context, string? ruleContext = null)
+        private EvaluationResult[] EvaluateAssertions(
+            Schema schema,
+            XPathNavigator navigator,
+            Xslt.SchematronContext context,
+            string? ruleContext = null
+        )
         {
             List<EvaluationResult> results = new List<EvaluationResult>();
             if (this.Assertions != null)
@@ -104,7 +109,8 @@ namespace Securibox.FacturX.Schematron.Types
         private SchematronContext BuildSchematronContext(Schema schema, IEnumerable<Let> lets)
         {
             List<Let> combined = new List<Let>(lets);
-            if (this.Lets != null) combined.AddRange(this.Lets);
+            if (this.Lets != null)
+                combined.AddRange(this.Lets);
 
             var context = new Xslt.SchematronContext(new NameTable(), combined);
             if (schema.Namespaces != null)
@@ -118,9 +124,15 @@ namespace Securibox.FacturX.Schematron.Types
             return context;
         }
 
-        public RuleResult Evaluate(Schema schema, XPathNavigator navigator, IEnumerable<Let> lets, bool evalAbstract = false)
+        public RuleResult Evaluate(
+            Schema schema,
+            XPathNavigator navigator,
+            IEnumerable<Let> lets,
+            bool evalAbstract = false
+        )
         {
-            if (this.Abstract && !evalAbstract) return RuleResult.Empty;
+            if (this.Abstract && !evalAbstract)
+                return RuleResult.Empty;
 
             var results = new List<EvaluationResult>();
 

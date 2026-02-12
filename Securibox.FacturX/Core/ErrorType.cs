@@ -3,7 +3,7 @@
     internal enum ErrorType
     {
         Undefined,
-        NullNode, 
+        NullNode,
         EmptyNode,
         NullAttribute,
         EmptyAttribute,

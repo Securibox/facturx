@@ -6,7 +6,7 @@
 
         public new StakeHolders StakeHolders { get; set; }
 
-        public new References? References { get;    set; }
+        public new References? References { get; set; }
 
         public IList<AllowanceCharge>? AllowanceList { get; set; }
 

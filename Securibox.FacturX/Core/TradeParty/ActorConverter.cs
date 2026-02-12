@@ -1,7 +1,7 @@
-﻿using Securibox.FacturX.Models;
+﻿using System.Xml;
+using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Extended;
-using System.Xml;
 
 namespace Securibox.FacturX.Core
 {
@@ -25,35 +25,73 @@ namespace Securibox.FacturX.Core
         private XmlNode? _deliverFromAddressNode;
         private XmlNode? _ultimateDeliverToAddressNode;
 
-        internal ActorConverter(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument) : base(conformanceLevelType)
+        internal ActorConverter(
+            FacturXConformanceLevelType conformanceLevelType,
+            XmlDocument xmlDocument
+        )
+            : base(conformanceLevelType)
         {
-            var tradeAgreementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeAgreement']")!;
-            _buyerNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerTradeParty']")!;
-            _sellerNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SellerTradeParty']")!;
+            var tradeAgreementNode = xmlDocument.SelectSingleNode(
+                "//*[local-name() = 'ApplicableHeaderTradeAgreement']"
+            )!;
+            _buyerNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'BuyerTradeParty']"
+            )!;
+            _sellerNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'SellerTradeParty']"
+            )!;
 
-            _buyerAgentNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerAgentTradeParty']");
-            _salesAgentNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SalesAgentTradeParty']");
-            
-            _buyerTaxRepresentativeNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerTaxRepresentativeTradeParty']");
-            _sellerTaxRepresentativeNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SellerTaxRepresentativeTradeParty']");
+            _buyerAgentNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'BuyerAgentTradeParty']"
+            );
+            _salesAgentNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'SalesAgentTradeParty']"
+            );
 
-            _productEndUserNode = tradeAgreementNode.SelectSingleNode("*[local-name() = 'ProductEndUserTradeParty']");
+            _buyerTaxRepresentativeNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'BuyerTaxRepresentativeTradeParty']"
+            );
+            _sellerTaxRepresentativeNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'SellerTaxRepresentativeTradeParty']"
+            );
 
-            var tradeSettlementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeSettlement']")!;
-            _invoiceeNode = tradeSettlementNode.SelectSingleNode("*[local-name() = 'InvoiceeTradeParty']");
-            _invoicerNode = tradeSettlementNode.SelectSingleNode("*[local-name() = 'InvoicerTradeParty']");
-            _payeeNode = tradeSettlementNode.SelectSingleNode("*[local-name() = 'PayeeTradeParty']");
-            _payerNode = tradeSettlementNode.SelectSingleNode("*[local-name() = 'PayerTradeParty']");
+            _productEndUserNode = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'ProductEndUserTradeParty']"
+            );
+
+            var tradeSettlementNode = xmlDocument.SelectSingleNode(
+                "//*[local-name() = 'ApplicableHeaderTradeSettlement']"
+            )!;
+            _invoiceeNode = tradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'InvoiceeTradeParty']"
+            );
+            _invoicerNode = tradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'InvoicerTradeParty']"
+            );
+            _payeeNode = tradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'PayeeTradeParty']"
+            );
+            _payerNode = tradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'PayerTradeParty']"
+            );
 
             _payeeMultiplePaymentNode = tradeSettlementNode
-              .SelectSingleNode("*[local-name() = 'SpecifiedTradePaymentTerms']")?
-              .SelectSingleNode("*[local-name() = 'PayeeTradeParty']");
+                .SelectSingleNode("*[local-name() = 'SpecifiedTradePaymentTerms']")
+                ?.SelectSingleNode("*[local-name() = 'PayeeTradeParty']");
 
-            var tradeDeliveryNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeDelivery']");
+            var tradeDeliveryNode = xmlDocument.SelectSingleNode(
+                "//*[local-name() = 'ApplicableHeaderTradeDelivery']"
+            );
 
-            _deliverFromAddressNode = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'ShipFromTradeParty']");
-            _deliverToAddressNode = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'ShipToTradeParty']");
-            _ultimateDeliverToAddressNode = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'UltimateShipToTradeParty']");
+            _deliverFromAddressNode = tradeDeliveryNode?.SelectSingleNode(
+                "*[local-name() = 'ShipFromTradeParty']"
+            );
+            _deliverToAddressNode = tradeDeliveryNode?.SelectSingleNode(
+                "*[local-name() = 'ShipToTradeParty']"
+            );
+            _ultimateDeliverToAddressNode = tradeDeliveryNode?.SelectSingleNode(
+                "*[local-name() = 'UltimateShipToTradeParty']"
+            );
         }
 
         internal Models.Minimum.Buyer? GetBuyer()
@@ -78,7 +116,10 @@ namespace Securibox.FacturX.Core
             var vatRegistration = GetVatRegistration(_buyerNode);
             var electronicAddress = GetElectronicAddress(_buyerNode);
 
-            if (ConformanceLevelType == FacturXConformanceLevelType.BasicWL || ConformanceLevelType == FacturXConformanceLevelType.Basic)
+            if (
+                ConformanceLevelType == FacturXConformanceLevelType.BasicWL
+                || ConformanceLevelType == FacturXConformanceLevelType.Basic
+            )
             {
                 return new Models.BasicWL.Buyer
                 {
@@ -119,7 +160,9 @@ namespace Securibox.FacturX.Core
                 PostalAddress = postalAddress as Models.BasicWL.PostalAddress,
                 VatRegistration = vatRegistration,
                 Contact = contact as Models.Extended.Contact,
-                AdditionalLegalInformation = _buyerNode.SelectSingleNode("*[local-name() = 'Description']")?.InnerText,
+                AdditionalLegalInformation = _buyerNode
+                    .SelectSingleNode("*[local-name() = 'Description']")
+                    ?.InnerText,
             };
         }
 
@@ -131,7 +174,8 @@ namespace Securibox.FacturX.Core
             var name = GetName(_buyerAgentNode);
             var id = GetIdList(_buyerAgentNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(_buyerAgentNode);
-            var legalRegistration = GetLegalRegistration(_buyerAgentNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_buyerAgentNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(_buyerAgentNode) as Contact;
             var postalAddress = GetPostalAddress(_buyerAgentNode) as Models.BasicWL.PostalAddress;
 
@@ -159,10 +203,13 @@ namespace Securibox.FacturX.Core
             var name = GetName(_buyerTaxRepresentativeNode);
             var id = GetIdList(_buyerTaxRepresentativeNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(_buyerTaxRepresentativeNode);
-            var legalRegistration = GetLegalRegistration(_buyerTaxRepresentativeNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_buyerTaxRepresentativeNode)
+                as Models.Extended.LegalRegistration;
             var contact = GetContact(_buyerTaxRepresentativeNode) as Contact;
 
-            var postalAddress = GetPostalAddress(_buyerTaxRepresentativeNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(_buyerTaxRepresentativeNode) as Models.BasicWL.PostalAddress;
 
             var electronicAddress = GetElectronicAddress(_buyerTaxRepresentativeNode);
             var vatRegistration = GetVatRegistration(_buyerTaxRepresentativeNode);
@@ -188,9 +235,14 @@ namespace Securibox.FacturX.Core
             var id = GetId(_deliverToAddressNode);
             var globalIdentification = GetGlobalIdOptionalScheme(_deliverToAddressNode);
             var name = GetName(_deliverToAddressNode);
-            var postalAddress = GetPostalAddress(_deliverToAddressNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(_deliverToAddressNode) as Models.BasicWL.PostalAddress;
 
-            if (ConformanceLevelType == FacturXConformanceLevelType.BasicWL || ConformanceLevelType == FacturXConformanceLevelType.Basic || ConformanceLevelType == FacturXConformanceLevelType.EN16931)
+            if (
+                ConformanceLevelType == FacturXConformanceLevelType.BasicWL
+                || ConformanceLevelType == FacturXConformanceLevelType.Basic
+                || ConformanceLevelType == FacturXConformanceLevelType.EN16931
+            )
             {
                 return new DeliverToAddress
                 {
@@ -215,7 +267,7 @@ namespace Securibox.FacturX.Core
                 LegalRegistration = legalRegistration,
                 Contact = contact,
                 ElectronicAddress = electronicAddress,
-                VatRegistrationList = vatRegistrationList
+                VatRegistrationList = vatRegistrationList,
             };
         }
 
@@ -228,9 +280,11 @@ namespace Securibox.FacturX.Core
             var globalIdentificationList = GetGlobalIdentificationList(_deliverFromAddressNode);
             var name = GetName(_deliverFromAddressNode);
 
-            var postalAddress = GetPostalAddress(_deliverFromAddressNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(_deliverFromAddressNode) as Models.BasicWL.PostalAddress;
 
-            var legalRegistration = GetLegalRegistration(_deliverFromAddressNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_deliverFromAddressNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(_deliverFromAddressNode) as Contact;
             var electronicAddress = GetElectronicAddress(_deliverFromAddressNode);
             var vatRegistrationList = GetVatRegistrationList(_deliverFromAddressNode);
@@ -244,7 +298,7 @@ namespace Securibox.FacturX.Core
                 LegalRegistration = legalRegistration,
                 Contact = contact,
                 ElectronicAddress = electronicAddress,
-                VatRegistrationList = vatRegistrationList
+                VatRegistrationList = vatRegistrationList,
             };
         }
 
@@ -256,7 +310,8 @@ namespace Securibox.FacturX.Core
             var id = GetIdList(_invoiceeNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(_invoiceeNode);
             var name = GetName(_invoiceeNode);
-            var legalRegistration = GetLegalRegistration(_invoiceeNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_invoiceeNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(_invoiceeNode) as Contact;
 
             var postalAddress = GetPostalAddress(_invoiceeNode) as Models.BasicWL.PostalAddress;
@@ -285,7 +340,8 @@ namespace Securibox.FacturX.Core
             var id = GetIdList(_invoicerNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(_invoicerNode);
             var name = GetName(_invoicerNode);
-            var legalRegistration = GetLegalRegistration(_invoicerNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_invoicerNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(_invoicerNode) as Contact;
 
             var postalAddress = GetPostalAddress(_invoicerNode) as Models.BasicWL.PostalAddress;
@@ -312,12 +368,17 @@ namespace Securibox.FacturX.Core
                 return null;
 
             var id = GetIdList(_ultimateDeliverToAddressNode)?.FirstOrDefault();
-            var globalIdentificationList = GetGlobalIdentificationList(_ultimateDeliverToAddressNode);
+            var globalIdentificationList = GetGlobalIdentificationList(
+                _ultimateDeliverToAddressNode
+            );
             var name = GetName(_ultimateDeliverToAddressNode);
 
-            var postalAddress = GetPostalAddress(_ultimateDeliverToAddressNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(_ultimateDeliverToAddressNode) as Models.BasicWL.PostalAddress;
 
-            var legalRegistration = GetLegalRegistration(_ultimateDeliverToAddressNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_ultimateDeliverToAddressNode)
+                as Models.Extended.LegalRegistration;
             var contact = GetContact(_ultimateDeliverToAddressNode) as Contact;
             var electronicAddress = GetElectronicAddress(_ultimateDeliverToAddressNode);
             var vatRegistrationList = GetVatRegistrationList(_ultimateDeliverToAddressNode);
@@ -361,7 +422,9 @@ namespace Securibox.FacturX.Core
 
                 var electronicAddress = GetElectronicAddress(_payeeNode);
                 var contact = GetContact(_payeeNode) as Contact;
-                var roleCode = _payeeNode.SelectSingleNode("*[local-name() = 'RoleCode']")?.InnerText;
+                var roleCode = _payeeNode
+                    .SelectSingleNode("*[local-name() = 'RoleCode']")
+                    ?.InnerText;
 
                 return new Models.Extended.PaymentActor
                 {
@@ -390,10 +453,13 @@ namespace Securibox.FacturX.Core
             var id = GetIdList(_payeeMultiplePaymentNode)?.FirstOrDefault();
             var globalIdentification = GetActorGlobalIdentification(_payeeMultiplePaymentNode);
             var legalRegistration = GetLegalRegistration(_payeeMultiplePaymentNode);
-            var roleCode = _payeeMultiplePaymentNode.SelectSingleNode("*[local-name() = 'RoleCode']")?.InnerText;
+            var roleCode = _payeeMultiplePaymentNode
+                .SelectSingleNode("*[local-name() = 'RoleCode']")
+                ?.InnerText;
             var contact = GetContact(_payeeMultiplePaymentNode);
 
-            var postalAddress = GetPostalAddress(_payeeMultiplePaymentNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(_payeeMultiplePaymentNode) as Models.BasicWL.PostalAddress;
 
             var electronicAddress = GetElectronicAddress(_payeeMultiplePaymentNode);
             var vatRegistartionList = GetVatRegistrationList(_payeeMultiplePaymentNode);
@@ -451,7 +517,8 @@ namespace Securibox.FacturX.Core
             var name = GetName(_productEndUserNode);
             var id = GetIdList(_productEndUserNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(_productEndUserNode);
-            var legalRegistration = GetLegalRegistration(_productEndUserNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_productEndUserNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(_productEndUserNode) as Models.Extended.Contact;
 
             var postalAddress = GetPostalAddress(_productEndUserNode);
@@ -468,7 +535,7 @@ namespace Securibox.FacturX.Core
                 Contact = contact,
                 PostalAddress = postalAddress as Models.BasicWL.PostalAddress,
                 ElectronicAddress = electronicAddress,
-                VatRegistrationList = vatRegistrationList
+                VatRegistrationList = vatRegistrationList,
             };
         }
 
@@ -480,7 +547,8 @@ namespace Securibox.FacturX.Core
             var name = GetName(_salesAgentNode);
             var id = GetIdList(_salesAgentNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(_salesAgentNode);
-            var legalRegistration = GetLegalRegistration(_salesAgentNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(_salesAgentNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(_salesAgentNode) as Contact;
 
             var postalAddress = GetPostalAddress(_salesAgentNode) as Models.BasicWL.PostalAddress;
@@ -526,7 +594,10 @@ namespace Securibox.FacturX.Core
             var globalIdentificationList = GetGlobalIdentificationList(_sellerNode);
             var electronicAddress = GetElectronicAddress(_sellerNode);
 
-            if (ConformanceLevelType == FacturXConformanceLevelType.BasicWL || ConformanceLevelType == FacturXConformanceLevelType.Basic)
+            if (
+                ConformanceLevelType == FacturXConformanceLevelType.BasicWL
+                || ConformanceLevelType == FacturXConformanceLevelType.Basic
+            )
             {
                 return new Models.BasicWL.Seller
                 {
@@ -541,7 +612,9 @@ namespace Securibox.FacturX.Core
             }
 
             var contact = GetContact(_sellerNode);
-            var additionalLegalInformation = _sellerNode.SelectSingleNode("*[local-name() = 'Description']")?.InnerText;
+            var additionalLegalInformation = _sellerNode
+                .SelectSingleNode("*[local-name() = 'Description']")
+                ?.InnerText;
 
             var fiscalRegistration = GetFiscalRegistration(_sellerNode);
 
@@ -589,7 +662,11 @@ namespace Securibox.FacturX.Core
 
             var vatRegistration = GetVatRegistration(_sellerTaxRepresentativeNode);
 
-            if (ConformanceLevelType == FacturXConformanceLevelType.BasicWL || ConformanceLevelType == FacturXConformanceLevelType.Basic || ConformanceLevelType == FacturXConformanceLevelType.EN16931)
+            if (
+                ConformanceLevelType == FacturXConformanceLevelType.BasicWL
+                || ConformanceLevelType == FacturXConformanceLevelType.Basic
+                || ConformanceLevelType == FacturXConformanceLevelType.EN16931
+            )
             {
                 return new SellerTaxRepresentative
                 {
@@ -600,7 +677,9 @@ namespace Securibox.FacturX.Core
             }
 
             var id = GetIdList(_sellerTaxRepresentativeNode)?.FirstOrDefault();
-            var globalIdentificationList = GetGlobalIdentificationList(_sellerTaxRepresentativeNode);
+            var globalIdentificationList = GetGlobalIdentificationList(
+                _sellerTaxRepresentativeNode
+            );
             var legalRegistration = GetLegalRegistration(_sellerTaxRepresentativeNode);
             var contact = GetContact(_sellerTaxRepresentativeNode);
             var electronicAddress = GetElectronicAddress(_sellerTaxRepresentativeNode);
@@ -620,7 +699,9 @@ namespace Securibox.FacturX.Core
 
         internal LineDeliverAddress? GetLineDeliverToAddress(XmlNode lineNode)
         {
-            var deliverToAddressNode = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")?.SelectSingleNode("*[local-name() = 'ShipToTradeParty']");
+            var deliverToAddressNode = lineNode
+                .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")
+                ?.SelectSingleNode("*[local-name() = 'ShipToTradeParty']");
 
             if (deliverToAddressNode == null)
                 return null;
@@ -628,10 +709,12 @@ namespace Securibox.FacturX.Core
             var id = GetIdList(deliverToAddressNode)?.FirstOrDefault();
             var globalIdentificationList = GetGlobalIdentificationList(deliverToAddressNode);
             var name = GetName(deliverToAddressNode);
-            var legalRegistration = GetLegalRegistration(deliverToAddressNode) as Models.Extended.LegalRegistration;
+            var legalRegistration =
+                GetLegalRegistration(deliverToAddressNode) as Models.Extended.LegalRegistration;
             var contact = GetContact(deliverToAddressNode) as Contact;
 
-            var postalAddress = GetPostalAddress(deliverToAddressNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(deliverToAddressNode) as Models.BasicWL.PostalAddress;
 
             var electronicAddress = GetElectronicAddress(deliverToAddressNode);
             var vatRegistration = GetVatRegistration(deliverToAddressNode);
@@ -651,18 +734,25 @@ namespace Securibox.FacturX.Core
 
         internal IActor? GetLineUltimateDeliverToAddress(XmlNode lineNode)
         {
-            var ultimateDeliverToAddressNode = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")?.SelectSingleNode("*[local-name() = 'UltimateShipToTradeParty']");
+            var ultimateDeliverToAddressNode = lineNode
+                .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")
+                ?.SelectSingleNode("*[local-name() = 'UltimateShipToTradeParty']");
 
             if (ultimateDeliverToAddressNode == null)
                 return null;
 
             var name = GetName(ultimateDeliverToAddressNode);
             var id = GetIdList(ultimateDeliverToAddressNode)?.FirstOrDefault();
-            var globalIdentificationList = GetGlobalIdentificationList(ultimateDeliverToAddressNode);
-            var legalRegistration = GetLegalRegistration(ultimateDeliverToAddressNode) as Models.Extended.LegalRegistration;
+            var globalIdentificationList = GetGlobalIdentificationList(
+                ultimateDeliverToAddressNode
+            );
+            var legalRegistration =
+                GetLegalRegistration(ultimateDeliverToAddressNode)
+                as Models.Extended.LegalRegistration;
             var contact = GetContact(ultimateDeliverToAddressNode) as Contact;
 
-            var postalAddress = GetPostalAddress(ultimateDeliverToAddressNode) as Models.BasicWL.PostalAddress;
+            var postalAddress =
+                GetPostalAddress(ultimateDeliverToAddressNode) as Models.BasicWL.PostalAddress;
 
             var electronicAddress = GetElectronicAddress(ultimateDeliverToAddressNode);
             var vatRegistration = GetVatRegistration(ultimateDeliverToAddressNode);

@@ -1,9 +1,9 @@
-﻿using Securibox.FacturX.Core.Line;
+﻿using System.Xml;
+using Securibox.FacturX.Core.Line;
 using Securibox.FacturX.Models.BasicWL;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Extended;
 using Securibox.FacturX.Models.Extended.Payment;
-using System.Xml;
 
 namespace Securibox.FacturX.Core
 {
@@ -15,11 +15,18 @@ namespace Securibox.FacturX.Core
         private readonly XmlNode? TaxCurrencyExchangeNode;
         private readonly XmlNodeList? AdvancePaymentNodeList;
 
-        internal ExtendedInvoiceBuilder(XmlDocument xmlDocument) : base(FacturXConformanceLevelType.Extended, xmlDocument) 
+        internal ExtendedInvoiceBuilder(XmlDocument xmlDocument)
+            : base(FacturXConformanceLevelType.Extended, xmlDocument)
         {
-            SpecifiedLogisticsServiceChargeNodeList = TradeSettlementNode.SelectNodes("*[local-name() = 'SpecifiedLogisticsServiceCharge']");
-            TaxCurrencyExchangeNode = TradeSettlementNode.SelectSingleNode("*[local-name() = 'TaxApplicableTradeCurrencyExchange']");
-            AdvancePaymentNodeList = TradeSettlementNode.SelectNodes("*[local-name() = 'SpecifiedAdvancePayment']");
+            SpecifiedLogisticsServiceChargeNodeList = TradeSettlementNode.SelectNodes(
+                "*[local-name() = 'SpecifiedLogisticsServiceCharge']"
+            );
+            TaxCurrencyExchangeNode = TradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'TaxApplicableTradeCurrencyExchange']"
+            );
+            AdvancePaymentNodeList = TradeSettlementNode.SelectNodes(
+                "*[local-name() = 'SpecifiedAdvancePayment']"
+            );
 
             invoice = new Models.Extended.Invoice();
         }
@@ -37,25 +44,63 @@ namespace Securibox.FacturX.Core
         protected override void BuildProccessControl()
         {
             invoice.ProccessControl = GetProccessControl() as Models.Extended.ProccessControl;
-
         }
 
         protected override void BuildReferences()
         {
             var references = new Models.Extended.References
             {
-                BuyerReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.BuyerReference) as Models.Minimum.BuyerReference,
-                PurchaseOrderReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.PurchaseOrderReference) as Models.Extended.PurchaseOrderReference,
-                ContractReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.ContractReference) as Models.Extended.ContractReference,
-                TenderOrLotReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.TenderOrLotReference) as Models.Extended.TenderOrLotReference,
-                ProjectReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.ProjectReference) as Models.EN16931.ProjectReference,
-                SupportingDocumentList = ReferenceFactory.ConvertInvoiceReferenceList(References.ReferenceType.SupportingDocumentReference)?.Cast<Models.Extended.SupportingDocument>(),
-                InvoicedObjectIdentifier = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.InvoicedObjectIdentifier) as Models.Extended.InvoicedObjectIdentifier,
-                SalesOrderReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.SalesOrderReference) as Models.Extended.SalesOrderReference,
-                QuotationReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.QuotationReference) as Models.Extended.QuotationReference,
-                UltimateCustomerOrderReferenceList = ReferenceFactory.ConvertInvoiceReferenceList(References.ReferenceType.UltimateCustomerOrderReferenceList)?.Cast<Models.Extended.UltimateCustomerOrderReference>(),
-                BuyerAccountingReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.BuyerAccountingReference) as Models.Extended.BuyerAccountingReference,
-                PreviousInvoiceReferenceList = ReferenceFactory.ConvertInvoiceReferenceList(References.ReferenceType.PreviousInvoiceReferenceList)?.Cast<Models.Extended.PreviousInvoiceReference>(),
+                BuyerReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.BuyerReference
+                    ) as Models.Minimum.BuyerReference,
+                PurchaseOrderReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.PurchaseOrderReference
+                    ) as Models.Extended.PurchaseOrderReference,
+                ContractReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.ContractReference
+                    ) as Models.Extended.ContractReference,
+                TenderOrLotReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.TenderOrLotReference
+                    ) as Models.Extended.TenderOrLotReference,
+                ProjectReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.ProjectReference
+                    ) as Models.EN16931.ProjectReference,
+                SupportingDocumentList = ReferenceFactory
+                    .ConvertInvoiceReferenceList(
+                        References.ReferenceType.SupportingDocumentReference
+                    )
+                    ?.Cast<Models.Extended.SupportingDocument>(),
+                InvoicedObjectIdentifier =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.InvoicedObjectIdentifier
+                    ) as Models.Extended.InvoicedObjectIdentifier,
+                SalesOrderReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.SalesOrderReference
+                    ) as Models.Extended.SalesOrderReference,
+                QuotationReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.QuotationReference
+                    ) as Models.Extended.QuotationReference,
+                UltimateCustomerOrderReferenceList = ReferenceFactory
+                    .ConvertInvoiceReferenceList(
+                        References.ReferenceType.UltimateCustomerOrderReferenceList
+                    )
+                    ?.Cast<Models.Extended.UltimateCustomerOrderReference>(),
+                BuyerAccountingReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.BuyerAccountingReference
+                    ) as Models.Extended.BuyerAccountingReference,
+                PreviousInvoiceReferenceList = ReferenceFactory
+                    .ConvertInvoiceReferenceList(
+                        References.ReferenceType.PreviousInvoiceReferenceList
+                    )
+                    ?.Cast<Models.Extended.PreviousInvoiceReference>(),
             };
 
             invoice.References = references;
@@ -65,18 +110,40 @@ namespace Securibox.FacturX.Core
         {
             var stakeHolders = new Models.Extended.StakeHolders
             {
-                Seller = TradePartyFactory.ConvertActor(TradePartyType.Seller) as Models.Extended.Seller,
-                Buyer = TradePartyFactory.ConvertActor(TradePartyType.Buyer) as Models.Extended.Buyer,
-                SellerTaxRepresentative = TradePartyFactory.ConvertActor(TradePartyType.SellerTaxRepresentative) as Models.Extended.SellerTaxRepresentative,
-                BuyerTaxRepresentative = TradePartyFactory.ConvertActor(TradePartyType.BuyerTaxRepresentative) as Models.Extended.BuyerTaxRepresentative,
-                SalesAgent = TradePartyFactory.ConvertActor(TradePartyType.SalesAgent) as Models.Extended.SalesAgent,
-                BuyerAgent = TradePartyFactory.ConvertActor(TradePartyType.BuyerAgent) as Models.Extended.BuyerAgent,
-                ProductEndUser = TradePartyFactory.ConvertActor(TradePartyType.ProductEndUser) as Models.Extended.ProductEndUser,
-                Invoicee = TradePartyFactory.ConvertActor(TradePartyType.SalesAgent) as Models.Extended.Invoicee,
-                Invoicer = TradePartyFactory.ConvertActor(TradePartyType.Invoicer) as Models.Extended.Invoicer,
-                Payee = TradePartyFactory.ConvertActor(TradePartyType.Payee) as Models.Extended.PaymentActor,
-                Payer = TradePartyFactory.ConvertActor(TradePartyType.Payer) as Models.Extended.PaymentActor,
-                PayeeMultiplePayment = TradePartyFactory.ConvertActor(TradePartyType.PayeeMultiplePaymentsAndPayee) as Models.Extended.PaymentActor,
+                Seller =
+                    TradePartyFactory.ConvertActor(TradePartyType.Seller) as Models.Extended.Seller,
+                Buyer =
+                    TradePartyFactory.ConvertActor(TradePartyType.Buyer) as Models.Extended.Buyer,
+                SellerTaxRepresentative =
+                    TradePartyFactory.ConvertActor(TradePartyType.SellerTaxRepresentative)
+                    as Models.Extended.SellerTaxRepresentative,
+                BuyerTaxRepresentative =
+                    TradePartyFactory.ConvertActor(TradePartyType.BuyerTaxRepresentative)
+                    as Models.Extended.BuyerTaxRepresentative,
+                SalesAgent =
+                    TradePartyFactory.ConvertActor(TradePartyType.SalesAgent)
+                    as Models.Extended.SalesAgent,
+                BuyerAgent =
+                    TradePartyFactory.ConvertActor(TradePartyType.BuyerAgent)
+                    as Models.Extended.BuyerAgent,
+                ProductEndUser =
+                    TradePartyFactory.ConvertActor(TradePartyType.ProductEndUser)
+                    as Models.Extended.ProductEndUser,
+                Invoicee =
+                    TradePartyFactory.ConvertActor(TradePartyType.SalesAgent)
+                    as Models.Extended.Invoicee,
+                Invoicer =
+                    TradePartyFactory.ConvertActor(TradePartyType.Invoicer)
+                    as Models.Extended.Invoicer,
+                Payee =
+                    TradePartyFactory.ConvertActor(TradePartyType.Payee)
+                    as Models.Extended.PaymentActor,
+                Payer =
+                    TradePartyFactory.ConvertActor(TradePartyType.Payer)
+                    as Models.Extended.PaymentActor,
+                PayeeMultiplePayment =
+                    TradePartyFactory.ConvertActor(TradePartyType.PayeeMultiplePaymentsAndPayee)
+                    as Models.Extended.PaymentActor,
             };
 
             invoice.StakeHolders = stakeHolders;
@@ -84,39 +151,44 @@ namespace Securibox.FacturX.Core
 
         protected override void BuildTotals()
         {
-            invoice.Totals = GetTotals(invoice.DirectDebit.InvoiceCurrencyCode) as Models.Extended.Totals;
+            invoice.Totals =
+                GetTotals(invoice.DirectDebit.InvoiceCurrencyCode) as Models.Extended.Totals;
         }
 
-        protected override void BuildPaymentTerms() 
+        protected override void BuildPaymentTerms()
         {
             invoice.PaymentTerms = GetPaymentTerms() as Models.Extended.PaymentTerms;
         }
 
-        protected override void BuildPaymentInstructions() 
+        protected override void BuildPaymentInstructions()
         {
-            invoice.PaymentInstructions = GetPaymentInstructions() as Models.EN16931.PaymentInstructions;
+            invoice.PaymentInstructions =
+                GetPaymentInstructions() as Models.EN16931.PaymentInstructions;
         }
 
-        protected override void BuildDeliveryDetails() 
+        protected override void BuildDeliveryDetails()
         {
             invoice.DeliveryDetails = GetDeliveryDetails() as Models.Extended.DeliveryDetails;
         }
 
-        protected override void BuildVatAndAllowanceCharge() 
+        protected override void BuildVatAndAllowanceCharge()
         {
-            invoice.TaxDistributionList = GetTaxDistributionList()?.Cast<Models.Extended.TaxDistribution>();
-
+            invoice.TaxDistributionList = GetTaxDistributionList()
+                ?.Cast<Models.Extended.TaxDistribution>();
 
             if (AllowanceChargeNodeList != null && AllowanceChargeNodeList.Count > 0)
             {
                 var allowanceChargeList = new List<Models.Extended.AllowanceCharge>();
                 foreach (XmlNode allowanceChargeNode in AllowanceChargeNodeList)
                 {
-                    var allowanceCharge = GetAllowanceCharge(allowanceChargeNode) as Models.Extended.AllowanceCharge;
+                    var allowanceCharge =
+                        GetAllowanceCharge(allowanceChargeNode) as Models.Extended.AllowanceCharge;
                     allowanceChargeList.Add(allowanceCharge);
                 }
 
-                var allowanceList = allowanceChargeList.Where(x => x.ChargeIndicator == false).ToList();
+                var allowanceList = allowanceChargeList
+                    .Where(x => x.ChargeIndicator == false)
+                    .ToList();
                 invoice.AllowanceList = allowanceList.Any() ? allowanceList : null;
 
                 var chargeList = allowanceChargeList.Where(x => x.ChargeIndicator == true).ToList();
@@ -142,24 +214,32 @@ namespace Securibox.FacturX.Core
             invoice.LineList = lineList;
         }
 
-        protected void BuildTaxCurrencyExchange() 
+        protected void BuildTaxCurrencyExchange()
         {
             if (TaxCurrencyExchangeNode == null)
                 return;
 
-            var conversionRateNode = TaxCurrencyExchangeNode.SelectSingleNode("*[local-name() = 'ConversionRate']");
-            var conversionRateDateNode = TaxCurrencyExchangeNode.SelectSingleNode("*[local-name() = 'ConversionRateDateTime']");
+            var conversionRateNode = TaxCurrencyExchangeNode.SelectSingleNode(
+                "*[local-name() = 'ConversionRate']"
+            );
+            var conversionRateDateNode = TaxCurrencyExchangeNode.SelectSingleNode(
+                "*[local-name() = 'ConversionRateDateTime']"
+            );
 
             invoice.TaxCurrencyExchange = new TaxCurrencyExchange
             {
-                SourceCurrencyCode = TaxCurrencyExchangeNode.SelectSingleNode("*[local-name() = 'SourceCurrencyCode']")?.InnerText,
-                TargetCurrencyCode = TaxCurrencyExchangeNode.SelectSingleNode("*[local-name() = 'TargetCurrencyCode']")?.InnerText,
+                SourceCurrencyCode = TaxCurrencyExchangeNode
+                    .SelectSingleNode("*[local-name() = 'SourceCurrencyCode']")
+                    ?.InnerText,
+                TargetCurrencyCode = TaxCurrencyExchangeNode
+                    .SelectSingleNode("*[local-name() = 'TargetCurrencyCode']")
+                    ?.InnerText,
                 ConversionRate = XmlParsingHelpers.ExtractDecimal(conversionRateNode),
                 ConversionRateDate = XmlParsingHelpers.ExtractDateTime(conversionRateDateNode),
             };
         }
 
-        protected void BuildAdvancePaymentList() 
+        protected void BuildAdvancePaymentList()
         {
             if (AdvancePaymentNodeList == null || AdvancePaymentNodeList.Count == 0)
                 return;
@@ -174,9 +254,12 @@ namespace Securibox.FacturX.Core
             invoice.AdvancePaymentList = advancePaymentList;
         }
 
-        protected void BuildLogisticsServiceChargeList() 
+        protected void BuildLogisticsServiceChargeList()
         {
-            if (SpecifiedLogisticsServiceChargeNodeList == null || SpecifiedLogisticsServiceChargeNodeList.Count == 0)
+            if (
+                SpecifiedLogisticsServiceChargeNodeList == null
+                || SpecifiedLogisticsServiceChargeNodeList.Count == 0
+            )
                 return;
 
             invoice.LogisticsServiceChargeList = new List<LogisticsServiceCharge>();
@@ -190,19 +273,29 @@ namespace Securibox.FacturX.Core
         #region LogisticsServiceCharge
         private Models.Extended.AppliedTax GetAppliedTax(XmlNode logisticsServiceChargeNode)
         {
-            var vatRateNode = logisticsServiceChargeNode.SelectSingleNode("*[local-name() = 'RateApplicablePercent']");
+            var vatRateNode = logisticsServiceChargeNode.SelectSingleNode(
+                "*[local-name() = 'RateApplicablePercent']"
+            );
 
             return new Models.Extended.AppliedTax
             {
-                VatType = logisticsServiceChargeNode.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText,
+                VatType = logisticsServiceChargeNode
+                    .SelectSingleNode("*[local-name() = 'TypeCode']")
+                    ?.InnerText,
                 VatRate = XmlParsingHelpers.ExtractDecimal(vatRateNode),
-                VatCategoryCode = logisticsServiceChargeNode.SelectSingleNode("*[local-name() = 'CategoryCode']")?.InnerText,
+                VatCategoryCode = logisticsServiceChargeNode
+                    .SelectSingleNode("*[local-name() = 'CategoryCode']")
+                    ?.InnerText,
             };
         }
 
-        private IEnumerable<AppliedTax>? GetLogisticsServiceChargeAppliedTaxList(XmlNode logisticsServiceChargeNode)
+        private IEnumerable<AppliedTax>? GetLogisticsServiceChargeAppliedTaxList(
+            XmlNode logisticsServiceChargeNode
+        )
         {
-            var appliedTaxNodeList = logisticsServiceChargeNode.SelectNodes("*[local-name() = 'AppliedTradeTax']");
+            var appliedTaxNodeList = logisticsServiceChargeNode.SelectNodes(
+                "*[local-name() = 'AppliedTradeTax']"
+            );
             if (appliedTaxNodeList == null || appliedTaxNodeList.Count == 0)
                 return null;
 
@@ -215,15 +308,23 @@ namespace Securibox.FacturX.Core
             return appliedTaxList;
         }
 
-        internal Models.Extended.LogisticsServiceCharge GetLogisticsServiceCharge(XmlNode logisticsServiceChargeNode)
+        internal Models.Extended.LogisticsServiceCharge GetLogisticsServiceCharge(
+            XmlNode logisticsServiceChargeNode
+        )
         {
-            var appliedAmountNode = logisticsServiceChargeNode.SelectSingleNode("*[local-name() = 'AppliedAmount']");
+            var appliedAmountNode = logisticsServiceChargeNode.SelectSingleNode(
+                "*[local-name() = 'AppliedAmount']"
+            );
 
             return new Models.Extended.LogisticsServiceCharge
             {
-                Description = logisticsServiceChargeNode.SelectSingleNode("*[local-name() = 'Description']")?.InnerText,
+                Description = logisticsServiceChargeNode
+                    .SelectSingleNode("*[local-name() = 'Description']")
+                    ?.InnerText,
                 AppliedAmount = XmlParsingHelpers.ExtractDecimal(appliedAmountNode),
-                AppliedTaxList = GetLogisticsServiceChargeAppliedTaxList(logisticsServiceChargeNode)
+                AppliedTaxList = GetLogisticsServiceChargeAppliedTaxList(
+                    logisticsServiceChargeNode
+                ),
             };
         }
         #endregion
@@ -232,29 +333,45 @@ namespace Securibox.FacturX.Core
 
         private IncludedTax GetAdvancePaymentIncludedTax(XmlNode includedTaxNode)
         {
-            var vatAmount = includedTaxNode.SelectSingleNode("*[local-name() = 'CalculatedAmount']");
-            var vatRate = includedTaxNode.SelectSingleNode("*[local-name() = 'RateApplicablePercent']");
+            var vatAmount = includedTaxNode.SelectSingleNode(
+                "*[local-name() = 'CalculatedAmount']"
+            );
+            var vatRate = includedTaxNode.SelectSingleNode(
+                "*[local-name() = 'RateApplicablePercent']"
+            );
 
             var includedTax = new IncludedTax
             {
                 VatAmount = XmlParsingHelpers.ExtractDecimal(vatAmount),
-                VatType = includedTaxNode.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText,
-                VatCategoryCode = includedTaxNode.SelectSingleNode("*[local-name() = 'CategoryCode']")?.InnerText,
+                VatType = includedTaxNode
+                    .SelectSingleNode("*[local-name() = 'TypeCode']")
+                    ?.InnerText,
+                VatCategoryCode = includedTaxNode
+                    .SelectSingleNode("*[local-name() = 'CategoryCode']")
+                    ?.InnerText,
                 VatRate = XmlParsingHelpers.ExtractDecimal(vatRate),
             };
 
             includedTax.VatExemptionReason = new Reason
             {
-                Text = includedTaxNode.SelectSingleNode("*[local-name() = 'ExemptionReason']")?.InnerText,
-                Code = includedTaxNode.SelectSingleNode("*[local-name() = 'ExemptionReasonCode']")?.InnerText
+                Text = includedTaxNode
+                    .SelectSingleNode("*[local-name() = 'ExemptionReason']")
+                    ?.InnerText,
+                Code = includedTaxNode
+                    .SelectSingleNode("*[local-name() = 'ExemptionReasonCode']")
+                    ?.InnerText,
             };
 
             return includedTax;
         }
 
-        private IEnumerable<IncludedTax>? GetAdvancePaymentIncludedTaxList(XmlNode advancePaymentNode)
+        private IEnumerable<IncludedTax>? GetAdvancePaymentIncludedTaxList(
+            XmlNode advancePaymentNode
+        )
         {
-            var includedTaxNodeList = advancePaymentNode.SelectNodes("*[local-name() = 'IncludedTradeTax']");
+            var includedTaxNodeList = advancePaymentNode.SelectNodes(
+                "*[local-name() = 'IncludedTradeTax']"
+            );
             if (includedTaxNodeList == null || includedTaxNodeList.Count == 0)
                 return null;
 
@@ -270,14 +387,18 @@ namespace Securibox.FacturX.Core
 
         private AdvancePayment GetAdvancePayment(XmlNode advancePaymentNode)
         {
-            var paidAmountNode = advancePaymentNode.SelectSingleNode("*[local-name() = 'PaidAmount']");
-            var receivedPaymentDateNode = advancePaymentNode.SelectSingleNode("*[local-name() = 'FormattedReceivedDateTime']");
+            var paidAmountNode = advancePaymentNode.SelectSingleNode(
+                "*[local-name() = 'PaidAmount']"
+            );
+            var receivedPaymentDateNode = advancePaymentNode.SelectSingleNode(
+                "*[local-name() = 'FormattedReceivedDateTime']"
+            );
 
             return new AdvancePayment
             {
                 PaidAmount = XmlParsingHelpers.ExtractDecimal(paidAmountNode),
                 ReceivedPaymentDate = XmlParsingHelpers.ExtractDateTime(receivedPaymentDateNode),
-                IncludedTaxList = GetAdvancePaymentIncludedTaxList(advancePaymentNode)
+                IncludedTaxList = GetAdvancePaymentIncludedTaxList(advancePaymentNode),
             };
         }
         #endregion

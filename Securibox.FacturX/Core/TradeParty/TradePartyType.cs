@@ -15,7 +15,7 @@
         Invoicer,
         Invoicee,
         Payee,
-        Payer, 
-        PayeeMultiplePaymentsAndPayee
+        Payer,
+        PayeeMultiplePaymentsAndPayee,
     }
 }

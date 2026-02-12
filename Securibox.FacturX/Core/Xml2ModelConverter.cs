@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Xml;
+using Microsoft.Extensions.Logging;
 using Securibox.FacturX.Models.Enums;
-using System.Xml;
 
 namespace Securibox.FacturX.Core
 {
@@ -12,7 +12,11 @@ namespace Securibox.FacturX.Core
         private readonly IList<ErrorReport> _errorReports;
         private int _version;
 
-        internal Xml2ModelConverter(XmlDocument xmlDocument, FacturXConformanceLevelType conformanceLevelType, ILogger<Xml2ModelConverter> logger = null)
+        internal Xml2ModelConverter(
+            XmlDocument xmlDocument,
+            FacturXConformanceLevelType conformanceLevelType,
+            ILogger<Xml2ModelConverter> logger = null
+        )
         {
             if (xmlDocument == null)
             {
@@ -21,10 +25,15 @@ namespace Securibox.FacturX.Core
 
             if (logger == null)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(delegate (ILoggingBuilder builder)
-                {
-                    builder.AddFilter("Microsoft", LogLevel.Warning).AddFilter("System", LogLevel.Warning).AddFilter(nameof(Xml2ModelConverter), LogLevel.Debug);
-                });
+                using ILoggerFactory factory = LoggerFactory.Create(
+                    delegate(ILoggingBuilder builder)
+                    {
+                        builder
+                            .AddFilter("Microsoft", LogLevel.Warning)
+                            .AddFilter("System", LogLevel.Warning)
+                            .AddFilter(nameof(Xml2ModelConverter), LogLevel.Debug);
+                    }
+                );
                 logger = factory.CreateLogger<Xml2ModelConverter>();
             }
             _logger = logger;
@@ -42,8 +51,6 @@ namespace Securibox.FacturX.Core
             }
 
             _errorReports = new List<ErrorReport>();
-
-            
         }
 
         internal Models.Minimum.Invoice Convert()

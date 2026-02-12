@@ -6,9 +6,11 @@
 
         public DateTime? IssueDate { get; private set; }
 
-        internal LinePurchaseOrderReference(string? lineId) : base(lineId) { }
+        internal LinePurchaseOrderReference(string? lineId)
+            : base(lineId) { }
 
         internal void AddAssignedId(string? assignedId) => AssignedId = assignedId;
+
         internal void AddIssueDate(DateTime? issueDate) => IssueDate = issueDate;
     }
 }

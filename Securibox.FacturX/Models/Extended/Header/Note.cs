@@ -4,6 +4,7 @@
     {
         public string? ContentCode { get; internal set; }
 
-        public Note(string content, string? subjectCode, string? contentCode) : base(content, subjectCode) => ContentCode = contentCode;
+        public Note(string content, string? subjectCode, string? contentCode)
+            : base(content, subjectCode) => ContentCode = contentCode;
     }
 }

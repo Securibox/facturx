@@ -1,5 +1,5 @@
-﻿using Securibox.FacturX.Models.Enums;
-using System.Xml;
+﻿using System.Xml;
+using Securibox.FacturX.Models.Enums;
 
 namespace Securibox.FacturX.Core
 {
@@ -7,9 +7,9 @@ namespace Securibox.FacturX.Core
     {
         private Models.Minimum.Invoice invoice;
 
-        internal MinimumInvoiceBuilder(XmlDocument xmlDocument) 
-            : base(FacturXConformanceLevelType.Minimum, xmlDocument) 
-        { 
+        internal MinimumInvoiceBuilder(XmlDocument xmlDocument)
+            : base(FacturXConformanceLevelType.Minimum, xmlDocument)
+        {
             invoice = new Models.Minimum.Invoice();
         }
 
@@ -32,19 +32,27 @@ namespace Securibox.FacturX.Core
         {
             var references = new Models.Minimum.References
             {
-                BuyerReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.BuyerReference) as Models.Minimum.BuyerReference,
-                PurchaseOrderReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.PurchaseOrderReference) as Models.Minimum.PurchaseOrderReference,
+                BuyerReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.BuyerReference
+                    ) as Models.Minimum.BuyerReference,
+                PurchaseOrderReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.PurchaseOrderReference
+                    ) as Models.Minimum.PurchaseOrderReference,
             };
 
-            invoice.References = references; 
+            invoice.References = references;
         }
 
         protected override void BuildStakeHolders()
         {
             var stakeHolders = new Models.Minimum.StakeHolders
             {
-                Buyer = TradePartyFactory.ConvertActor(TradePartyType.Buyer) as Models.Minimum.Buyer,
-                Seller = TradePartyFactory.ConvertActor(TradePartyType.Seller) as Models.Minimum.Seller,
+                Buyer =
+                    TradePartyFactory.ConvertActor(TradePartyType.Buyer) as Models.Minimum.Buyer,
+                Seller =
+                    TradePartyFactory.ConvertActor(TradePartyType.Seller) as Models.Minimum.Seller,
             };
 
             invoice.StakeHolders = stakeHolders;

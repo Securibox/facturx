@@ -1,7 +1,7 @@
-﻿using Securibox.FacturX.Models;
+﻿using System.Xml;
+using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.EN16931;
 using Securibox.FacturX.Models.Enums;
-using System.Xml;
 
 namespace Securibox.FacturX.Core
 {
@@ -25,44 +25,83 @@ namespace Securibox.FacturX.Core
         protected readonly IEnumerable<XmlNode>? SupportingDocumentReferenceNodeList;
         protected readonly XmlNodeList? UltimateCustomerOrderReferenceNodeList;
 
-        protected BaseReferenceConverter(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument)
+        protected BaseReferenceConverter(
+            FacturXConformanceLevelType conformanceLevelType,
+            XmlDocument xmlDocument
+        )
         {
             ConformanceLevelType = conformanceLevelType;
 
-            var tradeAgreementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeAgreement']")!;
-            BuyerReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerReference']");
-            ContractReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'ContractReferencedDocument']");
-            ProjectReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SpecifiedProcuringProject']");
-            PurchaseOrderReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'BuyerOrderReferencedDocument']");
-            QuotationReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'QuotationReferencedDocument']");
-            SalesOrderReference = tradeAgreementNode.SelectSingleNode("*[local-name() = 'SellerOrderReferencedDocument']");
+            var tradeAgreementNode = xmlDocument.SelectSingleNode(
+                "//*[local-name() = 'ApplicableHeaderTradeAgreement']"
+            )!;
+            BuyerReference = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'BuyerReference']"
+            );
+            ContractReference = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'ContractReferencedDocument']"
+            );
+            ProjectReference = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'SpecifiedProcuringProject']"
+            );
+            PurchaseOrderReference = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'BuyerOrderReferencedDocument']"
+            );
+            QuotationReference = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'QuotationReferencedDocument']"
+            );
+            SalesOrderReference = tradeAgreementNode.SelectSingleNode(
+                "*[local-name() = 'SellerOrderReferencedDocument']"
+            );
 
-            UltimateCustomerOrderReferenceNodeList = tradeAgreementNode.SelectNodes("*[local-name() = 'UltimateCustomerOrderReferencedDocument']");
+            UltimateCustomerOrderReferenceNodeList = tradeAgreementNode.SelectNodes(
+                "*[local-name() = 'UltimateCustomerOrderReferencedDocument']"
+            );
 
-            var additionalDocumentReferenceList = tradeAgreementNode?.SelectNodes("*[local-name() = 'AdditionalReferencedDocument']");
+            var additionalDocumentReferenceList = tradeAgreementNode?.SelectNodes(
+                "*[local-name() = 'AdditionalReferencedDocument']"
+            );
 
-            SupportingDocumentReferenceNodeList = additionalDocumentReferenceList?
-               .Cast<XmlNode>()
-               .Where(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "916");
+            SupportingDocumentReferenceNodeList = additionalDocumentReferenceList
+                ?.Cast<XmlNode>()
+                .Where(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "916");
 
-            InvoicedObjectIdentifier = additionalDocumentReferenceList?
-                .Cast<XmlNode>()
-                .FirstOrDefault(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "130");
+            InvoicedObjectIdentifier = additionalDocumentReferenceList
+                ?.Cast<XmlNode>()
+                .FirstOrDefault(x =>
+                    x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "130"
+                );
 
-            TenderOrLotReference = additionalDocumentReferenceList?
-                .Cast<XmlNode>()
-                .FirstOrDefault(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "50");
+            TenderOrLotReference = additionalDocumentReferenceList
+                ?.Cast<XmlNode>()
+                .FirstOrDefault(x =>
+                    x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "50"
+                );
 
-            var tradeSettlementNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeSettlement']")!;
+            var tradeSettlementNode = xmlDocument.SelectSingleNode(
+                "//*[local-name() = 'ApplicableHeaderTradeSettlement']"
+            )!;
 
-            BuyerAccountingReference = tradeSettlementNode.SelectSingleNode("*[local-name() = 'ReceivableSpecifiedTradeAccountingAccount']");
+            BuyerAccountingReference = tradeSettlementNode.SelectSingleNode(
+                "*[local-name() = 'ReceivableSpecifiedTradeAccountingAccount']"
+            );
 
-            PreviousInvoiceReferenceNodeList = tradeSettlementNode?.SelectNodes("*[local-name() = 'InvoiceReferencedDocument']");
+            PreviousInvoiceReferenceNodeList = tradeSettlementNode?.SelectNodes(
+                "*[local-name() = 'InvoiceReferencedDocument']"
+            );
 
-            var tradeDeliveryNode = xmlDocument.SelectSingleNode("//*[local-name() = 'ApplicableHeaderTradeDelivery']");
-            DeliveryNoteReference = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'DeliveryNoteReferencedDocument']");
-            DespatchAdviceReference = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'DespatchAdviceReferencedDocument']");
-            ReceivingAdviceReference = tradeDeliveryNode?.SelectSingleNode("*[local-name() = 'ReceivingAdviceReferencedDocument']");
+            var tradeDeliveryNode = xmlDocument.SelectSingleNode(
+                "//*[local-name() = 'ApplicableHeaderTradeDelivery']"
+            );
+            DeliveryNoteReference = tradeDeliveryNode?.SelectSingleNode(
+                "*[local-name() = 'DeliveryNoteReferencedDocument']"
+            );
+            DespatchAdviceReference = tradeDeliveryNode?.SelectSingleNode(
+                "*[local-name() = 'DespatchAdviceReferencedDocument']"
+            );
+            ReceivingAdviceReference = tradeDeliveryNode?.SelectSingleNode(
+                "*[local-name() = 'ReceivingAdviceReferencedDocument']"
+            );
         }
 
         internal virtual IReference? GetReference()
@@ -105,7 +144,9 @@ namespace Securibox.FacturX.Core
 
         protected virtual string? GetAssignedId(XmlNode referenceNode)
         {
-            var assignedIdNode = referenceNode.SelectSingleNode("*[local-name() = 'IssuerAssignedID']");
+            var assignedIdNode = referenceNode.SelectSingleNode(
+                "*[local-name() = 'IssuerAssignedID']"
+            );
             if (assignedIdNode == null)
                 return null;
 
@@ -123,17 +164,23 @@ namespace Securibox.FacturX.Core
 
         protected virtual DateTime? GetIssueDate(XmlNode referenceNode)
         {
-            var issueDateNode = referenceNode.SelectSingleNode("*[local-name() = 'FormattedIssueDateTime']");
+            var issueDateNode = referenceNode.SelectSingleNode(
+                "*[local-name() = 'FormattedIssueDateTime']"
+            );
             if (issueDateNode == null)
                 return null;
 
-            var dateStringNode = issueDateNode.SelectSingleNode("*[local-name() = 'DateTimeString']")!;
+            var dateStringNode = issueDateNode.SelectSingleNode(
+                "*[local-name() = 'DateTimeString']"
+            )!;
             return XmlParsingHelpers.ExtractDateTime(dateStringNode);
         }
 
         protected Attachment? GetAttachment(XmlNode referenceNode)
         {
-            var attachmentNode = referenceNode.SelectSingleNode("*[local-name() = 'AttachmentBinaryObject']");
+            var attachmentNode = referenceNode.SelectSingleNode(
+                "*[local-name() = 'AttachmentBinaryObject']"
+            );
             if (attachmentNode == null)
                 return null;
 
@@ -156,7 +203,9 @@ namespace Securibox.FacturX.Core
 
         protected string? GetReferenceTypeCode(XmlNode referenceNode)
         {
-            return referenceNode.SelectSingleNode("*[local-name() = 'ReferenceTypeCode']")?.InnerText;
+            return referenceNode
+                .SelectSingleNode("*[local-name() = 'ReferenceTypeCode']")
+                ?.InnerText;
         }
     }
 }

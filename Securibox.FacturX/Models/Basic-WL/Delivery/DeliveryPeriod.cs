@@ -6,7 +6,7 @@
 
         public DateTime? EndDate { get; internal set; }
 
-        public DeliveryPeriod(DateTime? startDate, DateTime? endDate) 
+        public DeliveryPeriod(DateTime? startDate, DateTime? endDate)
         {
             StartDate = startDate;
             EndDate = endDate;

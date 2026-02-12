@@ -1,6 +1,6 @@
-﻿using Securibox.FacturX.Core.Line;
+﻿using System.Xml;
+using Securibox.FacturX.Core.Line;
 using Securibox.FacturX.Models.Enums;
-using System.Xml;
 
 namespace Securibox.FacturX.Core
 {
@@ -8,8 +8,9 @@ namespace Securibox.FacturX.Core
     {
         private readonly Models.EN16931.Invoice invoice;
 
-        internal EN16931InvoiceBuilder(XmlDocument xmlDocument) : base(FacturXConformanceLevelType.EN16931, xmlDocument) 
-        { 
+        internal EN16931InvoiceBuilder(XmlDocument xmlDocument)
+            : base(FacturXConformanceLevelType.EN16931, xmlDocument)
+        {
             invoice = new Models.EN16931.Invoice();
         }
 
@@ -26,23 +27,54 @@ namespace Securibox.FacturX.Core
         protected override void BuildProccessControl()
         {
             invoice.ProccessControl = GetProccessControl();
-
         }
 
         protected override void BuildReferences()
         {
             var references = new Models.EN16931.References
             {
-                BuyerReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.BuyerReference) as Models.Minimum.BuyerReference,
-                BuyerAccountingReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.BuyerAccountingReference) as Models.BasicWL.BuyerAccountingReference,
-                PurchaseOrderReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.PurchaseOrderReference) as Models.Minimum.PurchaseOrderReference,
-                ContractReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.ContractReference) as Models.BasicWL.ContractReference,
-                TenderOrLotReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.TenderOrLotReference) as Models.EN16931.TenderOrLotReference,
-                ProjectReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.ProjectReference) as Models.EN16931.ProjectReference,
-                SupportingDocumentList = ReferenceFactory.ConvertInvoiceReferenceList(References.ReferenceType.SupportingDocumentReference)?.Cast<Models.EN16931.SupportingDocument>(),
-                InvoicedObjectIdentifier = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.InvoicedObjectIdentifier) as Models.EN16931.InvoicedObjectIdentifier,
-                SalesOrderReference = ReferenceFactory.ConvertInvoiceReference(References.ReferenceType.SalesOrderReference) as Models.EN16931.SalesOrderReference,
-                PreviousInvoiceReferenceList = ReferenceFactory.ConvertInvoiceReferenceList(References.ReferenceType.PreviousInvoiceReferenceList)?.Cast<Models.BasicWL.PreviousInvoiceReference>(),
+                BuyerReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.BuyerReference
+                    ) as Models.Minimum.BuyerReference,
+                BuyerAccountingReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.BuyerAccountingReference
+                    ) as Models.BasicWL.BuyerAccountingReference,
+                PurchaseOrderReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.PurchaseOrderReference
+                    ) as Models.Minimum.PurchaseOrderReference,
+                ContractReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.ContractReference
+                    ) as Models.BasicWL.ContractReference,
+                TenderOrLotReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.TenderOrLotReference
+                    ) as Models.EN16931.TenderOrLotReference,
+                ProjectReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.ProjectReference
+                    ) as Models.EN16931.ProjectReference,
+                SupportingDocumentList = ReferenceFactory
+                    .ConvertInvoiceReferenceList(
+                        References.ReferenceType.SupportingDocumentReference
+                    )
+                    ?.Cast<Models.EN16931.SupportingDocument>(),
+                InvoicedObjectIdentifier =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.InvoicedObjectIdentifier
+                    ) as Models.EN16931.InvoicedObjectIdentifier,
+                SalesOrderReference =
+                    ReferenceFactory.ConvertInvoiceReference(
+                        References.ReferenceType.SalesOrderReference
+                    ) as Models.EN16931.SalesOrderReference,
+                PreviousInvoiceReferenceList = ReferenceFactory
+                    .ConvertInvoiceReferenceList(
+                        References.ReferenceType.PreviousInvoiceReferenceList
+                    )
+                    ?.Cast<Models.BasicWL.PreviousInvoiceReference>(),
             };
 
             invoice.References = references;
@@ -52,10 +84,16 @@ namespace Securibox.FacturX.Core
         {
             var stakeHolders = new Models.EN16931.StakeHolders
             {
-                Seller = TradePartyFactory.ConvertActor(TradePartyType.Seller) as Models.EN16931.Seller,
-                Buyer = TradePartyFactory.ConvertActor(TradePartyType.Buyer) as Models.EN16931.Buyer,
-                SellerTaxRepresentative = TradePartyFactory.ConvertActor(TradePartyType.SellerTaxRepresentative) as Models.BasicWL.SellerTaxRepresentative,
-                Payee = TradePartyFactory.ConvertActor(TradePartyType.Payee) as Models.BasicWL.PaymentActor,
+                Seller =
+                    TradePartyFactory.ConvertActor(TradePartyType.Seller) as Models.EN16931.Seller,
+                Buyer =
+                    TradePartyFactory.ConvertActor(TradePartyType.Buyer) as Models.EN16931.Buyer,
+                SellerTaxRepresentative =
+                    TradePartyFactory.ConvertActor(TradePartyType.SellerTaxRepresentative)
+                    as Models.BasicWL.SellerTaxRepresentative,
+                Payee =
+                    TradePartyFactory.ConvertActor(TradePartyType.Payee)
+                    as Models.BasicWL.PaymentActor,
             };
 
             invoice.StakeHolders = stakeHolders;
@@ -63,39 +101,44 @@ namespace Securibox.FacturX.Core
 
         protected override void BuildTotals()
         {
-            invoice.Totals = GetTotals(invoice.DirectDebit.InvoiceCurrencyCode) as Models.EN16931.Totals;
+            invoice.Totals =
+                GetTotals(invoice.DirectDebit.InvoiceCurrencyCode) as Models.EN16931.Totals;
         }
 
-        protected override void BuildPaymentTerms() 
+        protected override void BuildPaymentTerms()
         {
             invoice.PaymentTerms = GetPaymentTerms();
-
         }
 
-        protected override void BuildPaymentInstructions() 
+        protected override void BuildPaymentInstructions()
         {
-            invoice.PaymentInstructions = GetPaymentInstructions() as Models.EN16931.PaymentInstructions;
+            invoice.PaymentInstructions =
+                GetPaymentInstructions() as Models.EN16931.PaymentInstructions;
         }
 
-        protected override void BuildDeliveryDetails() 
+        protected override void BuildDeliveryDetails()
         {
             invoice.DeliveryDetails = GetDeliveryDetails() as Models.EN16931.DeliveryDetails;
         }
 
-        protected override void BuildVatAndAllowanceCharge() 
+        protected override void BuildVatAndAllowanceCharge()
         {
-            invoice.TaxDistributionList = GetTaxDistributionList()?.Cast<Models.EN16931.TaxDistribution>();
+            invoice.TaxDistributionList = GetTaxDistributionList()
+                ?.Cast<Models.EN16931.TaxDistribution>();
 
             if (AllowanceChargeNodeList != null && AllowanceChargeNodeList.Count > 0)
             {
                 var allowanceChargeList = new List<Models.BasicWL.AllowanceCharge>();
                 foreach (XmlNode allowanceChargeNode in AllowanceChargeNodeList)
                 {
-                    var allowanceCharge = GetAllowanceCharge(allowanceChargeNode) as Models.BasicWL.AllowanceCharge;
+                    var allowanceCharge =
+                        GetAllowanceCharge(allowanceChargeNode) as Models.BasicWL.AllowanceCharge;
                     allowanceChargeList.Add(allowanceCharge);
                 }
 
-                var allowanceList = allowanceChargeList.Where(x => x.ChargeIndicator == false).ToList();
+                var allowanceList = allowanceChargeList
+                    .Where(x => x.ChargeIndicator == false)
+                    .ToList();
                 invoice.AllowanceList = allowanceList.Any() ? allowanceList : null;
 
                 var chargeList = allowanceChargeList.Where(x => x.ChargeIndicator == true).ToList();
