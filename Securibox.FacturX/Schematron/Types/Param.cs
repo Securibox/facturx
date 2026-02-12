@@ -6,7 +6,5 @@
      * }
      * Dear ISO, Why not just make param elements let elements? Why make an additional param type?
      */
-    public class Param : Let
-    {
-    }
+    public class Param : Let { }
 }

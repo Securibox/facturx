@@ -1,5 +1,5 @@
-﻿using Securibox.FacturX.Models.Enums;
-using System.Xml;
+﻿using System.Xml;
+using Securibox.FacturX.Models.Enums;
 
 namespace Securibox.FacturX.Core.Line
 {
@@ -7,10 +7,11 @@ namespace Securibox.FacturX.Core.Line
     {
         private Models.EN16931.InvoiceLine line;
 
-        internal EN16931LineBuilder(TradePartyFactory tradePartyFactory, ReferenceFactory referenceFactory) 
-            : base(FacturXConformanceLevelType.EN16931, tradePartyFactory, referenceFactory)
-        {
-        }
+        internal EN16931LineBuilder(
+            TradePartyFactory tradePartyFactory,
+            ReferenceFactory referenceFactory
+        )
+            : base(FacturXConformanceLevelType.EN16931, tradePartyFactory, referenceFactory) { }
 
         internal void Reset(XmlNode lineNode)
         {
@@ -20,7 +21,8 @@ namespace Securibox.FacturX.Core.Line
 
         internal override void BuildLineAllowanceAndChargeList()
         {
-            var allowanceChargeList = GetAllowanceAndChargeList()?.Cast<Models.EN16931.LineAllowanceCharge>();
+            var allowanceChargeList = GetAllowanceAndChargeList()
+                ?.Cast<Models.EN16931.LineAllowanceCharge>();
             if (allowanceChargeList == null)
                 return;
 
@@ -73,10 +75,7 @@ namespace Securibox.FacturX.Core.Line
 
         internal override void BuildLineTotals()
         {
-            var totals = new Models.Basic.LineTotals
-            {
-                LineNetAmount = GetNetAmount(),
-            };
+            var totals = new Models.Basic.LineTotals { LineNetAmount = GetNetAmount() };
 
             line.Totals = totals;
         }
@@ -90,21 +89,33 @@ namespace Securibox.FacturX.Core.Line
             line.VatDetails = vatDetails;
         }
 
-        internal override void BuildLineItemAttributeList() 
+        internal override void BuildLineItemAttributeList()
         {
             line.ItemAttributeList = GetItemAttributeList();
         }
 
-        internal override void BuildLineItemClassificationList() 
+        internal override void BuildLineItemClassificationList()
         {
             line.ItemClassificationList = GetItemClassificationList();
         }
 
-        internal override void BuildLineReferences() 
+        internal override void BuildLineReferences()
         {
-            line.BuyerAccountingReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.BuyerAccountingReference) as Models.BasicWL.BuyerAccountingReference;
-            line.InvoicedObjectIdentifier = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.InvoicedObjectIdentifier) as Models.EN16931.InvoicedObjectIdentifier;
-            line.PurchaseOrderReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.PurchaseOrderReference) as Models.EN16931.LinePurchaseOrderReference;
+            line.BuyerAccountingReference =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.BuyerAccountingReference
+                ) as Models.BasicWL.BuyerAccountingReference;
+            line.InvoicedObjectIdentifier =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.InvoicedObjectIdentifier
+                ) as Models.EN16931.InvoicedObjectIdentifier;
+            line.PurchaseOrderReference =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.PurchaseOrderReference
+                ) as Models.EN16931.LinePurchaseOrderReference;
         }
 
         internal Models.EN16931.InvoiceLine GetLine()

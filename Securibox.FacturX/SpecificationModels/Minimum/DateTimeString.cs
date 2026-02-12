@@ -6,6 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.Minimum
     {
         [XmlText]
         public string Value { get; set; }
+
         [XmlAttribute("format")]
         public string Format { get; set; }
     }

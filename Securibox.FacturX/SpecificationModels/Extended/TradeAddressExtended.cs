@@ -2,7 +2,7 @@
 
 namespace Securibox.FacturX.SpecificationModels.Extended
 {
-    public class TradeAddressExtended 
+    public class TradeAddressExtended
     {
         public string PostcodeCode { get; set; }
         public string LineOne { get; set; }
@@ -10,6 +10,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public string LineThree { get; set; }
         public string CityName { get; set; }
         public string CountryID { get; set; }
+
         [XmlElement]
         public string[] CountrySubDivisionName { get; set; }
     }

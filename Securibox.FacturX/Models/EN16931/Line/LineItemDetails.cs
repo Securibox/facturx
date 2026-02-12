@@ -12,12 +12,17 @@ namespace Securibox.FacturX.Models.EN16931
 
         public string? OriginCountry { get; private set; }
 
-        public LineItemDetails(string name, GlobalIdentification? standardIdentification) 
+        public LineItemDetails(string name, GlobalIdentification? standardIdentification)
             : base(name, standardIdentification) { }
 
-        internal void AddSellerAssignedId(string? sellerAssignedId) => SellerAssignedId = sellerAssignedId;
-        internal void AddBuyerAssignedId(string? buyerAssignedId) => BuyerAssignedId = buyerAssignedId;
+        internal void AddSellerAssignedId(string? sellerAssignedId) =>
+            SellerAssignedId = sellerAssignedId;
+
+        internal void AddBuyerAssignedId(string? buyerAssignedId) =>
+            BuyerAssignedId = buyerAssignedId;
+
         internal void AddDescription(string? description) => Description = description;
-        internal void AddOriginCountry(string? originCountry) => OriginCountry = originCountry; 
+
+        internal void AddOriginCountry(string? originCountry) => OriginCountry = originCountry;
     }
 }

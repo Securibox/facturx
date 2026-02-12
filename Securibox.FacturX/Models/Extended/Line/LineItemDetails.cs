@@ -7,9 +7,8 @@ namespace Securibox.FacturX.Models.Extended
         public string? Id { get; private set; }
 
         public LineItemDetails(string name, GlobalIdentification? standardIdentification)
-           : base(name, standardIdentification) { }
+            : base(name, standardIdentification) { }
 
         internal void AddId(string? id) => Id = id;
-
     }
 }

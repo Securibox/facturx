@@ -6,9 +6,12 @@
 
         public LineAttributeValueMeasure? ValueMeasure { get; internal set; }
 
-        internal LineItemAttribute(string name, string value) : base(name, value) { }
+        internal LineItemAttribute(string name, string value)
+            : base(name, value) { }
 
         internal void AddType(string? type) => Type = type;
-        internal void AddValueMeasure(LineAttributeValueMeasure? valueMeasure) => ValueMeasure = valueMeasure;
+
+        internal void AddValueMeasure(LineAttributeValueMeasure? valueMeasure) =>
+            ValueMeasure = valueMeasure;
     }
 }

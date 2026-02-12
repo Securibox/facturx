@@ -13,9 +13,16 @@
         public PaymentInstructions(string paymentMethodCode, string? debitedAccountIBAN)
             : base(paymentMethodCode, debitedAccountIBAN) { }
 
-        public void AddEN16931CreditTransferList(IEnumerable<CreditTransfer>? creditTransferList) => CreditTransferList = creditTransferList;
-        public void AddPaymentInformation(string? paymentInformation) => PaymentInformation = paymentInformation;
-        public void AddPaymentCardInformation(CardInformation? paymentCardInformation) => PaymentCardInformation = paymentCardInformation;
-        public void AddPaymentServiceProvider(string? paymentServiceProvider) => PaymentServiceProvider = paymentServiceProvider;
+        public void AddEN16931CreditTransferList(IEnumerable<CreditTransfer>? creditTransferList) =>
+            CreditTransferList = creditTransferList;
+
+        public void AddPaymentInformation(string? paymentInformation) =>
+            PaymentInformation = paymentInformation;
+
+        public void AddPaymentCardInformation(CardInformation? paymentCardInformation) =>
+            PaymentCardInformation = paymentCardInformation;
+
+        public void AddPaymentServiceProvider(string? paymentServiceProvider) =>
+            PaymentServiceProvider = paymentServiceProvider;
     }
 }

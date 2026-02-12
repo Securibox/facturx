@@ -32,11 +32,11 @@ namespace Securibox.FacturX.Schematron.Types
         public const string SchematronNamespace = "http://purl.oclc.org/dsdl/schematron";
         public const string OldSchematronNamespace = "";
 
-
         #region Attributes
 
         [XmlAttribute(AttributeName = "id")]
         public string Id { get; set; }
+
         [XmlAttribute(AttributeName = "schemaVersion")]
         public string SchemaVersion { get; set; }
 
@@ -90,10 +90,12 @@ namespace Securibox.FacturX.Schematron.Types
 
         [XmlIgnore]
         public Dictionary<string, Assert> AllAssertions { get; set; } = null;
+
         private void BuildAllAssertions()
         {
             AllAssertions = new Dictionary<string, Assert>();
-            if (this.Patterns == null) return;
+            if (this.Patterns == null)
+                return;
 
             for (int i = 0; i < this.Patterns.Length; i++)
             {
@@ -103,11 +105,14 @@ namespace Securibox.FacturX.Schematron.Types
                     {
                         if (rule.Assertions != null)
                         {
-                            for(int j = 0; j < rule.Assertions.Length; j++)
+                            for (int j = 0; j < rule.Assertions.Length; j++)
                             {
                                 if (rule.Context != null)
                                 {
-                                    AllAssertions.Add($"Pattern/{i}/" + rule.Context + "/Assertions/" + j, rule.Assertions[j]);
+                                    AllAssertions.Add(
+                                        $"Pattern/{i}/" + rule.Context + "/Assertions/" + j,
+                                        rule.Assertions[j]
+                                    );
                                 }
                             }
 
@@ -122,9 +127,11 @@ namespace Securibox.FacturX.Schematron.Types
                             for (int k = 0; k < rule.Reports.Length; k++)
                             {
                                 if (rule.Context != null)
-                                    AllAssertions.Add($"Pattern/{i}/" + rule.Context + "/Reports/" + k, rule.Reports[k]);
+                                    AllAssertions.Add(
+                                        $"Pattern/{i}/" + rule.Context + "/Reports/" + k,
+                                        rule.Reports[k]
+                                    );
                             }
-
 
                             //foreach (var report in rule.Reports)
                             //{
@@ -133,17 +140,18 @@ namespace Securibox.FacturX.Schematron.Types
                             //}
                         }
                     }
-
                 }
             }
         }
 
         [XmlIgnore]
         public Dictionary<string, Rule> AllRules { get; set; } = null;
+
         private void BuildAllRules()
         {
             AllRules = new Dictionary<string, Rule>();
-            if (this.Patterns == null) return;
+            if (this.Patterns == null)
+                return;
 
             foreach (var pattern in this.Patterns)
             {
@@ -155,7 +163,6 @@ namespace Securibox.FacturX.Schematron.Types
                         {
                             AllRules.Add(pattern.Rules[i].Context + "/Rule/" + i, pattern.Rules[i]);
                         }
-                            
                     }
                 }
             }
@@ -163,6 +170,7 @@ namespace Securibox.FacturX.Schematron.Types
 
         [XmlIgnore]
         public Dictionary<string, Pattern> AllPatterns { get; set; } = null;
+
         private void BuildAllPatterns()
         {
             AllPatterns = new Dictionary<string, Pattern>();
@@ -182,26 +190,37 @@ namespace Securibox.FacturX.Schematron.Types
                         AllPatterns.Add("Pattern/" + i, this.Patterns[i]);
                     }
                 }
-                
             }
         }
 
-        public Dictionary<string, PhaseResult> EvaluatePhase(XPathNavigator navigator, string selectedPhase = null)
+        public Dictionary<string, PhaseResult> EvaluatePhase(
+            XPathNavigator navigator,
+            string selectedPhase = null
+        )
         {
-            if (AllAssertions == null) BuildAllAssertions();
-            if (AllRules == null) BuildAllRules();
-            if (AllPatterns == null) BuildAllPatterns();
+            if (AllAssertions == null)
+                BuildAllAssertions();
+            if (AllRules == null)
+                BuildAllRules();
+            if (AllPatterns == null)
+                BuildAllPatterns();
 
             List<Let> lets = new List<Let>();
-            if (this.Lets != null) lets.AddRange(this.Lets);
+            if (this.Lets != null)
+                lets.AddRange(this.Lets);
 
             Dictionary<string, PhaseResult> result = new Dictionary<string, PhaseResult>();
             if (this.Phases != null)
             {
                 foreach (var phase in this.Phases)
                 {
-                    if (selectedPhase != null && selectedPhase.Equals(phase.Id) && selectedPhase != "#all") continue;
-                    
+                    if (
+                        selectedPhase != null
+                        && selectedPhase.Equals(phase.Id)
+                        && selectedPhase != "#all"
+                    )
+                        continue;
+
                     //TODO
                     if (phase.Id.Equals("syntax_phase"))
                         continue;
@@ -221,11 +240,10 @@ namespace Securibox.FacturX.Schematron.Types
                             throw new ArgumentException("Pattern Not Found");
                         }
                     }
-                    result.Add(phase.Id, new PhaseResult()
-                    {
-                        Phase = phase,
-                        PatternResults = results.ToArray(),
-                    });
+                    result.Add(
+                        phase.Id,
+                        new PhaseResult() { Phase = phase, PatternResults = results.ToArray() }
+                    );
                 }
             }
             return result;
@@ -233,12 +251,16 @@ namespace Securibox.FacturX.Schematron.Types
 
         public List<PatternResult> Evaluate(XPathNavigator navigator)
         {
-            if (AllAssertions == null) BuildAllAssertions();
-            if (AllRules == null) BuildAllRules();
-            if (AllPatterns == null) BuildAllPatterns();
+            if (AllAssertions == null)
+                BuildAllAssertions();
+            if (AllRules == null)
+                BuildAllRules();
+            if (AllPatterns == null)
+                BuildAllPatterns();
 
             List<Let> lets = new List<Let>();
-            if (this.Lets != null) lets.AddRange(this.Lets);
+            if (this.Lets != null)
+                lets.AddRange(this.Lets);
 
             List<PatternResult> result = new List<PatternResult>();
             foreach (var pattern in this.Patterns)

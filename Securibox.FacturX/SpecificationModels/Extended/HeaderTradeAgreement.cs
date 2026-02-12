@@ -8,7 +8,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public TradeParty SellerTradeParty { get; set; }
         public TradeParty BuyerTradeParty { get; set; }
         public TradeParty SalesAgentTradeParty { get; set; }
-        public TradeParty BuyerTaxRepresentativeTradeParty { get; set; }    
+        public TradeParty BuyerTaxRepresentativeTradeParty { get; set; }
         public TradeParty SellerTaxRepresentativeTradeParty { get; set; }
         public TradeParty ProductEndUserTradeParty { get; set; }
         public TradeDeliveryTerms ApplicableTradeDeliveryTerms { get; set; }
@@ -16,12 +16,13 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public EN16931.ReferencedDocumentEN16931 BuyerOrderReferencedDocument { get; set; }
         public EN16931.ReferencedDocumentEN16931 QuotationReferencedDocument { get; set; }
         public EN16931.ReferencedDocumentEN16931 ContractReferencedDocument { get; set; }
+
         [XmlElement]
         public EN16931.ReferencedDocumentEN16931[] AdditionalReferencedDocument { get; set; }
         public TradeParty BuyerAgentTradeParty { get; set; }
-        public EN16931.ProcuringProject SpecifiedProcuringProject {  get; set; }
-        [XmlElement]
-        public EN16931.ReferencedDocumentEN16931[] UltimateCustomerOrderReferencedDocument {  get; set; }
+        public EN16931.ProcuringProject SpecifiedProcuringProject { get; set; }
 
+        [XmlElement]
+        public EN16931.ReferencedDocumentEN16931[] UltimateCustomerOrderReferencedDocument { get; set; }
     }
 }

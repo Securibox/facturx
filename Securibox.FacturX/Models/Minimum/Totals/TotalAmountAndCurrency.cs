@@ -6,7 +6,8 @@
 
         public TotalAmountAndCurrency() { }
 
-        public TotalAmountAndCurrency(decimal? amount, string? currency): base(amount)
+        public TotalAmountAndCurrency(decimal? amount, string? currency)
+            : base(amount)
         {
             Currency = currency;
         }

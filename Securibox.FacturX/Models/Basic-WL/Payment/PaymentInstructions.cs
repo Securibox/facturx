@@ -14,7 +14,7 @@
             DebitedAccountIBAN = debitedAccountIBAN;
         }
 
-        public void AddBasicWLCreditTransferList(IEnumerable<CreditTransfer>? creditTransferList) => CreditTransferList = creditTransferList;
-
+        public void AddBasicWLCreditTransferList(IEnumerable<CreditTransfer>? creditTransferList) =>
+            CreditTransferList = creditTransferList;
     }
 }

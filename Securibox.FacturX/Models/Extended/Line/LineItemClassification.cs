@@ -6,7 +6,10 @@ namespace Securibox.FacturX.Models.Extended
     {
         public string? Name { get; internal set; }
 
-        internal LineItemClassification(LineItemClassificationIdentifier? classificationIdentifier, string? name) 
+        internal LineItemClassification(
+            LineItemClassificationIdentifier? classificationIdentifier,
+            string? name
+        )
             : base(classificationIdentifier) => Name = name;
     }
 }

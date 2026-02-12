@@ -4,7 +4,7 @@
     {
         public string? Description { get; internal set; }
 
-        public DeliveryPeriod(DateTime? startDate, DateTime? endDate, string? description) 
+        public DeliveryPeriod(DateTime? startDate, DateTime? endDate, string? description)
             : base(startDate, endDate) => Description = description;
     }
 }

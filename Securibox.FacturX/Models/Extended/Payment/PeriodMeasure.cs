@@ -4,6 +4,6 @@
     {
         public decimal? Measure { get; internal set; }
 
-        public string? UnitCode { get; internal set; }  
+        public string? UnitCode { get; internal set; }
     }
 }

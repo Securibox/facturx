@@ -2,7 +2,10 @@
 
 namespace Securibox.FacturX.SpecificationModels.Extended
 {
-    [XmlRoot(Namespace = "urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100", ElementName = "CrossIndustryInvoice")]
+    [XmlRoot(
+        Namespace = "urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100",
+        ElementName = "CrossIndustryInvoice"
+    )]
     public class CrossIndustryInvoice : SpecificationModels.ICrossIndustryInvoice
     {
         public ExchangedDocumentContext ExchangedDocumentContext { get; set; }

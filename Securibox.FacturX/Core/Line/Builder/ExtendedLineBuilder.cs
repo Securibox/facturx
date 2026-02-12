@@ -1,10 +1,10 @@
-﻿using Securibox.FacturX.Models.Basic;
+﻿using System.Globalization;
+using System.Xml;
+using Securibox.FacturX.Models.Basic;
 using Securibox.FacturX.Models.BasicWL;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Extended;
 using Securibox.FacturX.Models.Extended.Payment;
-using System.Globalization;
-using System.Xml;
 
 namespace Securibox.FacturX.Core.Line
 {
@@ -12,10 +12,11 @@ namespace Securibox.FacturX.Core.Line
     {
         private Models.Extended.InvoiceLine line;
 
-        internal ExtendedLineBuilder(TradePartyFactory tradePartyFactory, ReferenceFactory referenceFactory) 
-            : base(FacturXConformanceLevelType.Extended, tradePartyFactory, referenceFactory)
-        {
-        }
+        internal ExtendedLineBuilder(
+            TradePartyFactory tradePartyFactory,
+            ReferenceFactory referenceFactory
+        )
+            : base(FacturXConformanceLevelType.Extended, tradePartyFactory, referenceFactory) { }
 
         internal void Reset(XmlNode lineNode)
         {
@@ -25,7 +26,8 @@ namespace Securibox.FacturX.Core.Line
 
         internal override void BuildLineAllowanceAndChargeList()
         {
-            var allowanceChargeList = GetAllowanceAndChargeList()?.Cast<Models.EN16931.LineAllowanceCharge>();
+            var allowanceChargeList = GetAllowanceAndChargeList()
+                ?.Cast<Models.EN16931.LineAllowanceCharge>();
             if (allowanceChargeList == null)
                 return;
 
@@ -42,11 +44,29 @@ namespace Securibox.FacturX.Core.Line
             {
                 InvoicedQuantity = GetInvoicedQuantity(),
                 DeliveryPeriod = GetDeliveryPeriod(),
-                DeliverToAddress = TradePartyFactory.ConvertLineActor(LineNode, TradePartyType.DeliverToAddress) as Models.Extended.LineDeliverAddress,
-                UltimateDeliverToAddress = TradePartyFactory.ConvertLineActor(LineNode, TradePartyType.UltimateDeliverToAddress) as Models.Extended.LineDeliverAddress,
-                DespatchAdviceReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.DespatchAdviceReference) as Models.Extended.LineDespacthAdviceReference,
-                ReceivingAdviceReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.ReceivingAdviceReference) as Models.Extended.LineReceivingAdviceReference,
-                DeliveryNoteReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.DeliveryNoteReference) as Models.Extended.LineDeliveryNoteReference,
+                DeliverToAddress =
+                    TradePartyFactory.ConvertLineActor(LineNode, TradePartyType.DeliverToAddress)
+                    as Models.Extended.LineDeliverAddress,
+                UltimateDeliverToAddress =
+                    TradePartyFactory.ConvertLineActor(
+                        LineNode,
+                        TradePartyType.UltimateDeliverToAddress
+                    ) as Models.Extended.LineDeliverAddress,
+                DespatchAdviceReference =
+                    ReferenceFactory.ConvertLineReference(
+                        LineNode,
+                        References.ReferenceType.DespatchAdviceReference
+                    ) as Models.Extended.LineDespacthAdviceReference,
+                ReceivingAdviceReference =
+                    ReferenceFactory.ConvertLineReference(
+                        LineNode,
+                        References.ReferenceType.ReceivingAdviceReference
+                    ) as Models.Extended.LineReceivingAdviceReference,
+                DeliveryNoteReference =
+                    ReferenceFactory.ConvertLineReference(
+                        LineNode,
+                        References.ReferenceType.DeliveryNoteReference
+                    ) as Models.Extended.LineDeliveryNoteReference,
                 DeliveryDate = GetDeliveryDate(),
                 ChargeFreeQuantity = GetChargeFreeQuantity(),
                 PackageQuantity = GetPackageQuantity(),
@@ -58,39 +78,37 @@ namespace Securibox.FacturX.Core.Line
         #region Delivery
         private QuantityUnit? GetChargeFreeQuantity()
         {
-            var chargeFreeQuantityNode = TradeDeliveryNode.SelectSingleNode("*[local-name() = 'ChargeFreeQuantity']");
+            var chargeFreeQuantityNode = TradeDeliveryNode.SelectSingleNode(
+                "*[local-name() = 'ChargeFreeQuantity']"
+            );
             if (chargeFreeQuantityNode == null)
                 return null;
 
             var quantity = XmlParsingHelpers.ExtractDecimal(chargeFreeQuantityNode);
             var unitCode = chargeFreeQuantityNode.Attributes!["unitCode"]!.Value;
 
-            return new QuantityUnit
-            {
-                Quantity = quantity,
-                UnitCode = unitCode,
-            };
+            return new QuantityUnit { Quantity = quantity, UnitCode = unitCode };
         }
 
         private QuantityUnit? GetPackageQuantity()
         {
-            var packageQuantityNode = TradeDeliveryNode.SelectSingleNode("*[local-name() = 'PackageQuantity']");
+            var packageQuantityNode = TradeDeliveryNode.SelectSingleNode(
+                "*[local-name() = 'PackageQuantity']"
+            );
             if (packageQuantityNode == null)
                 return null;
 
             var quantity = XmlParsingHelpers.ExtractDecimal(packageQuantityNode);
             var unitCode = packageQuantityNode.Attributes!["unitCode"]!.Value;
 
-            return new QuantityUnit
-            {
-                Quantity = quantity,
-                UnitCode = unitCode,
-            };
+            return new QuantityUnit { Quantity = quantity, UnitCode = unitCode };
         }
 
         private DateTime? GetDeliveryDate()
         {
-            var actualDeliveryDateNode = TradeDeliveryNode.SelectSingleNode("*[local-name() = 'ActualDeliverySupplyChainEvent']");
+            var actualDeliveryDateNode = TradeDeliveryNode.SelectSingleNode(
+                "*[local-name() = 'ActualDeliverySupplyChainEvent']"
+            );
             if (actualDeliveryDateNode == null)
                 return null;
 
@@ -101,14 +119,17 @@ namespace Securibox.FacturX.Core.Line
             return XmlParsingHelpers.ExtractDateTime(occurrenceDateNode);
         }
 
-
         private IEnumerable<ShippingTransportation>? GetShippingTransportationList()
         {
-            var relatedSupplyChainConsignment = TradeDeliveryNode.SelectSingleNode("*[local-name() = 'RelatedSupplyChainConsignment']");
+            var relatedSupplyChainConsignment = TradeDeliveryNode.SelectSingleNode(
+                "*[local-name() = 'RelatedSupplyChainConsignment']"
+            );
             if (relatedSupplyChainConsignment == null)
                 return null;
 
-            var shippingTransportationNodeList = relatedSupplyChainConsignment.SelectNodes("*[local-name() = 'SpecifiedLogisticsTransportMovement']");
+            var shippingTransportationNodeList = relatedSupplyChainConsignment.SelectNodes(
+                "*[local-name() = 'SpecifiedLogisticsTransportMovement']"
+            );
             if (shippingTransportationNodeList == null)
                 return null;
 
@@ -117,7 +138,9 @@ namespace Securibox.FacturX.Core.Line
             {
                 var shippingTransportation = new ShippingTransportation
                 {
-                    ModeCode = shippingTransportationNode?.SelectSingleNode("*[local-name() = 'ModeCode']")?.InnerText,
+                    ModeCode = shippingTransportationNode
+                        ?.SelectSingleNode("*[local-name() = 'ModeCode']")
+                        ?.InnerText,
                 };
 
                 shippingTransportationList.Add(shippingTransportation);
@@ -139,7 +162,8 @@ namespace Securibox.FacturX.Core.Line
 
         internal override void BuildLineGrossPriceDetails()
         {
-            line.GrossPriceDetails = GetGrossPriceDetails() as Models.Extended.LineGrossPriceDetails;
+            line.GrossPriceDetails =
+                GetGrossPriceDetails() as Models.Extended.LineGrossPriceDetails;
         }
 
         internal override void BuildLineNetPriceDetails()
@@ -148,7 +172,7 @@ namespace Securibox.FacturX.Core.Line
             {
                 NetPrice = GetNetPriceAmount(),
                 BaseQuantity = GetNetPriceBaseQuantity(),
-                IncludedTax = GetNetPriceIncludedTax()
+                IncludedTax = GetNetPriceIncludedTax(),
             };
 
             line.NetPriceDetails = netPriceDetails;
@@ -157,24 +181,38 @@ namespace Securibox.FacturX.Core.Line
         #region NetPrice
         private IncludedTax? GetNetPriceIncludedTax()
         {
-            var includedTaxNode = NetPriceNode?.SelectSingleNode("*[local-name() = 'IncludedTradeTax']");
+            var includedTaxNode = NetPriceNode?.SelectSingleNode(
+                "*[local-name() = 'IncludedTradeTax']"
+            );
             if (includedTaxNode == null)
                 return null;
 
-            var vatAmountNode = includedTaxNode.SelectSingleNode("*[local-name() = 'CalculatedAmount']")!;
+            var vatAmountNode = includedTaxNode.SelectSingleNode(
+                "*[local-name() = 'CalculatedAmount']"
+            )!;
             var vatAmount = XmlParsingHelpers.ExtractDecimal(vatAmountNode);
 
-            var vatType = includedTaxNode.SelectSingleNode("*[local-name() = 'TypeCode']")!.InnerText;
+            var vatType = includedTaxNode
+                .SelectSingleNode("*[local-name() = 'TypeCode']")!
+                .InnerText;
 
             var reason = new Reason
             {
-                Text = includedTaxNode.SelectSingleNode("*[local-name() = 'ExemptionReason']")?.InnerText,
-                Code = includedTaxNode.SelectSingleNode("*[local-name() = 'ExemptionReasonCode']")?.InnerText,
+                Text = includedTaxNode
+                    .SelectSingleNode("*[local-name() = 'ExemptionReason']")
+                    ?.InnerText,
+                Code = includedTaxNode
+                    .SelectSingleNode("*[local-name() = 'ExemptionReasonCode']")
+                    ?.InnerText,
             };
 
-            var vatCategoryCode = includedTaxNode.SelectSingleNode("*[local-name() = 'CategoryCode']")!.InnerText;
+            var vatCategoryCode = includedTaxNode
+                .SelectSingleNode("*[local-name() = 'CategoryCode']")!
+                .InnerText;
 
-            var vatRateNode = includedTaxNode.SelectSingleNode("*[local-name() = 'RateApplicablePercent']")!;
+            var vatRateNode = includedTaxNode.SelectSingleNode(
+                "*[local-name() = 'RateApplicablePercent']"
+            )!;
             var vatRate = XmlParsingHelpers.ExtractDecimal(vatRateNode);
 
             return new IncludedTax
@@ -191,38 +229,50 @@ namespace Securibox.FacturX.Core.Line
         internal override void BuildLineTotals()
         {
             var totalAllowance = default(decimal?);
-            var totalAllowanceNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'AllowanceTotalAmount']");
+            var totalAllowanceNode = MonetarySummationNode.SelectSingleNode(
+                "*[local-name() = 'AllowanceTotalAmount']"
+            );
             if (totalAllowanceNode != null)
             {
                 totalAllowance = XmlParsingHelpers.ExtractDecimal(totalAllowanceNode);
             }
 
             var totalCharge = default(decimal?);
-            var totalChargeNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'ChargeTotalAmount']");
+            var totalChargeNode = MonetarySummationNode.SelectSingleNode(
+                "*[local-name() = 'ChargeTotalAmount']"
+            );
             if (totalChargeNode != null)
             {
                 totalCharge = XmlParsingHelpers.ExtractDecimal(totalChargeNode);
             }
 
             var totalVatAmount = default(decimal?);
-            var totalVatAmountNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'TaxTotalAmount']");
+            var totalVatAmountNode = MonetarySummationNode.SelectSingleNode(
+                "*[local-name() = 'TaxTotalAmount']"
+            );
             if (totalVatAmountNode != null)
             {
                 totalVatAmount = XmlParsingHelpers.ExtractDecimal(totalVatAmountNode);
             }
 
             var grandTotalAmount = default(decimal?);
-            var grandTotalAmountNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'GrandTotalAmount']");
+            var grandTotalAmountNode = MonetarySummationNode.SelectSingleNode(
+                "*[local-name() = 'GrandTotalAmount']"
+            );
             if (grandTotalAmountNode != null)
             {
                 grandTotalAmount = XmlParsingHelpers.ExtractDecimal(grandTotalAmountNode);
             }
 
             var totalAllowanceAndCharge = default(decimal?);
-            var totalAllowanceAndChargeNode = MonetarySummationNode.SelectSingleNode("*[local-name() = 'TotalAllowanceChargeAmount']");
+            var totalAllowanceAndChargeNode = MonetarySummationNode.SelectSingleNode(
+                "*[local-name() = 'TotalAllowanceChargeAmount']"
+            );
             if (totalAllowanceAndChargeNode != null)
             {
-                totalAllowanceAndCharge = XmlParsingHelpers.ExtractDecimal(totalAllowanceAndChargeNode);
+                totalAllowanceAndCharge = XmlParsingHelpers.ExtractDecimal(
+                    totalAllowanceAndChargeNode
+                );
             }
 
             var totals = new Models.Extended.LineTotals
@@ -247,28 +297,60 @@ namespace Securibox.FacturX.Core.Line
             line.VatDetails = vatDetails;
         }
 
-        internal override void BuildLineItemAttributeList() 
+        internal override void BuildLineItemAttributeList()
         {
-            line.ItemAttributeList = GetItemAttributeList()?.Cast<Models.Extended.LineItemAttribute>();
+            line.ItemAttributeList = GetItemAttributeList()
+                ?.Cast<Models.Extended.LineItemAttribute>();
         }
 
-        internal override void BuildLineItemClassificationList() 
+        internal override void BuildLineItemClassificationList()
         {
-            line.ItemClassificationList = GetItemClassificationList()?.Cast<Models.Extended.LineItemClassification>();
+            line.ItemClassificationList = GetItemClassificationList()
+                ?.Cast<Models.Extended.LineItemClassification>();
         }
 
         internal override void BuildLineReferences()
         {
-            line.BuyerAccountingReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.BuyerAccountingReference) as Models.Extended.BuyerAccountingReference;
-            line.InvoicedObjectIdentifier = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.InvoicedObjectIdentifier) as Models.Extended.InvoicedObjectIdentifier;
-            line.PurchaseOrderReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.PurchaseOrderReference) as Models.Extended.LinePurchaseOrderReference;
-            line.ContractReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.ContractReference) as Models.Extended.LineContractReference;
-            line.QuotationReference = ReferenceFactory.ConvertLineReference(LineNode, References.ReferenceType.QuotationReference) as Models.Extended.LineQuotationReference;
-            line.UltimateCustomerOrderReferenceList = ReferenceFactory.ConvertLineReferenceList(LineNode, References.ReferenceType.UltimateCustomerOrderReferenceList)?.Cast<Models.Extended.LineUltimateCustomerOrderReference>();
-            line.AdditionalDocumentReferenceList = ReferenceFactory.ConvertLineReferenceList(LineNode, References.ReferenceType.LineAdditionalDocumentReferenceList)?.Cast<Models.Extended.LineAdditionalDocument>();
+            line.BuyerAccountingReference =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.BuyerAccountingReference
+                ) as Models.Extended.BuyerAccountingReference;
+            line.InvoicedObjectIdentifier =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.InvoicedObjectIdentifier
+                ) as Models.Extended.InvoicedObjectIdentifier;
+            line.PurchaseOrderReference =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.PurchaseOrderReference
+                ) as Models.Extended.LinePurchaseOrderReference;
+            line.ContractReference =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.ContractReference
+                ) as Models.Extended.LineContractReference;
+            line.QuotationReference =
+                ReferenceFactory.ConvertLineReference(
+                    LineNode,
+                    References.ReferenceType.QuotationReference
+                ) as Models.Extended.LineQuotationReference;
+            line.UltimateCustomerOrderReferenceList = ReferenceFactory
+                .ConvertLineReferenceList(
+                    LineNode,
+                    References.ReferenceType.UltimateCustomerOrderReferenceList
+                )
+                ?.Cast<Models.Extended.LineUltimateCustomerOrderReference>();
+            line.AdditionalDocumentReferenceList = ReferenceFactory
+                .ConvertLineReferenceList(
+                    LineNode,
+                    References.ReferenceType.LineAdditionalDocumentReferenceList
+                )
+                ?.Cast<Models.Extended.LineAdditionalDocument>();
         }
 
-        internal override void BuildLineIncludedItemList() 
+        internal override void BuildLineIncludedItemList()
         {
             if (IncludedItemNodeList == null || IncludedItemNodeList.Count == 0)
                 return;
@@ -287,10 +369,18 @@ namespace Securibox.FacturX.Core.Line
             var includedItem = new Models.Extended.LineIncludedItem(name);
 
             var id = includedItemNode.SelectSingleNode("*[local-name() = 'ID']")?.InnerText;
-            var buyerAssignedId = includedItemNode.SelectSingleNode("*[local-name() = 'BuyerAssignedID']")?.InnerText;
-            var sellerAssignedId = includedItemNode.SelectSingleNode("*[local-name() = 'SellerAssignedID']")?.InnerText;
-            var industryAssignedId = includedItemNode.SelectSingleNode("*[local-name() = 'IndustryAssignedID']")?.InnerText;
-            var description = includedItemNode.SelectSingleNode("*[local-name() = 'Description']")?.InnerText;
+            var buyerAssignedId = includedItemNode
+                .SelectSingleNode("*[local-name() = 'BuyerAssignedID']")
+                ?.InnerText;
+            var sellerAssignedId = includedItemNode
+                .SelectSingleNode("*[local-name() = 'SellerAssignedID']")
+                ?.InnerText;
+            var industryAssignedId = includedItemNode
+                .SelectSingleNode("*[local-name() = 'IndustryAssignedID']")
+                ?.InnerText;
+            var description = includedItemNode
+                .SelectSingleNode("*[local-name() = 'Description']")
+                ?.InnerText;
 
             includedItem.AddId(id);
             includedItem.AddBuyerAssignedId(buyerAssignedId);
@@ -312,10 +402,17 @@ namespace Securibox.FacturX.Core.Line
                 includedItem.AddGlobalIdentificationList(globalIdList);
             }
 
-            var unitQuantityNode = includedItemNode.SelectSingleNode("*[local-name() = 'UnitQuantity']");
+            var unitQuantityNode = includedItemNode.SelectSingleNode(
+                "*[local-name() = 'UnitQuantity']"
+            );
             if (unitQuantityNode != null)
             {
-                decimal.TryParse(unitQuantityNode.InnerText, NumberStyles.Currency, CultureInfo.InvariantCulture, out decimal quantity);
+                decimal.TryParse(
+                    unitQuantityNode.InnerText,
+                    NumberStyles.Currency,
+                    CultureInfo.InvariantCulture,
+                    out decimal quantity
+                );
                 var unitCode = unitQuantityNode.Attributes!["unitCode"]!.Value;
 
                 includedItem.AddUnitQuantity(new QuantityUnit(quantity, unitCode));
@@ -324,7 +421,7 @@ namespace Securibox.FacturX.Core.Line
             return includedItem;
         }
 
-        internal override void BuildLineItemInstanceList() 
+        internal override void BuildLineItemInstanceList()
         {
             if (ItemInstanceNodeList == null || ItemInstanceNodeList.Count == 0)
                 return;
@@ -332,9 +429,13 @@ namespace Securibox.FacturX.Core.Line
             var itemInstanceList = new List<LineItemInstance>();
             foreach (XmlNode itemInstanceNode in ItemInstanceNodeList)
             {
-                var batchId = itemInstanceNode.SelectSingleNode("*[local-name() = 'BatchID']")?.InnerText;
-                var supplierSerialId = itemInstanceNode.SelectSingleNode("*[local-name() = 'SupplierAssignedSerialID']")?.InnerText;
-                
+                var batchId = itemInstanceNode
+                    .SelectSingleNode("*[local-name() = 'BatchID']")
+                    ?.InnerText;
+                var supplierSerialId = itemInstanceNode
+                    .SelectSingleNode("*[local-name() = 'SupplierAssignedSerialID']")
+                    ?.InnerText;
+
                 itemInstanceList.Add(new LineItemInstance(batchId, supplierSerialId));
             }
 
@@ -359,6 +460,5 @@ namespace Securibox.FacturX.Core.Line
 
             return line;
         }
-
     }
 }

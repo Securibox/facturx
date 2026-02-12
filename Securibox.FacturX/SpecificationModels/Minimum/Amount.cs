@@ -6,6 +6,7 @@ namespace Securibox.FacturX.SpecificationModels.Minimum
     {
         [XmlText]
         public decimal Value { get; set; }
+
         [XmlAttribute("currencyID")]
         public string CurrencyID { get; set; }
     }

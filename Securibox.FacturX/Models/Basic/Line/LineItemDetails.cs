@@ -8,7 +8,7 @@ namespace Securibox.FacturX.Models.Basic
 
         public string Name { get; private set; }
 
-        public LineItemDetails(string name, GlobalIdentification? standardIdentification) 
+        public LineItemDetails(string name, GlobalIdentification? standardIdentification)
         {
             Name = name;
             StandardIdentification = standardIdentification;

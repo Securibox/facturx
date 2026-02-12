@@ -11,6 +11,5 @@
         public string ReasonCode { get; set; }
         public string Reason { get; set; }
         public TradeTaxExtended CategoryTradeTax { get; set; }
-
     }
 }

@@ -1,22 +1,23 @@
-﻿using Securibox.FacturX.Models;
+﻿using System.Xml;
+using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
-using System.Xml;
 
 namespace Securibox.FacturX.Core.References
 {
     internal class ReferenceConverter : BaseReferenceConverter
     {
-        internal ReferenceConverter(FacturXConformanceLevelType conformanceLevelType, XmlDocument xmlDocument) : base(conformanceLevelType, xmlDocument) { }
+        internal ReferenceConverter(
+            FacturXConformanceLevelType conformanceLevelType,
+            XmlDocument xmlDocument
+        )
+            : base(conformanceLevelType, xmlDocument) { }
 
         internal Models.Minimum.BuyerReference? GetBuyerReference()
         {
             if (BuyerReference == null)
                 return null;
 
-            return new Models.Minimum.BuyerReference
-            {
-                Id = BuyerReference.InnerText,
-            };
+            return new Models.Minimum.BuyerReference { Id = BuyerReference.InnerText };
         }
 
         internal Models.BasicWL.ContractReference? GetContractReference()
@@ -26,7 +27,11 @@ namespace Securibox.FacturX.Core.References
 
             var assignedId = GetAssignedId(ContractReference);
 
-            if (ConformanceLevelType == FacturXConformanceLevelType.BasicWL || ConformanceLevelType == FacturXConformanceLevelType.Basic || ConformanceLevelType == FacturXConformanceLevelType.EN16931)
+            if (
+                ConformanceLevelType == FacturXConformanceLevelType.BasicWL
+                || ConformanceLevelType == FacturXConformanceLevelType.Basic
+                || ConformanceLevelType == FacturXConformanceLevelType.EN16931
+            )
                 return new Models.BasicWL.ContractReference { AssignedId = assignedId };
 
             var codeType = GetReferenceTypeCode(ContractReference);
@@ -74,10 +79,7 @@ namespace Securibox.FacturX.Core.References
                 };
             }
 
-            return new Models.BasicWL.DespacthAdviceReference
-            {
-                AssignedId = assignedId,
-            };
+            return new Models.BasicWL.DespacthAdviceReference { AssignedId = assignedId };
         }
 
         internal Models.EN16931.InvoicedObjectIdentifier? GetInvoicedObjectIdentifier()
@@ -93,7 +95,11 @@ namespace Securibox.FacturX.Core.References
                 return new Models.EN16931.InvoicedObjectIdentifier
                 {
                     AssignedId = assignedId,
-                    Type = Models.EN16931.Enum.AdditionalDocumentReferenceType.InvoicedObjectIdentifier,
+                    Type = Models
+                        .EN16931
+                        .Enum
+                        .AdditionalDocumentReferenceType
+                        .InvoicedObjectIdentifier,
                     Scheme = scheme,
                 };
             }
@@ -115,22 +121,23 @@ namespace Securibox.FacturX.Core.References
                 return null;
 
             var id = GetId(BuyerAccountingReference);
-            var basicWLBuyerAccountingReference = new Models.BasicWL.BuyerAccountingReference { Id = id };
+            var basicWLBuyerAccountingReference = new Models.BasicWL.BuyerAccountingReference
+            {
+                Id = id,
+            };
 
             if (ConformanceLevelType == FacturXConformanceLevelType.Extended)
             {
                 var type = GetTypeCode(BuyerAccountingReference);
-                return new Models.Extended.BuyerAccountingReference
-                {
-                    Id = id,
-                    Type = type,
-                };
+                return new Models.Extended.BuyerAccountingReference { Id = id, Type = type };
             }
 
             return basicWLBuyerAccountingReference;
         }
 
-        private Models.BasicWL.PreviousInvoiceReference GetPreviousInvoiceReference(XmlNode referenceNode)
+        private Models.BasicWL.PreviousInvoiceReference GetPreviousInvoiceReference(
+            XmlNode referenceNode
+        )
         {
             var assignedId = GetAssignedId(referenceNode);
             var issueDate = GetIssueDate(referenceNode);
@@ -157,13 +164,18 @@ namespace Securibox.FacturX.Core.References
 
         internal IEnumerable<IReference>? GetPreviousInvoiceReferenceList()
         {
-            if (PreviousInvoiceReferenceNodeList == null || PreviousInvoiceReferenceNodeList.Count == 0)
+            if (
+                PreviousInvoiceReferenceNodeList == null
+                || PreviousInvoiceReferenceNodeList.Count == 0
+            )
                 return null;
 
             var previousInvoiceReferenceList = new List<IReference>();
             foreach (XmlNode previousInvoiceReferenceNode in PreviousInvoiceReferenceNodeList)
             {
-                var previousInvoiceReference = GetPreviousInvoiceReference(previousInvoiceReferenceNode);
+                var previousInvoiceReference = GetPreviousInvoiceReference(
+                    previousInvoiceReferenceNode
+                );
                 previousInvoiceReferenceList.Add(previousInvoiceReference);
             }
 
@@ -179,11 +191,7 @@ namespace Securibox.FacturX.Core.References
 
             var name = GetName(ProjectReference)!;
 
-            return new Models.EN16931.ProjectReference
-            {
-                Id = id,
-                Name = name,
-            };
+            return new Models.EN16931.ProjectReference { Id = id, Name = name };
         }
 
         internal Models.Minimum.PurchaseOrderReference? GetPurchaseOrderReference()
@@ -234,7 +242,7 @@ namespace Securibox.FacturX.Core.References
 
             return new Models.EN16931.ReceivingAdviceReference
             {
-                AssignedId = GetAssignedId(ReceivingAdviceReference)
+                AssignedId = GetAssignedId(ReceivingAdviceReference),
             };
         }
 
@@ -258,14 +266,20 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        private Models.EN16931.SupportingDocument GetSupportingDocumentReference(XmlNode referenceNode)
+        private Models.EN16931.SupportingDocument GetSupportingDocumentReference(
+            XmlNode referenceNode
+        )
         {
             if (ConformanceLevelType == FacturXConformanceLevelType.EN16931)
             {
                 return new Models.EN16931.SupportingDocument
                 {
                     AssignedId = GetAssignedId(referenceNode),
-                    Type = Models.EN16931.Enum.AdditionalDocumentReferenceType.AdditionalDocumentReference,
+                    Type = Models
+                        .EN16931
+                        .Enum
+                        .AdditionalDocumentReferenceType
+                        .AdditionalDocumentReference,
                     Description = GetName(referenceNode),
                     ExternalLocation = GetURRID(referenceNode),
                     AttachedDocument = GetAttachment(referenceNode),
@@ -275,7 +289,11 @@ namespace Securibox.FacturX.Core.References
             return new Models.Extended.SupportingDocument
             {
                 AssignedId = GetAssignedId(referenceNode),
-                Type = Models.EN16931.Enum.AdditionalDocumentReferenceType.AdditionalDocumentReference,
+                Type = Models
+                    .EN16931
+                    .Enum
+                    .AdditionalDocumentReferenceType
+                    .AdditionalDocumentReference,
                 Description = GetName(referenceNode),
                 ExternalLocation = GetURRID(referenceNode),
                 AttachedDocument = GetAttachment(referenceNode),
@@ -285,7 +303,10 @@ namespace Securibox.FacturX.Core.References
 
         internal IEnumerable<IReference>? GetSupportingDocumentReferenceList()
         {
-            if (SupportingDocumentReferenceNodeList == null || !SupportingDocumentReferenceNodeList.Any())
+            if (
+                SupportingDocumentReferenceNodeList == null
+                || !SupportingDocumentReferenceNodeList.Any()
+            )
                 return null;
 
             var supportingDocumentList = new List<IReference>();
@@ -320,7 +341,9 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        private Models.Extended.UltimateCustomerOrderReference GetUltimateCustomerOrderReference(XmlNode referenceNode)
+        private Models.Extended.UltimateCustomerOrderReference GetUltimateCustomerOrderReference(
+            XmlNode referenceNode
+        )
         {
             return new Models.Extended.UltimateCustomerOrderReference
             {
@@ -331,26 +354,37 @@ namespace Securibox.FacturX.Core.References
 
         internal IEnumerable<IReference>? GetUltimateCustomerOrderReferenceList()
         {
-            if (UltimateCustomerOrderReferenceNodeList == null || UltimateCustomerOrderReferenceNodeList.Count == 0)
+            if (
+                UltimateCustomerOrderReferenceNodeList == null
+                || UltimateCustomerOrderReferenceNodeList.Count == 0
+            )
                 return null;
 
             var ultimateCustomerOrderReferenceList = new List<IReference>();
-            foreach (XmlNode ultimateCustomerOrderReferenceNode in UltimateCustomerOrderReferenceNodeList)
+            foreach (
+                XmlNode ultimateCustomerOrderReferenceNode in UltimateCustomerOrderReferenceNodeList
+            )
             {
-                var ultimateCustomerOrderReference = GetUltimateCustomerOrderReference(ultimateCustomerOrderReferenceNode);
+                var ultimateCustomerOrderReference = GetUltimateCustomerOrderReference(
+                    ultimateCustomerOrderReferenceNode
+                );
                 ultimateCustomerOrderReferenceList.Add(ultimateCustomerOrderReference);
             }
 
             return ultimateCustomerOrderReferenceList;
         }
 
-        internal IEnumerable<Models.Extended.LineAdditionalDocument>? GetLineAdditionalDocumentReferenceList(XmlNode lineNode)
+        internal IEnumerable<Models.Extended.LineAdditionalDocument>? GetLineAdditionalDocumentReferenceList(
+            XmlNode lineNode
+        )
         {
             var documentReferenceNodeList = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeAgreement']")!
-                .SelectNodes("*[local-name() = 'AdditionalReferencedDocument']")?
-                .Cast<XmlNode>()
-                .Where(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")!.InnerText.Equals("916"))
+                .SelectNodes("*[local-name() = 'AdditionalReferencedDocument']")
+                ?.Cast<XmlNode>()
+                .Where(x =>
+                    x.SelectSingleNode("*[local-name() = 'TypeCode']")!.InnerText.Equals("916")
+                )
                 .ToList();
 
             if (documentReferenceNodeList == null || !documentReferenceNodeList.Any())
@@ -375,9 +409,12 @@ namespace Securibox.FacturX.Core.References
             return additionalDocumentList;
         }
 
-        internal Models.BasicWL.BuyerAccountingReference? GetLineBuyerAccountingReference(XmlNode lineNode)
+        internal Models.BasicWL.BuyerAccountingReference? GetLineBuyerAccountingReference(
+            XmlNode lineNode
+        )
         {
-            var buyerAccountingReference = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeSettlement']")!
+            var buyerAccountingReference = lineNode
+                .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeSettlement']")!
                 .SelectSingleNode("*[local-name() = 'ReceivableSpecifiedTradeAccountingAccount']");
 
             if (buyerAccountingReference == null)
@@ -394,7 +431,7 @@ namespace Securibox.FacturX.Core.References
 
             return new Models.BasicWL.BuyerAccountingReference
             {
-                Id = GetId(buyerAccountingReference)
+                Id = GetId(buyerAccountingReference),
             };
         }
 
@@ -414,9 +451,12 @@ namespace Securibox.FacturX.Core.References
             return contractReference;
         }
 
-        internal Models.Extended.DeliveryNoteReference? GetLineDeliveryNoteReference(XmlNode lineNode)
+        internal Models.Extended.DeliveryNoteReference? GetLineDeliveryNoteReference(
+            XmlNode lineNode
+        )
         {
-            var deliveryNoteReference = lineNode.SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")!
+            var deliveryNoteReference = lineNode
+                .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")!
                 .SelectSingleNode("*[local-name() = 'DeliveryNoteReferencedDocument']");
 
             if (deliveryNoteReference == null)
@@ -430,7 +470,9 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        internal Models.Extended.LineDespacthAdviceReference? GetLineDespacthAdviceReference(XmlNode lineNode)
+        internal Models.Extended.LineDespacthAdviceReference? GetLineDespacthAdviceReference(
+            XmlNode lineNode
+        )
         {
             var despatchAdviceReference = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeDelivery']")!
@@ -447,15 +489,19 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        internal Models.EN16931.InvoicedObjectIdentifier? GetLineInvoicedObjectIdentifier(XmlNode lineNode)
+        internal Models.EN16931.InvoicedObjectIdentifier? GetLineInvoicedObjectIdentifier(
+            XmlNode lineNode
+        )
         {
             var additionalDocumentReferenceList = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeSettlement']")!
                 .SelectNodes("*[local-name() = 'AdditionalReferencedDocument']");
 
-            var invoicedObjectIdentifier = additionalDocumentReferenceList?
-                .Cast<XmlNode>()
-                .FirstOrDefault(x => x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "130");
+            var invoicedObjectIdentifier = additionalDocumentReferenceList
+                ?.Cast<XmlNode>()
+                .FirstOrDefault(x =>
+                    x.SelectSingleNode("*[local-name() = 'TypeCode']")?.InnerText == "130"
+                );
 
             if (invoicedObjectIdentifier == null)
                 return null;
@@ -465,7 +511,11 @@ namespace Securibox.FacturX.Core.References
                 return new Models.EN16931.InvoicedObjectIdentifier
                 {
                     AssignedId = GetAssignedId(invoicedObjectIdentifier),
-                    Type = Models.EN16931.Enum.AdditionalDocumentReferenceType.InvoicedObjectIdentifier,
+                    Type = Models
+                        .EN16931
+                        .Enum
+                        .AdditionalDocumentReferenceType
+                        .InvoicedObjectIdentifier,
                     Scheme = GetReferenceTypeCode(invoicedObjectIdentifier),
                 };
             }
@@ -479,7 +529,9 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        internal Models.BasicWL.PreviousInvoiceReference? GetLinePreviousInvoiceReference(XmlNode lineNode)
+        internal Models.BasicWL.PreviousInvoiceReference? GetLinePreviousInvoiceReference(
+            XmlNode lineNode
+        )
         {
             var previousInvoiceReferenceNode = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeSettlement']")!
@@ -505,7 +557,9 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        internal Models.EN16931.LinePurchaseOrderReference? GetLinePurchaseOrderReference(XmlNode lineNode)
+        internal Models.EN16931.LinePurchaseOrderReference? GetLinePurchaseOrderReference(
+            XmlNode lineNode
+        )
         {
             var purchaseOrderReference = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeAgreement']")!
@@ -516,10 +570,14 @@ namespace Securibox.FacturX.Core.References
 
             if (ConformanceLevelType == FacturXConformanceLevelType.EN16931)
             {
-                return new Models.EN16931.LinePurchaseOrderReference(GetLineId(purchaseOrderReference));
+                return new Models.EN16931.LinePurchaseOrderReference(
+                    GetLineId(purchaseOrderReference)
+                );
             }
 
-            var linePurchaseOrderReference = new Models.Extended.LinePurchaseOrderReference(GetLineId(purchaseOrderReference));
+            var linePurchaseOrderReference = new Models.Extended.LinePurchaseOrderReference(
+                GetLineId(purchaseOrderReference)
+            );
             linePurchaseOrderReference.AddAssignedId(GetAssignedId(purchaseOrderReference));
             linePurchaseOrderReference.AddIssueDate(GetIssueDate(purchaseOrderReference));
             return linePurchaseOrderReference;
@@ -541,7 +599,9 @@ namespace Securibox.FacturX.Core.References
             return quotationReference;
         }
 
-        internal Models.Extended.LineReceivingAdviceReference? GetLineReceivingAdviceReference(XmlNode lineNode)
+        internal Models.Extended.LineReceivingAdviceReference? GetLineReceivingAdviceReference(
+            XmlNode lineNode
+        )
         {
             var receivingAdviceReference = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeAgreement']")!
@@ -558,23 +618,32 @@ namespace Securibox.FacturX.Core.References
             };
         }
 
-        internal IEnumerable<Models.Extended.UltimateCustomerOrderReference>? GetLineUltimateCustomerOrderReferenceList(XmlNode lineNode)
+        internal IEnumerable<Models.Extended.UltimateCustomerOrderReference>? GetLineUltimateCustomerOrderReferenceList(
+            XmlNode lineNode
+        )
         {
             var ultimateCustomerOrderReferenceNodeList = lineNode
                 .SelectSingleNode("*[local-name() = 'SpecifiedLineTradeAgreement']")!
                 .SelectNodes("*[local-name() = 'UltimateCustomerOrderReferencedDocument']");
 
-            if (ultimateCustomerOrderReferenceNodeList == null || ultimateCustomerOrderReferenceNodeList.Count == 0)
+            if (
+                ultimateCustomerOrderReferenceNodeList == null
+                || ultimateCustomerOrderReferenceNodeList.Count == 0
+            )
                 return null;
 
-            var ultimateCustomerOrderReferenceList = new List<Models.Extended.UltimateCustomerOrderReference>();
-            foreach (XmlNode ultimateCustomerOrderReferenceNode in ultimateCustomerOrderReferenceNodeList)
+            var ultimateCustomerOrderReferenceList =
+                new List<Models.Extended.UltimateCustomerOrderReference>();
+            foreach (
+                XmlNode ultimateCustomerOrderReferenceNode in ultimateCustomerOrderReferenceNodeList
+            )
             {
-                var ultimateCustomerOrderReference = new Models.Extended.UltimateCustomerOrderReference
-                {
-                    AssignedId = GetAssignedId(ultimateCustomerOrderReferenceNode),
-                    IssueDate = GetIssueDate(ultimateCustomerOrderReferenceNode),
-                };
+                var ultimateCustomerOrderReference =
+                    new Models.Extended.UltimateCustomerOrderReference
+                    {
+                        AssignedId = GetAssignedId(ultimateCustomerOrderReferenceNode),
+                        IssueDate = GetIssueDate(ultimateCustomerOrderReferenceNode),
+                    };
 
                 ultimateCustomerOrderReferenceList.Add(ultimateCustomerOrderReference);
             }

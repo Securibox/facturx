@@ -1,6 +1,4 @@
-﻿using Securibox.FacturX.Schematron.Xslt;
-using Securibox.FacturX.Utils;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -8,6 +6,8 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Securibox.FacturX.Schematron.Xslt;
+using Securibox.FacturX.Utils;
 using Wmhelp.XPath2;
 
 namespace Securibox.FacturX.Schematron.Types
@@ -59,7 +59,9 @@ namespace Securibox.FacturX.Schematron.Types
             var nav = fragment.CreateNavigator();
             if (nav != null)
             {
-                fragment.LoadXml($"<root xmlns:sch=\"http://purl.oclc.org/dsdl/schematron\">{this.DescriptionFragment}</root>");
+                fragment.LoadXml(
+                    $"<root xmlns:sch=\"http://purl.oclc.org/dsdl/schematron\">{this.DescriptionFragment}</root>"
+                );
                 var nsMgr = new XmlNamespaceManager(fragment.NameTable);
                 nsMgr.AddNamespace("sch", "http://purl.oclc.org/dsdl/schematron");
                 var nodes = fragment.SelectNodes("//sch:value-of", nsMgr);
@@ -93,10 +95,18 @@ namespace Securibox.FacturX.Schematron.Types
             }
         }
 
-        public virtual EvaluationResult Evaluate(Schema schema, XPathNavigator navigator, XsltContext context)
+        public virtual EvaluationResult Evaluate(
+            Schema schema,
+            XPathNavigator navigator,
+            XsltContext context
+        )
         {
             var result = false;
-            var assert = this.Test.Replace("\r\n", " ").Replace('\n', ' ').Replace('\r', ' ').Trim();
+            var assert = this
+                .Test.Replace("\r\n", " ")
+                .Replace('\n', ' ')
+                .Replace('\r', ' ')
+                .Trim();
             assert = System.Text.RegularExpressions.Regex.Replace(assert, @"\s+", " ");
             result = EvaluateLogicalExpression(context, navigator, assert);
 
@@ -104,11 +114,15 @@ namespace Securibox.FacturX.Schematron.Types
             {
                 Assertion = this,
                 IsError = !result,
-                AssertInnerText = this.EvaluateDescriptionFragment(context)
+                AssertInnerText = this.EvaluateDescriptionFragment(context),
             };
         }
 
-        public bool EvaluateLogicalExpression(XsltContext context, XPathNavigator navigator, string expr)
+        public bool EvaluateLogicalExpression(
+            XsltContext context,
+            XPathNavigator navigator,
+            string expr
+        )
         {
             expr = TrimOuterParentheses(expr);
             var orParts = SplitTopLevel(expr, " or ");
@@ -135,7 +149,11 @@ namespace Securibox.FacturX.Schematron.Types
             }
         }
 
-        private bool EvaluateDocumentFunction(XPathNavigator navigator, XsltContext context, string exp)
+        private bool EvaluateDocumentFunction(
+            XPathNavigator navigator,
+            XsltContext context,
+            string exp
+        )
         {
             exp = exp.Replace(")", ",\'") + "\')";
             var compiledExpr = navigator.Compile(exp);
@@ -171,13 +189,25 @@ namespace Securibox.FacturX.Schematron.Types
             return ok;
         }
 
-        private bool GetAndEvaluateResult(XsltContext context, XPathNavigator navigator, string expr, Dictionary<string, Object>? variablesDictionary = null)
+        private bool GetAndEvaluateResult(
+            XsltContext context,
+            XPathNavigator navigator,
+            string expr,
+            Dictionary<string, Object>? variablesDictionary = null
+        )
         {
             #region Every condition
-            var everyMatch = Regex.Match(expr, @"every\s+(.*)\s+satisfies\s+(.+)", RegexOptions.Singleline);
+            var everyMatch = Regex.Match(
+                expr,
+                @"every\s+(.*)\s+satisfies\s+(.+)",
+                RegexOptions.Singleline
+            );
             if (everyMatch.Success && (expr.Contains(" for ") || expr.Contains(" let ")))
             {
-                var parts = everyMatch.Groups[1].ToString().Split(new[] { " in " }, StringSplitOptions.None);
+                var parts = everyMatch
+                    .Groups[1]
+                    .ToString()
+                    .Split(new[] { " in " }, StringSplitOptions.None);
                 var varName = parts[0].TrimStart('$').Trim();
                 var exprPart = parts[1].Trim();
                 var resultExprPart = navigator.XPath2Evaluate(exprPart, context);
@@ -224,10 +254,17 @@ namespace Securibox.FacturX.Schematron.Types
             #endregion
 
             #region Some condition
-            var someMatch = Regex.Match(expr, @"some\s+(.*)\s+satisfies\s+(.+)", RegexOptions.Singleline);
+            var someMatch = Regex.Match(
+                expr,
+                @"some\s+(.*)\s+satisfies\s+(.+)",
+                RegexOptions.Singleline
+            );
             if (someMatch.Success && (expr.Contains(" for ") || expr.Contains(" let ")))
             {
-                var parts = someMatch.Groups[1].ToString().Split(new[] { " in " }, StringSplitOptions.None);
+                var parts = someMatch
+                    .Groups[1]
+                    .ToString()
+                    .Split(new[] { " in " }, StringSplitOptions.None);
                 var varName = parts[0].TrimStart('$').Trim();
                 var exprPart = Regex.Replace(parts[1].Trim(), @"xs:decimal\s*\(([^)]+)\)", "$1");
                 var nodes = navigator.Select(exprPart, context);
@@ -259,10 +296,20 @@ namespace Securibox.FacturX.Schematron.Types
             }
             #endregion
 
-            var match = Regex.Match(expr, @"(?:for|let)\s+(.*?)\s+return\s+(.+)", RegexOptions.Singleline);
+            var match = Regex.Match(
+                expr,
+                @"(?:for|let)\s+(.*?)\s+return\s+(.+)",
+                RegexOptions.Singleline
+            );
             if (match.Success)
             {
-                expr = EvaluateForOrLetStatement(context, navigator, expr, match, variablesDictionary);
+                expr = EvaluateForOrLetStatement(
+                    context,
+                    navigator,
+                    expr,
+                    match,
+                    variablesDictionary
+                );
             }
 
             var schematronContext = context as SchematronContext;
@@ -289,7 +336,11 @@ namespace Securibox.FacturX.Schematron.Types
             object result;
             if (variables.Count != 0)
             {
-                result = navigator.XPath2Evaluate(expr, context, DynamicXPathVariables.BuildDynamicProps(variables));
+                result = navigator.XPath2Evaluate(
+                    expr,
+                    context,
+                    DynamicXPathVariables.BuildDynamicProps(variables)
+                );
             }
             else
             {
@@ -323,12 +374,19 @@ namespace Securibox.FacturX.Schematron.Types
             return ok;
         }
 
-        private string EvaluateForOrLetStatement(XsltContext context, XPathNavigator navigator, string expr, Match forMatch, Dictionary<string, Object>? variables = null)
+        private string EvaluateForOrLetStatement(
+            XsltContext context,
+            XPathNavigator navigator,
+            string expr,
+            Match forMatch,
+            Dictionary<string, Object>? variables = null
+        )
         {
             var bindings = forMatch.Groups[1].Value.Trim();
             var returnExpr = forMatch.Groups[2].Value.Trim();
 
-            var bindingParts = bindings.Split(',')
+            var bindingParts = bindings
+                .Split(',')
                 .Select(b => b.Trim())
                 .Where(b => b.StartsWith('$'))
                 .ToArray();
@@ -350,11 +408,18 @@ namespace Securibox.FacturX.Schematron.Types
                     var exprPart = parts[1].Trim();
                     foreach (var kvp in variables)
                     {
-                        exprPart = exprPart.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
+                        exprPart = exprPart.Replace(
+                            "$" + kvp.Key,
+                            ConversionUtils.ToInvariantNumericString(kvp.Value)
+                        );
                     }
 
                     var value = navigator.XPath2Evaluate(exprPart, context);
-                    if (value == null || (value is string s && string.IsNullOrWhiteSpace(s)) || value.ToString() == "()")
+                    if (
+                        value == null
+                        || (value is string s && string.IsNullOrWhiteSpace(s))
+                        || value.ToString() == "()"
+                    )
                     {
                         value = 0;
                     }
@@ -372,11 +437,18 @@ namespace Securibox.FacturX.Schematron.Types
 
                     foreach (var kvp in variables)
                     {
-                        exprPart = exprPart.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
+                        exprPart = exprPart.Replace(
+                            "$" + kvp.Key,
+                            ConversionUtils.ToInvariantNumericString(kvp.Value)
+                        );
                     }
-                        
+
                     var value = navigator.XPath2Evaluate(exprPart, context);
-                    if (value == null || (value is string s && string.IsNullOrWhiteSpace(s)) || value.ToString() == "()")
+                    if (
+                        value == null
+                        || (value is string s && string.IsNullOrWhiteSpace(s))
+                        || value.ToString() == "()"
+                    )
                     {
                         value = 0;
                     }
@@ -391,7 +463,10 @@ namespace Securibox.FacturX.Schematron.Types
 
             foreach (var kvp in variables)
             {
-                returnExpr = returnExpr.Replace("$" + kvp.Key, ConversionUtils.ToInvariantNumericString(kvp.Value));
+                returnExpr = returnExpr.Replace(
+                    "$" + kvp.Key,
+                    ConversionUtils.ToInvariantNumericString(kvp.Value)
+                );
             }
 
             return returnExpr;
@@ -407,9 +482,19 @@ namespace Securibox.FacturX.Schematron.Types
 
             while (i <= expr.Length - op.Length)
             {
-                if (char.IsLetter(expr[i]) && (expr.Substring(i).StartsWith("for", StringComparison.OrdinalIgnoreCase) || expr.Substring(i).StartsWith("let", StringComparison.OrdinalIgnoreCase)))
+                if (
+                    char.IsLetter(expr[i])
+                    && (
+                        expr.Substring(i).StartsWith("for", StringComparison.OrdinalIgnoreCase)
+                        || expr.Substring(i).StartsWith("let", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
                 {
-                    var match = Regex.Match(expr, @"(?:for|let)\s+(.*?)\s+return\s+(.+)", RegexOptions.Singleline);
+                    var match = Regex.Match(
+                        expr,
+                        @"(?:for|let)\s+(.*?)\s+return\s+(.+)",
+                        RegexOptions.Singleline
+                    );
                     if (match.Success)
                     {
                         int forBlockLength = match.Length;
@@ -466,12 +551,10 @@ namespace Securibox.FacturX.Schematron.Types
                     if (expr[i] == '(')
                     {
                         depth++;
-
                     }
                     else if (expr[i] == ')')
                     {
                         depth--;
-
                     }
                     if (depth == 0 && i < expr.Length - 1)
                     {

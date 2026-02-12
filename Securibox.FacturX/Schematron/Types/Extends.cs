@@ -12,6 +12,7 @@ namespace Securibox.FacturX.Schematron.Types
     {
         [XmlAttribute(AttributeName = "rule")]
         public string Rule { get; set; }
+
         [XmlAttribute(AttributeName = "href")]
         public string Href { get; set; }
     }

@@ -2,7 +2,9 @@
 
 namespace Securibox.FacturX.SpecificationModels.Minimum
 {
-    [XmlRoot(Namespace = "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100")]
+    [XmlRoot(
+        Namespace = "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100"
+    )]
     public class SupplyChainTradeTransaction
     {
         public HeaderTradeAgreement ApplicableHeaderTradeAgreement { get; set; }

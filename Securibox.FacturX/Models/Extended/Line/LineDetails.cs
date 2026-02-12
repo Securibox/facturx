@@ -10,8 +10,13 @@
 
         public new LineNote? Note { get; internal set; }
 
-        public LineDetails(string lineId, string? parentLineId, string? statusCode, string? statusReasonCode) 
-            : base(lineId) 
+        public LineDetails(
+            string lineId,
+            string? parentLineId,
+            string? statusCode,
+            string? statusReasonCode
+        )
+            : base(lineId)
         {
             ParentLineId = parentLineId;
             StatusCode = statusCode;

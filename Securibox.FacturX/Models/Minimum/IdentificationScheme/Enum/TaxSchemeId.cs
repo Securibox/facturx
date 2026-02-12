@@ -10,6 +10,7 @@ namespace Securibox.FacturX.Models.Minimum.Enum
 
         public static TaxSchemeId FC = new TaxSchemeId(2, "FC");
 
-        private TaxSchemeId(int id, string name) : base(id, name) { }
+        private TaxSchemeId(int id, string name)
+            : base(id, name) { }
     }
 }

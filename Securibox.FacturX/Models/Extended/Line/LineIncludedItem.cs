@@ -24,11 +24,22 @@ namespace Securibox.FacturX.Models.Extended
         internal LineIncludedItem(string name) => Name = name;
 
         internal void AddId(string? id) => Id = id;
-        internal void AddGlobalIdentificationList(IEnumerable<GlobalIdentification> globalIdentificationList) => GlobalIdentificationList = globalIdentificationList;
-        internal void AddSellerAssignedId(string? sellerAssignedId) => SellerAssignedId = sellerAssignedId;
-        internal void AddBuyerAssignedId(string? buyerAssignedId) => BuyerAssignedId = buyerAssignedId;
-        internal void AddIndustryAssignedId(string? industryAssignedId) => IndustryAssignedId = industryAssignedId;
+
+        internal void AddGlobalIdentificationList(
+            IEnumerable<GlobalIdentification> globalIdentificationList
+        ) => GlobalIdentificationList = globalIdentificationList;
+
+        internal void AddSellerAssignedId(string? sellerAssignedId) =>
+            SellerAssignedId = sellerAssignedId;
+
+        internal void AddBuyerAssignedId(string? buyerAssignedId) =>
+            BuyerAssignedId = buyerAssignedId;
+
+        internal void AddIndustryAssignedId(string? industryAssignedId) =>
+            IndustryAssignedId = industryAssignedId;
+
         internal void AddDescription(string? description) => Description = description;
+
         internal void AddUnitQuantity(QuantityUnit? unitQuantity) => UnitQuantity = unitQuantity;
     }
 }

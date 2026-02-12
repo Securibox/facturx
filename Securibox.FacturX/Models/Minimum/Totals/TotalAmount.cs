@@ -9,6 +9,6 @@
         public TotalAmount(decimal? amount)
         {
             Amount = amount;
-        }   
+        }
     }
 }
