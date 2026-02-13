@@ -14838,6 +14838,11 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .Reason,
                 Is.EqualTo("REMISE VOLUME")
             );
+            Assert.That(
+                line1!
+                    .SpecifiedLineTradeSettlement
+                    .SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent,
+                Is.EqualTo(1.00m));
 
             Assert.That(
                 line1
