@@ -107,7 +107,6 @@ namespace Securibox.FacturX.Models.BasicWL.Enum
         //public static NoteSubjectCode TypeOfSurveyQuestion = new NoteSubjectCode(91, "ADO");
         //public static NoteSubjectCode CarriersAgentCounterInformation = new NoteSubjectCode(92, "ADP");
 
-
         //public static NoteSubjectCode SupplierNotes = new NoteSubjectCode(1, "SUR");
         //public static NoteSubjectCode RegulatoryInformation = new NoteSubjectCode(2, "REG");
         //public static NoteSubjectCode LegalInformation = new NoteSubjectCode(3, "ABL");
