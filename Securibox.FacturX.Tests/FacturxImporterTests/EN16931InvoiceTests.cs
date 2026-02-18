@@ -14840,8 +14840,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             );
             Assert.That(
                 line1!
-                    .SpecifiedLineTradeSettlement
-                    .SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent,
+                    .SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0).CalculationPercent,
                 Is.EqualTo(1.00m));
 
             Assert.That(
