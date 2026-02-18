@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <Title>Securibox Factur-X Library</Title>
-	  <Version>0.5.3</Version>
-	  <Company>Securibox</Company>
-	  <RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
-	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	  <Authors>securibox</Authors>
-	  <Description>Open Source .NET library to read, create and validate Factur-X e-invoices.</Description>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
-	  <IncludeSymbols>False</IncludeSymbols>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Securibox Factur-X Library</Title>
+    <Version>0.5.3</Version>
+    <Company>Securibox</Company>
+    <RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Authors>securibox</Authors>
+    <Description>Open Source .NET library to read, create and validate Factur-X e-invoices.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,13 +27,17 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
-	<PackageReference Include="NuGet.CommandLine" Version="6.14.0">
-		<PrivateAssets>all</PrivateAssets>
-		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	</PackageReference>
+    <PackageReference Include="NuGet.CommandLine" Version="6.14.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="PdfSharpCore" Version="1.3.67" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
     <PackageReference Include="XmpCore" Version="6.1.10.1" />
@@ -60,18 +63,18 @@
     <Folder Include="Xsd\FacturX\Basic\" />
     <Folder Include="Xsd\FacturX\Minimum\" />
     <Folder Include="Xsd\FacturX\Basic WL\" />
-	<Folder Include="Xsd\FacturX\EN 16931\" />
-	<Folder Include="Xsd\FacturX\Extended\" />
+    <Folder Include="Xsd\FacturX\EN 16931\" />
+    <Folder Include="Xsd\FacturX\Extended\" />
   </ItemGroup>
   <ItemGroup>
-	<None Include="..\LICENSE">
-		<Pack>True</Pack>
-		<PackagePath>\</PackagePath>
-	</None>
-	<None Include="..\README.md">
-		<Pack>True</Pack>
-		<PackagePath>\</PackagePath>
-	</None>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <EmbeddedResource Include="Xsd\**\*.*" />
-	</ItemGroup>
-  </Project>
+  </ItemGroup>
+</Project>
