@@ -14842,8 +14842,8 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                 line1!
                     .SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(0)
                     .CalculationPercent,
-                Is.EqualTo(1.00m));
-
+                Is.EqualTo(1.00m)
+            );
             Assert.That(
                 line1
                     .SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge.ElementAt(1)
