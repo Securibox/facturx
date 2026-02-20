@@ -354,10 +354,10 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                     Value = 1235.40m,
                                                 },
                                                 RateApplicablePercent = 10.00m,
-                                                TaxPointDate = 
+                                                TaxPointDate =
                                                     new SpecificationModels.Minimum.IssueDate()
                                                     {
-                                                        DateString = 
+                                                        DateString =
                                                             new SpecificationModels.Minimum.DateString()
                                                             {
                                                                 Value = "20230920",
