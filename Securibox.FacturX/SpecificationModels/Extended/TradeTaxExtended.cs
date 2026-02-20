@@ -10,7 +10,7 @@
         public Minimum.Amount AllowanceChargeBasisAmount { get; set; }
         public string CategoryCode { get; set; }
         public string ExemptionReasonCode { get; set; }
-        public Minimum.IssueDateTime TaxPointDate { get; set; }
+        public Minimum.IssueDate TaxPointDate { get; set; }
         public string DueDateTypeCode { get; set; }
         public decimal RateApplicablePercent { get; set; }
     }
