@@ -104,7 +104,7 @@ namespace Securibox.FacturX
         }
 
         public Stream CreateFacturXStream(
-            string pdfPath,
+            Stream pdfStream,
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
@@ -112,9 +112,9 @@ namespace Securibox.FacturX
         )
         {
             ArgumentNullException.ThrowIfNull(invoice);
-            if (!File.Exists(pdfPath))
+            if (pdfStream == null)
             {
-                throw new FileNotFoundException("File not found", pdfPath);
+                throw new ArgumentNullException(nameof(pdfStream));
             }
 
             var invoiceType = invoice.GetType();
@@ -155,16 +155,16 @@ namespace Securibox.FacturX
 
             //create an XmlWriter that utilizes a StringWriter to
             //build the output, then write that to the Console window
-            using (Stream stream = new MemoryStream())
+            using (Stream invoiceStream = new MemoryStream())
             {
-                using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
+                using (XmlWriter xmlWriter = XmlWriter.Create(invoiceStream, settings))
                 {
                     serializer.Serialize(xmlWriter, invoice, namespaces);
-                    stream.Seek(0, SeekOrigin.Begin);
+                    invoiceStream.Seek(0, SeekOrigin.Begin);
 
                     return CreateFacturXStream(
-                        File.OpenRead(pdfPath),
-                        stream,
+                        pdfStream,
+                        invoiceStream,
                         conformanceLevel,
                         documentTitle,
                         documentDescription,
@@ -172,6 +172,29 @@ namespace Securibox.FacturX
                     );
                 }
             }
+        }
+
+        public Stream CreateFacturXStream(
+            string pdfPath,
+            ICrossIndustryInvoice invoice,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
+        {
+            ArgumentNullException.ThrowIfNull(invoice);
+            if (!File.Exists(pdfPath))
+            {
+                throw new FileNotFoundException("File not found", pdfPath);
+            }
+
+            return CreateFacturXStream(
+                File.OpenRead(pdfPath),
+                invoice,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
         }
 
         public Stream CreateFacturXStream(
