@@ -7,285 +7,280 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 {
     internal class BasicWLInvoiceTests
     {
-        private readonly string _mainDir = Path.Combine(
-            System.IO.Directory.GetCurrentDirectory(),
-            "Invoices",
-            "Custom"
+        private static readonly string path = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "Invoices"
         );
-        private readonly string _invoiceName = "2023-6013_facture_facturx_basicWL.pdf";
+        private static readonly string dstPath = Path.Combine(path, "Result");
+
+        private static readonly string srcFile = Path.Combine(
+            path,
+            "Custom",
+            "2023-6013_facture.pdf"
+        );
+        private static readonly string dstFile = Path.Combine(
+            dstPath,
+            "2023-6013_facture_facturx_basicWL.pdf"
+        );
 
         [SetUp]
         public void Setup()
         {
-            TestContext.WriteLine(_mainDir);
-        }
-
-        [OneTimeTearDown]
-        public void Teardown()
-        {
-            var outputPath = Path.Combine(_mainDir, _invoiceName);
-            if (File.Exists(outputPath))
+            TestContext.WriteLine(dstPath);
+            if (!Directory.Exists(dstPath))
             {
-                File.Delete(outputPath);
+                Directory.CreateDirectory(dstPath);
             }
         }
 
         public static SpecificationModels.BasicWL.CrossIndustryInvoice GetInvoice()
         {
-            Securibox.FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice invoice =
-                new Securibox.FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice()
+            var invoice = new Securibox.FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice()
+            {
+                ExchangedDocument = new SpecificationModels.BasicWL.ExchangedDocument()
                 {
-                    ExchangedDocument = new SpecificationModels.BasicWL.ExchangedDocument()
+                    ID = new SpecificationModels.Minimum.ID() { Value = "2023-6013" },
+                    IssueDateTime = new SpecificationModels.Minimum.IssueDateTime()
                     {
-                        ID = new SpecificationModels.Minimum.ID() { Value = "2023-6013" },
-                        IssueDateTime = new SpecificationModels.Minimum.IssueDateTime()
+                        DateTimeString = new SpecificationModels.Minimum.DateTimeString()
                         {
-                            DateTimeString = new SpecificationModels.Minimum.DateTimeString()
-                            {
-                                Value = "20230920",
-                                Format = "102",
-                            },
-                        },
-                        TypeCode = "380",
-                        IncludedNote = new SpecificationModels.BasicWL.Note[]
-                        {
-                            new SpecificationModels.BasicWL.Note()
-                            {
-                                Content = "SASU au capital de 200000€",
-                                SubjectCode = "REG",
-                            },
-                            new SpecificationModels.BasicWL.Note()
-                            {
-                                Content = "R.C.S Paris 123 456 789",
-                                SubjectCode = "ABL",
-                            },
-                            new SpecificationModels.BasicWL.Note()
-                            {
-                                Content =
-                                    "2, rue de la Paix – 75000 Paris – Tel: +33 1 01 12 34 56",
-                                SubjectCode = "AAI",
-                            },
-                            new SpecificationModels.BasicWL.Note()
-                            {
-                                Content = "APE 5510Z – TVA FR40123456824",
-                                SubjectCode = "AAI",
-                            },
-                            new SpecificationModels.BasicWL.Note()
-                            {
-                                Content =
-                                    "La loi n°92/1442 du 31 décembre 1992 nous fait l’obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de retard suivant modalités et taux défini par la loi.",
-                                SubjectCode = "PMD",
-                            },
-                            new SpecificationModels.BasicWL.Note()
-                            {
-                                Content =
-                                    "Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.",
-                                SubjectCode = "PMT",
-                            },
+                            Value = "20230920",
+                            Format = "102",
                         },
                     },
-                    ExchangedDocumentContext =
-                        new SpecificationModels.Minimum.ExchangedDocumentContext()
+                    TypeCode = "380",
+                    IncludedNote = new SpecificationModels.BasicWL.Note[]
+                    {
+                        new SpecificationModels.BasicWL.Note()
                         {
-                            BusinessProcessSpecifiedDocumentContextParameter =
-                                new SpecificationModels.Minimum.DocumentContextParameter()
-                                {
-                                    ID = new SpecificationModels.Minimum.ID() { Value = "A1" },
-                                },
-                            GuidelineSpecifiedDocumentContextParameter =
-                                new SpecificationModels.Minimum.DocumentContextParameter()
-                                {
-                                    ID = new SpecificationModels.Minimum.ID()
-                                    {
-                                        Value = "urn:factur-x.eu:1p0:basicwl",
-                                    },
-                                },
+                            Content = "SASU au capital de 200000€",
+                            SubjectCode = "REG",
                         },
-                    SupplyChainTradeTransaction =
-                        new SpecificationModels.BasicWL.SupplyChainTradeTransaction()
+                        new SpecificationModels.BasicWL.Note()
                         {
-                            ApplicableHeaderTradeAgreement =
-                                new SpecificationModels.BasicWL.HeaderTradeAgreement()
+                            Content = "R.C.S Paris 123 456 789",
+                            SubjectCode = "ABL",
+                        },
+                        new SpecificationModels.BasicWL.Note()
+                        {
+                            Content = "2, rue de la Paix – 75000 Paris – Tel: +33 1 01 12 34 56",
+                            SubjectCode = "AAI",
+                        },
+                        new SpecificationModels.BasicWL.Note()
+                        {
+                            Content = "APE 5510Z – TVA FR40123456824",
+                            SubjectCode = "AAI",
+                        },
+                        new SpecificationModels.BasicWL.Note()
+                        {
+                            Content =
+                                "La loi n°92/1442 du 31 décembre 1992 nous fait l’obligation de vous indiquer que le non-respect des conditions de paiement entraine des intérêts de retard suivant modalités et taux défini par la loi.",
+                            SubjectCode = "PMD",
+                        },
+                        new SpecificationModels.BasicWL.Note()
+                        {
+                            Content =
+                                "Une indemnité forfaitaire de 40€ sera due pour frais de recouvrement en cas de retard de paiement.",
+                            SubjectCode = "PMT",
+                        },
+                    },
+                },
+                ExchangedDocumentContext =
+                    new SpecificationModels.Minimum.ExchangedDocumentContext()
+                    {
+                        BusinessProcessSpecifiedDocumentContextParameter =
+                            new SpecificationModels.Minimum.DocumentContextParameter()
+                            {
+                                ID = new SpecificationModels.Minimum.ID() { Value = "A1" },
+                            },
+                        GuidelineSpecifiedDocumentContextParameter =
+                            new SpecificationModels.Minimum.DocumentContextParameter()
+                            {
+                                ID = new SpecificationModels.Minimum.ID()
                                 {
-                                    SellerTradeParty = new SpecificationModels.BasicWL.TradeParty()
+                                    Value = "urn:factur-x.eu:1p0:basicwl",
+                                },
+                            },
+                    },
+                SupplyChainTradeTransaction =
+                    new SpecificationModels.BasicWL.SupplyChainTradeTransaction()
+                    {
+                        ApplicableHeaderTradeAgreement =
+                            new SpecificationModels.BasicWL.HeaderTradeAgreement()
+                            {
+                                SellerTradeParty = new SpecificationModels.BasicWL.TradeParty()
+                                {
+                                    Name = "Société Hôtelière du Pacano",
+                                    SpecifiedLegalOrganization =
+                                        new SpecificationModels.BasicWL.LegalOrganization()
+                                        {
+                                            ID = new SpecificationModels.Minimum.ID()
+                                            {
+                                                Value = "12345682400016",
+                                                SchemeID = "0002",
+                                            },
+                                        },
+                                    PostalTradeAddress =
+                                        new SpecificationModels.BasicWL.TradeAddress()
+                                        {
+                                            CountryID = "FR",
+                                            PostcodeCode = "75000",
+                                            LineOne = "2, rue de la Paix",
+                                            CityName = "PARIS",
+                                        },
+                                    URIUniversalCommunication =
+                                        new SpecificationModels.BasicWL.UniversalCommunication()
+                                        {
+                                            URIID = new SpecificationModels.Minimum.ID()
+                                            {
+                                                Value = "info@hotel-du-pacano.fr",
+                                                SchemeID = "EM",
+                                            },
+                                        },
+                                    SpecifiedTaxRegistration =
+                                        new SpecificationModels.Minimum.TaxRegistration()
+                                        {
+                                            ID = new SpecificationModels.Minimum.ID()
+                                            {
+                                                Value = "FR40123456824",
+                                                SchemeID = "VA",
+                                            },
+                                        },
+                                },
+                                BuyerTradeParty = new SpecificationModels.BasicWL.TradeParty()
+                                {
+                                    Name = "Securibox SARL",
+                                    SpecifiedLegalOrganization =
+                                        new SpecificationModels.BasicWL.LegalOrganization()
+                                        {
+                                            ID = new SpecificationModels.Minimum.ID()
+                                            {
+                                                Value = "50000371000034",
+                                                SchemeID = "0002",
+                                            },
+                                        },
+                                    SpecifiedTaxRegistration =
+                                        new SpecificationModels.Minimum.TaxRegistration()
+                                        {
+                                            ID = new SpecificationModels.Minimum.ID()
+                                            {
+                                                Value = "FR38500003710",
+                                                SchemeID = "VA",
+                                            },
+                                        },
+                                    PostalTradeAddress =
+                                        new SpecificationModels.BasicWL.TradeAddress()
+                                        {
+                                            CountryID = "FR",
+                                            PostcodeCode = "75008",
+                                            LineOne = "27, Rue de Bassano",
+                                            CityName = "Paris",
+                                        },
+                                },
+                            },
+                        ApplicableHeaderTradeDelivery =
+                            new SpecificationModels.BasicWL.HeaderTradeDelivery() { },
+                        ApplicableHeaderTradeSettlement =
+                            new SpecificationModels.BasicWL.HeaderTradeSettlement()
+                            {
+                                InvoiceCurrencyCode = "EUR",
+                                SpecifiedTradeSettlementPaymentMeans =
+                                [
+                                    new()
                                     {
-                                        Name = "Société Hôtelière du Pacano",
-                                        SpecifiedLegalOrganization =
-                                            new SpecificationModels.BasicWL.LegalOrganization()
+                                        TypeCode = "30",
+                                        PayeePartyCreditorFinancialAccount = new()
+                                        {
+                                            IBANID = new SpecificationModels.Minimum.ID
                                             {
-                                                ID = new SpecificationModels.Minimum.ID()
-                                                {
-                                                    Value = "12345682400016",
-                                                    SchemeID = "0002",
-                                                },
+                                                Value = "FR7430003000402964223654P78",
                                             },
-                                        PostalTradeAddress =
-                                            new SpecificationModels.BasicWL.TradeAddress()
-                                            {
-                                                CountryID = "FR",
-                                                PostcodeCode = "75000",
-                                                LineOne = "2, rue de la Paix",
-                                                CityName = "PARIS",
-                                            },
-                                        URIUniversalCommunication =
-                                            new SpecificationModels.BasicWL.UniversalCommunication()
-                                            {
-                                                URIID = new SpecificationModels.Minimum.ID()
-                                                {
-                                                    Value = "info@hotel-du-pacano.fr",
-                                                    SchemeID = "EM",
-                                                },
-                                            },
-                                        SpecifiedTaxRegistration =
-                                            new SpecificationModels.Minimum.TaxRegistration()
-                                            {
-                                                ID = new SpecificationModels.Minimum.ID()
-                                                {
-                                                    Value = "FR40123456824",
-                                                    SchemeID = "VA",
-                                                },
-                                            },
+                                        },
                                     },
-                                    BuyerTradeParty = new SpecificationModels.BasicWL.TradeParty()
+                                ],
+                                ApplicableTradeTax = new SpecificationModels.BasicWL.TradeTax[]
+                                {
+                                    new SpecificationModels.BasicWL.TradeTax()
                                     {
-                                        Name = "Securibox SARL",
-                                        SpecifiedLegalOrganization =
-                                            new SpecificationModels.BasicWL.LegalOrganization()
-                                            {
-                                                ID = new SpecificationModels.Minimum.ID()
-                                                {
-                                                    Value = "50000371000034",
-                                                    SchemeID = "0002",
-                                                },
-                                            },
-                                        SpecifiedTaxRegistration =
-                                            new SpecificationModels.Minimum.TaxRegistration()
-                                            {
-                                                ID = new SpecificationModels.Minimum.ID()
-                                                {
-                                                    Value = "FR38500003710",
-                                                    SchemeID = "VA",
-                                                },
-                                            },
-                                        PostalTradeAddress =
-                                            new SpecificationModels.BasicWL.TradeAddress()
-                                            {
-                                                CountryID = "FR",
-                                                PostcodeCode = "75008",
-                                                LineOne = "27, Rue de Bassano",
-                                                CityName = "Paris",
-                                            },
+                                        CalculatedAmount = new SpecificationModels.Minimum.Amount
+                                        {
+                                            Value = 123.54m,
+                                        },
+                                        TypeCode = "VAT",
+                                        CategoryCode = "S",
+                                        BasisAmount = new SpecificationModels.Minimum.Amount
+                                        {
+                                            Value = 1235.40m,
+                                        },
+                                        RateApplicablePercent = 10.00m,
+                                    },
+                                    new SpecificationModels.BasicWL.TradeTax()
+                                    {
+                                        CalculatedAmount = new SpecificationModels.Minimum.Amount
+                                        {
+                                            Value = 0.0m,
+                                        },
+                                        TypeCode = "VAT",
+                                        CategoryCode = "Z",
+                                        BasisAmount = new SpecificationModels.Minimum.Amount
+                                        {
+                                            Value = 9.90m,
+                                        },
+                                        RateApplicablePercent = 0.00m,
                                     },
                                 },
-                            ApplicableHeaderTradeDelivery =
-                                new SpecificationModels.BasicWL.HeaderTradeDelivery() { },
-                            ApplicableHeaderTradeSettlement =
-                                new SpecificationModels.BasicWL.HeaderTradeSettlement()
-                                {
-                                    InvoiceCurrencyCode = "EUR",
-                                    SpecifiedTradeSettlementPaymentMeans =
-                                    [
-                                        new()
-                                        {
-                                            TypeCode = "30",
-                                            PayeePartyCreditorFinancialAccount = new()
-                                            {
-                                                IBANID = new SpecificationModels.Minimum.ID
-                                                {
-                                                    Value = "FR7430003000402964223654P78",
-                                                },
-                                            },
-                                        },
-                                    ],
-                                    ApplicableTradeTax = new SpecificationModels.BasicWL.TradeTax[]
+                                SpecifiedTradePaymentTerms =
+                                    new SpecificationModels.BasicWL.TradePaymentTerms()
                                     {
-                                        new SpecificationModels.BasicWL.TradeTax()
-                                        {
-                                            CalculatedAmount =
-                                                new SpecificationModels.Minimum.Amount
-                                                {
-                                                    Value = 123.54m,
-                                                },
-                                            TypeCode = "VAT",
-                                            CategoryCode = "S",
-                                            BasisAmount = new SpecificationModels.Minimum.Amount
+                                        DueDateDateTime =
+                                            new SpecificationModels.Minimum.IssueDateTime()
                                             {
-                                                Value = 1235.40m,
-                                            },
-                                            RateApplicablePercent = 10.00m,
-                                        },
-                                        new SpecificationModels.BasicWL.TradeTax()
-                                        {
-                                            CalculatedAmount =
-                                                new SpecificationModels.Minimum.Amount
-                                                {
-                                                    Value = 0.0m,
-                                                },
-                                            TypeCode = "VAT",
-                                            CategoryCode = "Z",
-                                            BasisAmount = new SpecificationModels.Minimum.Amount
-                                            {
-                                                Value = 9.90m,
-                                            },
-                                            RateApplicablePercent = 0.00m,
-                                        },
-                                    },
-                                    SpecifiedTradePaymentTerms =
-                                        new SpecificationModels.BasicWL.TradePaymentTerms()
-                                        {
-                                            DueDateDateTime =
-                                                new SpecificationModels.Minimum.IssueDateTime()
-                                                {
-                                                    DateTimeString =
-                                                        new SpecificationModels.Minimum.DateTimeString()
-                                                        {
-                                                            Value = "20231019",
-                                                            Format = "102",
-                                                        },
-                                                },
-                                            Description = "30 jours net",
-                                        },
-                                    SpecifiedTradeSettlementHeaderMonetarySummation =
-                                        new SpecificationModels.BasicWL.TradeSettlementHeaderMonetarySummation()
-                                        {
-                                            LineTotalAmount =
-                                                new SpecificationModels.Minimum.Amount()
-                                                {
-                                                    Value = 1245.30m,
-                                                },
-                                            TaxBasisTotalAmount =
-                                                new SpecificationModels.Minimum.Amount()
-                                                {
-                                                    Value = 123.54m,
-                                                },
-                                            TaxTotalAmount =
-                                                new SpecificationModels.Minimum.Amount[]
-                                                {
-                                                    new SpecificationModels.Minimum.Amount()
+                                                DateTimeString =
+                                                    new SpecificationModels.Minimum.DateTimeString()
                                                     {
-                                                        Value = 123.54m,
-                                                        CurrencyID = "EUR",
+                                                        Value = "20231019",
+                                                        Format = "102",
                                                     },
-                                                },
-                                            GrandTotalAmount =
-                                                new SpecificationModels.Minimum.Amount()
-                                                {
-                                                    Value = 1368.84m,
-                                                },
-                                            TotalPrepaidAmount =
-                                                new SpecificationModels.Minimum.Amount()
-                                                {
-                                                    Value = 452.98m,
-                                                },
-                                            DuePayableAmount =
-                                                new SpecificationModels.Minimum.Amount()
-                                                {
-                                                    Value = 915.86m,
-                                                },
+                                            },
+                                        Description = "30 jours net",
+                                    },
+                                SpecifiedTradeSettlementHeaderMonetarySummation =
+                                    new SpecificationModels.BasicWL.TradeSettlementHeaderMonetarySummation()
+                                    {
+                                        LineTotalAmount = new SpecificationModels.Minimum.Amount()
+                                        {
+                                            Value = 1245.30m,
                                         },
-                                },
-                        },
-                };
+                                        TaxBasisTotalAmount =
+                                            new SpecificationModels.Minimum.Amount()
+                                            {
+                                                Value = 123.54m,
+                                            },
+                                        TaxTotalAmount = new SpecificationModels.Minimum.Amount[]
+                                        {
+                                            new SpecificationModels.Minimum.Amount()
+                                            {
+                                                Value = 123.54m,
+                                                CurrencyID = "EUR",
+                                            },
+                                        },
+                                        GrandTotalAmount = new SpecificationModels.Minimum.Amount()
+                                        {
+                                            Value = 1368.84m,
+                                        },
+                                        TotalPrepaidAmount =
+                                            new SpecificationModels.Minimum.Amount()
+                                            {
+                                                Value = 452.98m,
+                                            },
+                                        DuePayableAmount = new SpecificationModels.Minimum.Amount()
+                                        {
+                                            Value = 915.86m,
+                                        },
+                                    },
+                            },
+                    },
+            };
 
             return invoice;
         }
@@ -294,35 +289,26 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
         [Order(1)]
         public async Task WriteData_BasicWL_SUCCESS()
         {
-            var outputPath = Path.Combine(_mainDir, _invoiceName);
+            var invoice = GetInvoice();
+            var exporter = new FacturxExporter();
 
-            Securibox.FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice invoice =
-                GetInvoice();
-            FacturxExporter exporter = new FacturxExporter();
+            using var stream = exporter.CreateFacturXStream(
+                srcFile,
+                invoice,
+                $"SEPEM: Invoice ",
+                $"Invoice "
+            );
 
-            using (
-                var stream = exporter.CreateFacturXStream(
-                    Path.Combine(_mainDir, "2023-6013_facture.pdf"),
-                    invoice,
-                    $"SEPEM: Invoice ",
-                    $"Invoice "
-                )
-            )
-            {
-                using (var fileStream = new FileStream(outputPath, FileMode.Create))
-                {
-                    await stream.CopyToAsync(fileStream);
-                }
-            }
+            using var fileStream = new FileStream(dstFile, FileMode.Create);
+
+            await stream.CopyToAsync(fileStream);
         }
 
         [Test]
         [Order(2)]
         public void AssertWrittenData_BasicWL_SUCCESS()
         {
-            var invoicePath = Path.Combine(_mainDir, "2023-6013_facture_facturx_basicWL.pdf");
-
-            var importer = new FacturxImporter(invoicePath);
+            var importer = new FacturxImporter(dstFile);
             var basicWLInvoice =
                 importer.ImportDataWithDeserialization()
                 as Securibox.FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
