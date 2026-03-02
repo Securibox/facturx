@@ -1,13 +1,10 @@
-﻿using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 using Securibox.FacturX.Schematron.Xslt;
-using Securibox.FacturX.Utils;
 using Wmhelp.XPath2;
 
 namespace Securibox.FacturX.Schematron.Types
@@ -107,6 +104,7 @@ namespace Securibox.FacturX.Schematron.Types
                 .Replace('\n', ' ')
                 .Replace('\r', ' ')
                 .Trim();
+
             assert = System.Text.RegularExpressions.Regex.Replace(assert, @"\s+", " ");
             result = EvaluateLogicalExpression(context, navigator, assert);
 
@@ -259,12 +257,14 @@ namespace Securibox.FacturX.Schematron.Types
                 @"some\s+(.*)\s+satisfies\s+(.+)",
                 RegexOptions.Singleline
             );
+
             if (someMatch.Success && (expr.Contains(" for ") || expr.Contains(" let ")))
             {
                 var parts = someMatch
                     .Groups[1]
                     .ToString()
                     .Split(new[] { " in " }, StringSplitOptions.None);
+
                 var varName = parts[0].TrimStart('$').Trim();
                 var exprPart = Regex.Replace(parts[1].Trim(), @"xs:decimal\s*\(([^)]+)\)", "$1");
                 var nodes = navigator.Select(exprPart, context);
@@ -281,7 +281,9 @@ namespace Securibox.FacturX.Schematron.Types
 
                 string condition = someMatch.Groups[2].ToString().Trim();
                 if (condition.StartsWith('(') && condition.EndsWith(')'))
+                {
                     condition = condition.Substring(1, condition.Length - 2);
+                }
 
                 foreach (var value in varValues)
                 {
@@ -301,21 +303,25 @@ namespace Securibox.FacturX.Schematron.Types
                 @"(?:for|let)\s+(.*?)\s+return\s+(.+)",
                 RegexOptions.Singleline
             );
-            if (match.Success)
-            {
-                expr = EvaluateForOrLetStatement(
-                    context,
-                    navigator,
-                    expr,
-                    match,
-                    variablesDictionary
-                );
-            }
 
             var schematronContext = context as SchematronContext;
             if (schematronContext == null)
             {
                 throw new Exception("Schematron context is null");
+            }
+
+            object result;
+            if (match.Success)
+            {
+                result = EvaluateForOrLetExpression(
+                    context,
+                    navigator,
+                    match,
+                    schematronContext,
+                    variablesDictionary
+                );
+
+                return ConvertResultToBoolean(result);
             }
 
             var variables = new Dictionary<XmlQualifiedName, object>();
@@ -333,7 +339,6 @@ namespace Securibox.FacturX.Schematron.Types
 
             var compiledExpr = XPath2Expression.Compile(expr, context);
             var returnType = compiledExpr.GetResultType(variables);
-            object result;
             if (variables.Count != 0)
             {
                 result = navigator.XPath2Evaluate(
@@ -347,39 +352,15 @@ namespace Securibox.FacturX.Schematron.Types
                 result = navigator.XPath2Evaluate(expr, context);
             }
 
-            bool ok = false;
-            switch (returnType)
-            {
-                case XPath2ResultType.Boolean:
-                    ok = (bool)result;
-                    break;
-                case XPath2ResultType.Error:
-                    ok = false;
-                    break;
-                case XPath2ResultType.NodeSet:
-                    ok = ((XPath2NodeIterator)result).Count != 0;
-                    break;
-                case XPath2ResultType.Number:
-                    ok = int.TryParse(result.ToString(), out int t);
-                    //ok = (int)result != 0;
-                    break;
-                case XPath2ResultType.String:
-                    ok = !String.IsNullOrEmpty((string)result);
-                    break;
-                default:
-                    ok = false;
-                    break;
-            }
-
-            return ok;
+            return ConvertResultToBoolean(result);
         }
 
-        private string EvaluateForOrLetStatement(
+        private object EvaluateForOrLetExpression(
             XsltContext context,
             XPathNavigator navigator,
-            string expr,
             Match forMatch,
-            Dictionary<string, Object>? variables = null
+            SchematronContext schematronContext,
+            Dictionary<string, Object>? existingVariables = null
         )
         {
             var bindings = forMatch.Groups[1].Value.Trim();
@@ -391,9 +372,25 @@ namespace Securibox.FacturX.Schematron.Types
                 .Where(b => b.StartsWith('$'))
                 .ToArray();
 
-            if (variables is null)
+            var variables = new Dictionary<XmlQualifiedName, object>();
+            foreach (var let in schematronContext.Lets)
             {
-                variables = new Dictionary<string, object>();
+                if (let.Value == ".")
+                {
+                    variables[new XmlQualifiedName(let.Name)] = navigator.Value;
+                }
+                else
+                {
+                    variables[new XmlQualifiedName(let.Name)] = let.Value;
+                }
+            }
+
+            if (existingVariables != null)
+            {
+                foreach (var kvp in existingVariables)
+                {
+                    variables[new XmlQualifiedName(kvp.Key)] = kvp.Value;
+                }
             }
 
             foreach (var binding in bindingParts)
@@ -406,15 +403,14 @@ namespace Securibox.FacturX.Schematron.Types
 
                     var varName = parts[0].TrimStart('$').Trim();
                     var exprPart = parts[1].Trim();
-                    foreach (var kvp in variables)
-                    {
-                        exprPart = exprPart.Replace(
-                            "$" + kvp.Key,
-                            ConversionUtils.ToInvariantNumericString(kvp.Value)
-                        );
-                    }
+                    var value = navigator.XPath2Evaluate(
+                        exprPart,
+                        context,
+                        variables.Count > 0
+                            ? DynamicXPathVariables.BuildDynamicProps(variables)
+                            : null
+                    );
 
-                    var value = navigator.XPath2Evaluate(exprPart, context);
                     if (
                         value == null
                         || (value is string s && string.IsNullOrWhiteSpace(s))
@@ -424,7 +420,7 @@ namespace Securibox.FacturX.Schematron.Types
                         value = 0;
                     }
 
-                    variables[varName] = value;
+                    variables[new XmlQualifiedName(varName)] = value;
                 }
                 else if (binding.Contains(":="))
                 {
@@ -435,15 +431,14 @@ namespace Securibox.FacturX.Schematron.Types
                     var varName = parts[0].TrimStart('$').Trim();
                     var exprPart = parts[1].Trim();
 
-                    foreach (var kvp in variables)
-                    {
-                        exprPart = exprPart.Replace(
-                            "$" + kvp.Key,
-                            ConversionUtils.ToInvariantNumericString(kvp.Value)
-                        );
-                    }
+                    var value = navigator.XPath2Evaluate(
+                        exprPart,
+                        context,
+                        variables.Count > 0
+                            ? DynamicXPathVariables.BuildDynamicProps(variables)
+                            : null
+                    );
 
-                    var value = navigator.XPath2Evaluate(exprPart, context);
                     if (
                         value == null
                         || (value is string s && string.IsNullOrWhiteSpace(s))
@@ -453,7 +448,7 @@ namespace Securibox.FacturX.Schematron.Types
                         value = 0;
                     }
 
-                    variables[varName] = value;
+                    variables[new XmlQualifiedName(varName)] = value;
                 }
                 else
                 {
@@ -461,15 +456,41 @@ namespace Securibox.FacturX.Schematron.Types
                 }
             }
 
-            foreach (var kvp in variables)
-            {
-                returnExpr = returnExpr.Replace(
-                    "$" + kvp.Key,
-                    ConversionUtils.ToInvariantNumericString(kvp.Value)
-                );
-            }
+            return navigator.XPath2Evaluate(
+                returnExpr,
+                context,
+                variables.Count > 0 ? DynamicXPathVariables.BuildDynamicProps(variables) : null
+            );
+        }
 
-            return returnExpr;
+        private bool ConvertResultToBoolean(object result)
+        {
+            if (result == null)
+                return false;
+
+            switch (result)
+            {
+                case bool b:
+                    return b;
+                case XPath2NodeIterator iterator:
+                    return iterator.Count != 0;
+                case int i:
+                    return i != 0;
+                case long l:
+                    return l != 0;
+                case double d:
+                    return !double.IsNaN(d) && d != 0;
+                case decimal dec:
+                    return dec != 0;
+                case float f:
+                    return !float.IsNaN(f) && f != 0;
+                case string str:
+                    return !string.IsNullOrEmpty(str);
+                default:
+                    if (int.TryParse(result.ToString(), out int parsed))
+                        return parsed != 0;
+                    return true;
+            }
         }
 
         private string[] SplitTopLevel(string expr, string op)
