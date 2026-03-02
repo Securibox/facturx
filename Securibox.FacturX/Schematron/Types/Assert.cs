@@ -1,10 +1,10 @@
-﻿using Securibox.FacturX.Schematron.Xslt;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Securibox.FacturX.Schematron.Xslt;
 using Wmhelp.XPath2;
 
 namespace Securibox.FacturX.Schematron.Types
@@ -104,7 +104,7 @@ namespace Securibox.FacturX.Schematron.Types
                 .Replace('\n', ' ')
                 .Replace('\r', ' ')
                 .Trim();
-            
+
             assert = System.Text.RegularExpressions.Regex.Replace(assert, @"\s+", " ");
             result = EvaluateLogicalExpression(context, navigator, assert);
 
@@ -312,7 +312,7 @@ namespace Securibox.FacturX.Schematron.Types
 
             object result;
             if (match.Success)
-            {             
+            {
                 result = EvaluateForOrLetExpression(
                     context,
                     navigator,
@@ -406,7 +406,9 @@ namespace Securibox.FacturX.Schematron.Types
                     var value = navigator.XPath2Evaluate(
                         exprPart,
                         context,
-                        variables.Count > 0 ? DynamicXPathVariables.BuildDynamicProps(variables) : null
+                        variables.Count > 0
+                            ? DynamicXPathVariables.BuildDynamicProps(variables)
+                            : null
                     );
 
                     if (
@@ -432,7 +434,9 @@ namespace Securibox.FacturX.Schematron.Types
                     var value = navigator.XPath2Evaluate(
                         exprPart,
                         context,
-                        variables.Count > 0 ? DynamicXPathVariables.BuildDynamicProps(variables) : null
+                        variables.Count > 0
+                            ? DynamicXPathVariables.BuildDynamicProps(variables)
+                            : null
                     );
 
                     if (
