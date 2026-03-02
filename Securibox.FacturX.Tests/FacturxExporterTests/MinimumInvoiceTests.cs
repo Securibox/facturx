@@ -1,4 +1,5 @@
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -163,12 +164,57 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 using (var fileStream = new FileStream(outputPath, FileMode.Create))
                 {
                     await stream.CopyToAsync(fileStream);
+                    fileStream.Close();
+                }
+            }
+
+            Assert.That(File.Exists(outputPath), Is.True);
+        }
+
+        [Test]
+        [Order(2)]
+        public async Task WriteData_Stream_Minimum_SUCCESS()
+        {
+            var outputPath = Path.GetTempFileName();
+
+            try
+            {
+                Securibox.FacturX.SpecificationModels.Minimum.CrossIndustryInvoice invoiceToExport =
+                    GetInvoice();
+                FacturxExporter exporter = new FacturxExporter();
+
+                using (
+                    var stream = exporter.CreateFacturXStream(
+                        File.Open(
+                            Path.Combine(_mainDir, "2023-6026_facture_minimum.pdf"),
+                            FileMode.Open,
+                            FileAccess.Read,
+                            FileShare.Read
+                        ),
+                        invoiceToExport,
+                        $"SEPEM: Invoice ",
+                        $"Invoice "
+                    )
+                )
+                {
+                    using (var fileStream = new FileStream(outputPath, FileMode.Create))
+                    {
+                        await stream.CopyToAsync(fileStream);
+                    }
+                }
+                Assert.That(File.Exists(outputPath), Is.True);
+            }
+            finally
+            {
+                if (File.Exists(outputPath))
+                {
+                    File.Delete(outputPath);
                 }
             }
         }
 
         [Test]
-        [Order(2)]
+        [Order(3)]
         public void AssertWrittenData_Minimum_SUCCESS()
         {
             var invoicePath = Path.Combine(_mainDir, "2023-6026_facture_facturx_minimum.pdf");
