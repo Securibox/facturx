@@ -1047,6 +1047,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
         }
 
         [Test]
+        [Order(3)]
         public async Task ValidateXml_IncorrectVATCalculation_FAILS_BR_FXEXT_S_09()
         {
             // This test validates that BR-FXEXT-S-09 assertion correctly detects
@@ -1061,18 +1062,40 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             // INTENTIONALLY INCORRECT: CalculatedAmount should be 123.54 (1235.40 * 10%)
             // but we set it to 150.00 to trigger BR-FXEXT-S-09 validation error
-            invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.ApplicableTradeTax[0].CalculatedAmount.Value = 150.00m;
-            invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.TaxTotalAmount[0].Value = 150.00m;
-            invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.GrandTotalAmount.Value = 1395.30m;
-            invoice.SupplyChainTradeTransaction.ApplicableHeaderTradeSettlement.SpecifiedTradeSettlementHeaderMonetarySummation.DuePayableAmount.Value = 942.32m;
+            invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .ApplicableTradeTax[0]
+                .CalculatedAmount
+                .Value = 150.00m;
+            invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedTradeSettlementHeaderMonetarySummation
+                .TaxTotalAmount[0]
+                .Value = 150.00m;
+            invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedTradeSettlementHeaderMonetarySummation
+                .GrandTotalAmount
+                .Value = 1395.30m;
+            invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedTradeSettlementHeaderMonetarySummation
+                .DuePayableAmount
+                .Value = 942.32m;
 
             FacturxExporter exporter = new FacturxExporter();
-
-            using (var stream = exporter.CreateFacturXStream(
-                Path.Combine(_mainDir, "2023-6013_facture.pdf"),
-                invoice,
-                "Test Invoice with Incorrect VAT",
-                "Test Invoice"))
+            using (
+                var stream = exporter.CreateFacturXStream(
+                    Path.Combine(_mainDir, "2023-6013_facture.pdf"),
+                    invoice,
+                    "Test Invoice with Incorrect VAT",
+                    "Test Invoice"
+                )
+            )
             {
                 using (var fileStream = new FileStream(outputPath, FileMode.Create))
                 {
@@ -1085,7 +1108,6 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 importer.ImportDataWithDeserialization()
                 as Securibox.FacturX.SpecificationModels.Extended.CrossIndustryInvoice;
 
-
             if (File.Exists(outputPath))
             {
                 File.Delete(outputPath);
@@ -1093,16 +1115,22 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             Assert.That(importer.validationReport, Is.Not.Null);
             var brFxextS09Error = importer.validationReport.FirstOrDefault(r =>
-                r.Description != null && r.Description.Contains("BR-FXEXT-S-09"));
+                r.Description != null && r.Description.Contains("BR-FXEXT-S-09")
+            );
 
-            Assert.That(brFxextS09Error, Is.Not.Null,
-                "Expected BR-FXEXT-S-09 validation error was not found");
+            Assert.That(
+                brFxextS09Error,
+                Is.Not.Null,
+                "Expected BR-FXEXT-S-09 validation error was not found"
+            );
             Assert.That(brFxextS09Error!.IsError, Is.True);
 
             // The error should be about VAT calculation tolerance
             Assert.That(brFxextS09Error.Description, Does.Contain("VAT"));
 
-            TestContext.WriteLine($"Validation failed as expected with error: {brFxextS09Error.Description}");
+            TestContext.WriteLine(
+                $"Validation failed as expected with error: {brFxextS09Error.Description}"
+            );
         }
     }
 }
