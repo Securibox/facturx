@@ -20,9 +20,13 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             "Custom",
             "2023-6013_facture.pdf"
         );
-        private static readonly string dstFile = Path.Combine(
+        private static readonly string importExportDstFile = Path.Combine(
             dstPath,
             "2023-6013_facture_facturx_extended.pdf"
+        );
+        private static readonly string incorrectVatCalculationsTestDstFile = Path.Combine(
+            dstPath,
+            "2023-6013_facture_facturx_extended_incorrect_VAT_output.pdf"
         );
 
         [SetUp]
@@ -442,7 +446,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 $"Invoice "
             );
 
-            using var fileStream = new FileStream(dstFile, FileMode.Create);
+            using var fileStream = new FileStream(importExportDstFile, FileMode.Create);
 
             await stream.CopyToAsync(fileStream);
         }
@@ -451,7 +455,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
         [Order(2)]
         public void AssertWrittenData_Extended_SUCCESS()
         {
-            var importer = new FacturxImporter(dstFile);
+            var importer = new FacturxImporter(importExportDstFile);
             var extendedInvoice =
                 importer.ImportDataWithDeserialization()
                 as Securibox.FacturX.SpecificationModels.Extended.CrossIndustryInvoice;
@@ -1035,7 +1039,6 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             // First VAT: BasisAmount = 1235.40, Rate = 10%, expected = 123.54
             // We'll set CalculatedAmount = 150.00 (incorrect, difference = 26.46 > 0.02)
 
-            var outputPath = Path.Combine(_mainDir, "test_incorrect_vat_BR_FXEXT_S_09.pdf");
             var invoice = GetInvoice_SpecificationModels();
 
             // INTENTIONALLY INCORRECT: CalculatedAmount should be 123.54 (1235.40 * 10%)
@@ -1066,30 +1069,23 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 .Value = 942.32m;
 
             FacturxExporter exporter = new FacturxExporter();
-            using (
-                var stream = exporter.CreateFacturXStream(
-                    Path.Combine(_mainDir, "2023-6013_facture.pdf"),
-                    invoice,
-                    "Test Invoice with Incorrect VAT",
-                    "Test Invoice"
-                )
-            )
-            {
-                using (var fileStream = new FileStream(outputPath, FileMode.Create))
-                {
-                    await stream.CopyToAsync(fileStream);
-                }
-            }
+            using var stream = exporter.CreateFacturXStream(
+                srcFile,
+                invoice,
+                "Test Invoice with Incorrect VAT",
+                "Test Invoice"
+            );
+            using var fileStream = new FileStream(
+                incorrectVatCalculationsTestDstFile,
+                FileMode.Create
+            );
 
-            var importer = new FacturxImporter(outputPath);
+            await stream.CopyToAsync(fileStream);
+
+            var importer = new FacturxImporter(incorrectVatCalculationsTestDstFile);
             var extendedInvoice =
                 importer.ImportDataWithDeserialization()
                 as Securibox.FacturX.SpecificationModels.Extended.CrossIndustryInvoice;
-
-            if (File.Exists(outputPath))
-            {
-                File.Delete(outputPath);
-            }
 
             Assert.That(importer.validationReport, Is.Not.Null);
             var brFxextS09Error = importer.validationReport.FirstOrDefault(r =>
