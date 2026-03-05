@@ -194,7 +194,6 @@ namespace Securibox.FacturX
             _logger.LogInformation($"Validating XML for {conformanceLevel.Name}");
             FacturxXsdValidator.ValidateXml(xmlStream, conformanceLevel);
 
-            bool isNotValid = false;
             xmlStream.Position = 0;
             var schValidationResult = FacturxSchematronValidator.ValidateXml(
                 xmlStream,
@@ -202,21 +201,12 @@ namespace Securibox.FacturX
             );
             if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = schValidationResult
-                    ._results.Where(x => x.IsError == true || x.IsWarning == true)
+                validationReport = schValidationResult
+                    ._results.Where(x => x.IsError || x.IsWarning)
                     .ToList();
-                for (int i = 0; i < errors.Count; i++)
-                {
-                    if (!isNotValid && errors[i].IsError)
-                    {
-                        isNotValid = true;
-                    }
-
-                    validationReport.Add(errors[i]);
-                }
             }
 
-            if (failOnInvalid && isNotValid)
+            if (failOnInvalid && validationReport.Any(report => report.IsError))
             {
                 throw new Exception(
                     "The provided XML is not valid according to the selected Factur-X conformance level. "
