@@ -19,7 +19,7 @@ namespace Securibox.FacturX
 
         public FacturxExporter(ILogger<FacturxExporter>? logger = null)
         {
-            InitializeLogger(logger);
+            _logger = InitializeLogger(logger);
             validationReport = [];
         }
 
@@ -391,26 +391,24 @@ namespace Securibox.FacturX
             }
         }
 
-        private void InitializeLogger(ILogger<FacturxExporter>? logger)
+        private ILogger<FacturxExporter> InitializeLogger(ILogger<FacturxExporter>? logger)
         {
-            if (logger == null)
+            if (logger != null)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(
-                    delegate(ILoggingBuilder builder)
-                    {
-                        builder
-                            .AddFilter("Microsoft", LogLevel.Warning)
-                            .AddFilter("System", LogLevel.Warning)
-                            .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
-                    }
-                );
+                return logger;
+            }
 
-                _logger = factory.CreateLogger<FacturxExporter>();
-            }
-            else
-            {
-                _logger = logger;
-            }
+            using ILoggerFactory factory = LoggerFactory.Create(
+                delegate(ILoggingBuilder builder)
+                {
+                    builder
+                        .AddFilter("Microsoft", LogLevel.Warning)
+                        .AddFilter("System", LogLevel.Warning)
+                        .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
+                }
+            );
+
+            return factory.CreateLogger<FacturxExporter>();
         }
     }
 }
