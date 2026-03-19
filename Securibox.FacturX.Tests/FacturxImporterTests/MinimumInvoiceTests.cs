@@ -424,12 +424,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220023_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260023_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -439,10 +439,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220023"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260023"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -456,7 +456,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -639,12 +639,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220024_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260024_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -654,10 +654,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220024"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260024"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -671,7 +671,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -859,12 +859,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220025_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260025_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -874,10 +874,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220025"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260025"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -891,7 +891,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -1079,12 +1079,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220026_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260026_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -1094,10 +1094,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220026"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260026"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -1111,7 +1111,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -1294,12 +1294,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220027_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260027_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -1309,10 +1309,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220027"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260027"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -1326,7 +1326,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -1500,12 +1500,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220028_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260028_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -1515,10 +1515,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220028"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260028"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -1532,7 +1532,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -1706,12 +1706,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220029_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260029_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -1721,10 +1721,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220029"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260029"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -1738,7 +1738,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -1921,12 +1921,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220030_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260030_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -1936,10 +1936,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220030"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260030"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -1953,7 +1953,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -2120,12 +2120,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220031_MINIMUM_SUCCESS()
+        public void ExtractData_Facture_F20260031_MINIMUM_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
+                    "Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf"
                 )
             );
 
@@ -2135,10 +2135,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.Minimum.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220031"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260031"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -2152,7 +2152,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(

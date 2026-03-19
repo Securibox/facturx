@@ -32,31 +32,31 @@
     <None Update="Invoices\BasicWL\Facture_DOM_BASICWL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\BasicWL\Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
+    <None Update="Invoices\BasicWL\Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Invoices\BasicWL\Facture_FR_BASICWL.pdf">
@@ -74,31 +74,31 @@
     <None Update="Invoices\Basic\Facture_DOM_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Basic\Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
+    <None Update="Invoices\Basic\Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Invoices\Basic\Facture_FR_BASIC.pdf">
@@ -125,31 +125,31 @@
     <None Update="Invoices\EN16931\Facture_DOM_EN16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\EN16931\Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
+    <None Update="Invoices\EN16931\Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_EN_16931.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Invoices\EN16931\Facture_FR_EN16931.pdf">
@@ -170,37 +170,37 @@
     <None Update="Invoices\Extended\Facture_DOM_EXTENDED.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Extended\Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Extended\Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Invoices\Extended\Facture_FR_EXTENDED.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Invoices\Extended\Facture_UE_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Extended\Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_EXTENDED.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Invoices\Minimum\Avoir_FR_type380_MINIMUM.pdf">
@@ -212,37 +212,37 @@
     <None Update="Invoices\Minimum\Facture_DOM_MINIMUM.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Invoices\Minimum\Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Invoices\Minimum\Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Invoices\Minimum\Facture_FR_MINIMUM.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Invoices\Minimum\Facture_UE_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Invoices\Minimum\Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_MINIMUM.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
