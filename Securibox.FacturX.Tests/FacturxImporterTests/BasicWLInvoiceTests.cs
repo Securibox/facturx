@@ -1553,7 +1553,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
                 Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
-            );  
+            );
 
             var taxDistributionList = invoice
                 ?.SupplyChainTradeTransaction
