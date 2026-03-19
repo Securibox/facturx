@@ -787,12 +787,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220023_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260023_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220023-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260023-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -802,10 +802,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220023"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260023"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -857,7 +857,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -1415,7 +1415,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -1435,7 +1435,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -1455,7 +1455,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
             Assert.That(
                 invoice
@@ -1481,7 +1481,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260023BUYER")
             );
             Assert.That(
                 invoice
@@ -1525,7 +1525,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .SpecifiedLegalOrganization
                     .ID
                     .Value,
-                Is.EqualTo("123456782")
+                Is.EqualTo("303656847")
             );
             Assert.That(
                 invoice
@@ -1552,24 +1552,8 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
-            );
-            Assert.That(
-                invoice
-                    ?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(
-                        0
-                    )
-                    .PayeePartyCreditorFinancialAccount?.ProprietaryID.Value,
-                Is.EqualTo("LOC BANK ACCOUNT")
-            );
-            Assert.That(
-                invoice
-                    ?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(
-                        0
-                    )
-                    .PayerPartyDebtorFinancialAccount.IBANID.Value,
-                Is.EqualTo("FRDEBIT")
-            );
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
+            );  
 
             var taxDistributionList = invoice
                 ?.SupplyChainTradeTransaction
@@ -1588,7 +1572,6 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
             Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(60.00));
             Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("E"));
-            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("72"));
             Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
             Assert.That(taxDistributionList?.ElementAt(1).ExemptionReason, Is.EqualTo("DEBOURS"));
             Assert.That(
@@ -1600,14 +1583,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(taxDistributionList?.ElementAt(2).TypeCode, Is.EqualTo("VAT"));
             Assert.That(taxDistributionList?.ElementAt(2).BasisAmount.Value, Is.EqualTo(27.00));
             Assert.That(taxDistributionList?.ElementAt(2).CategoryCode, Is.EqualTo("S"));
-            Assert.That(taxDistributionList?.ElementAt(2).DueDateTypeCode, Is.EqualTo("72"));
             Assert.That(taxDistributionList?.ElementAt(2).RateApplicablePercent, Is.EqualTo(10.00));
 
             Assert.That(taxDistributionList?.ElementAt(3).CalculatedAmount.Value, Is.EqualTo(0.00));
             Assert.That(taxDistributionList?.ElementAt(3).TypeCode, Is.EqualTo("VAT"));
             Assert.That(taxDistributionList?.ElementAt(3).BasisAmount.Value, Is.EqualTo(2.00));
             Assert.That(taxDistributionList?.ElementAt(3).CategoryCode, Is.EqualTo("K"));
-            Assert.That(taxDistributionList?.ElementAt(3).DueDateTypeCode, Is.EqualTo("72"));
             Assert.That(taxDistributionList?.ElementAt(3).RateApplicablePercent, Is.EqualTo(0.00));
             Assert.That(
                 taxDistributionList?.ElementAt(3).ExemptionReason,
@@ -2202,7 +2183,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -2304,7 +2285,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     ?.IssuerAssignedID.Value,
-                Is.EqualTo("F20220003")
+                Is.EqualTo("F20260003")
             );
             Assert.That(
                 invoice
@@ -2312,7 +2293,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     ?.FormattedIssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -2335,12 +2316,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220024_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260024_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220024-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260024-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -2350,10 +2331,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220024"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260024"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -2405,7 +2386,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -2848,7 +2829,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
             Assert.That(
                 invoice
@@ -2892,7 +2873,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260024BUYER")
             );
             Assert.That(
                 invoice
@@ -2917,7 +2898,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     ?.Value,
-                Is.EqualTo("123")
+                Is.EqualTo("987")
             );
             Assert.That(
                 invoice
@@ -2936,7 +2917,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .SpecifiedLegalOrganization
                     .ID
                     .Value,
-                Is.EqualTo("123456782")
+                Is.EqualTo("303656847")
             );
             Assert.That(
                 invoice
@@ -2956,14 +2937,6 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     )
                     .TypeCode,
                 Is.EqualTo("30")
-            );
-            Assert.That(
-                invoice
-                    ?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(
-                        0
-                    )
-                    .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -2999,7 +2972,6 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
             Assert.That(taxDistributionList?.ElementAt(1).BasisAmount.Value, Is.EqualTo(60.00));
             Assert.That(taxDistributionList?.ElementAt(1).CategoryCode, Is.EqualTo("E"));
-            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("72"));
             Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
             Assert.That(taxDistributionList?.ElementAt(1).ExemptionReason, Is.EqualTo("VAT EXEMP"));
             Assert.That(
@@ -3161,7 +3133,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -3287,12 +3259,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220025_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260025_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220025-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260025-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -3302,10 +3274,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220025"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260025"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -3357,7 +3329,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -3720,7 +3692,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
             Assert.That(
                 invoice
@@ -3763,7 +3735,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260025BUYER")
             );
             Assert.That(
                 invoice
@@ -3807,7 +3779,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .SpecifiedLegalOrganization
                     .ID
                     .Value,
-                Is.EqualTo("123456782")
+                Is.EqualTo("303656847")
             );
             Assert.That(
                 invoice
@@ -3834,7 +3806,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -3923,7 +3895,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -3955,7 +3927,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260025BUYER")
             );
             Assert.That(
                 invoice
@@ -3998,7 +3970,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .SpecifiedLegalOrganization
                     .ID
                     .Value,
-                Is.EqualTo("123456782")
+                Is.EqualTo("303656847")
             );
             Assert.That(
                 invoice
@@ -4025,7 +3997,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -4107,7 +4079,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -4222,12 +4194,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220026_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260026_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220026-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260026-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -4237,10 +4209,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220026"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260026"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -4292,7 +4264,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -4700,7 +4672,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
             Assert.That(
                 invoice
@@ -4731,7 +4703,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -4751,7 +4723,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
             Assert.That(
                 invoice
@@ -4776,7 +4748,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260026BUYER")
             );
             Assert.That(
                 invoice
@@ -4808,7 +4780,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -4886,7 +4858,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -4987,7 +4959,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .IssuerAssignedID.Value,
-                Is.EqualTo("F20220003")
+                Is.EqualTo("F20260003")
             );
             Assert.That(
                 invoice
@@ -4995,7 +4967,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .FormattedIssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -5018,12 +4990,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220027_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260027_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220027-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260027-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -5033,10 +5005,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220027"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260027"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -5088,7 +5060,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -5496,7 +5468,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -5517,7 +5489,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -5537,7 +5509,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
             Assert.That(
                 invoice
@@ -5562,7 +5534,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260027BUYER")
             );
             Assert.That(
                 invoice
@@ -5594,7 +5566,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -5675,7 +5647,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -5776,7 +5748,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .IssuerAssignedID.Value,
-                Is.EqualTo("F20220003")
+                Is.EqualTo("F20260003")
             );
             Assert.That(
                 invoice
@@ -5784,7 +5756,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .FormattedIssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
 
             Assert.That(
@@ -5799,12 +5771,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220028_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260028_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220028-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260028-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -5814,10 +5786,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             var invoice =
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220028"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260028"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -5869,7 +5841,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -6277,7 +6249,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -6298,7 +6270,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -6318,7 +6290,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
             Assert.That(
                 invoice
@@ -6343,7 +6315,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260028BUYER")
             );
             Assert.That(
                 invoice
@@ -6375,7 +6347,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -6456,7 +6428,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -6567,7 +6539,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .IssuerAssignedID.Value,
-                Is.EqualTo("F20220003")
+                Is.EqualTo("F20260003")
             );
             Assert.That(
                 invoice
@@ -6575,7 +6547,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .FormattedIssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -6598,12 +6570,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220029_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260029_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220029-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260029-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -6614,10 +6586,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
             Assert.That(invoice is not null);
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220029"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260029"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -6669,7 +6641,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -7095,7 +7067,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -7116,7 +7088,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -7136,7 +7108,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
             Assert.That(
                 invoice
@@ -7161,7 +7133,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260029BUYER")
             );
             Assert.That(
                 invoice
@@ -7193,7 +7165,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -7275,7 +7247,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -7376,7 +7348,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .IssuerAssignedID.Value,
-                Is.EqualTo("F20220003")
+                Is.EqualTo("F20260003")
             );
             Assert.That(
                 invoice
@@ -7384,7 +7356,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .FormattedIssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -7407,12 +7379,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220030_BASICWL_SUCCESS()
+        public void ExtractData_Facture_F20260030_BASICWL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220030-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260030-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -7423,10 +7395,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
             Assert.That(invoice is not null);
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220030"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260030"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(invoice?.ExchangedDocument.TypeCode, Is.EqualTo("380"));
 
@@ -7474,7 +7446,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -7934,7 +7906,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -7955,7 +7927,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -7965,7 +7937,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
 
             Assert.That(
@@ -7980,7 +7952,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260030BUYER")
             );
             Assert.That(
                 invoice
@@ -8024,7 +7996,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .SpecifiedLegalOrganization
                     .ID
                     .Value,
-                Is.EqualTo("123456782")
+                Is.EqualTo("303 656 847")
             );
             Assert.That(
                 invoice
@@ -8051,7 +8023,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -8136,7 +8108,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
@@ -8237,7 +8209,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .IssuerAssignedID.Value,
-                Is.EqualTo("F20220003")
+                Is.EqualTo("F20260003")
             );
             Assert.That(
                 invoice
@@ -8245,7 +8217,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .FormattedIssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
 
             Assert.That(
@@ -8260,12 +8232,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
         }
 
         [Test]
-        public void ExtractData_Facture_F20220031_BASIC_WL_SUCCESS()
+        public void ExtractData_Facture_F20260031_BASIC_WL_SUCCESS()
         {
             var importer = new FacturxImporter(
                 Path.Combine(
                     _mainDir,
-                    "Facture_F20220031-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
+                    "Facture_F20260031-LE_FOURNISSEUR-POUR-LE_CLIENT_BASIC_WL.pdf"
                 )
             );
 
@@ -8276,10 +8248,10 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                 crossIndustryInvoice as FacturX.SpecificationModels.BasicWL.CrossIndustryInvoice;
             Assert.That(invoice is not null);
 
-            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20220031"));
+            Assert.That(invoice?.ExchangedDocument.ID.Value, Is.EqualTo("F20260031"));
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Value,
-                Is.EqualTo("20220131")
+                Is.EqualTo("20260131")
             );
             Assert.That(
                 invoice?.ExchangedDocument.IssueDateTime.DateTimeString.Format,
@@ -8331,7 +8303,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .BusinessProcessSpecifiedDocumentContextParameter
                     .ID
                     .Value,
-                Is.EqualTo("A1")
+                Is.EqualTo("S1")
             );
 
             Assert.That(
@@ -8809,7 +8781,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .OccurrenceDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220128")
+                Is.EqualTo("20260128")
             );
 
             Assert.That(
@@ -8830,7 +8802,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .StartDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220101")
+                Is.EqualTo("20260101")
             );
             Assert.That(
                 invoice
@@ -8840,7 +8812,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .EndDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20221231")
+                Is.EqualTo("20261231")
             );
 
             Assert.That(
@@ -8856,7 +8828,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     ?.SupplyChainTradeTransaction
                     ?.ApplicableHeaderTradeSettlement
                     ?.PaymentReference,
-                Is.EqualTo("F20180023BUYER")
+                Is.EqualTo("F20260031BUYER")
             );
             Assert.That(
                 invoice
@@ -8900,7 +8872,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .SpecifiedLegalOrganization
                     .ID
                     .Value,
-                Is.EqualTo("123456782")
+                Is.EqualTo("303 656 847")
             );
             Assert.That(
                 invoice
@@ -8927,15 +8899,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .PayeePartyCreditorFinancialAccount?.IBANID.Value,
-                Is.EqualTo("FR76 1254 2547 2569 8542 5874 698")
-            );
-            Assert.That(
-                invoice
-                    ?.SupplyChainTradeTransaction?.ApplicableHeaderTradeSettlement?.SpecifiedTradeSettlementPaymentMeans?.ElementAt(
-                        0
-                    )
-                    .PayeePartyCreditorFinancialAccount?.ProprietaryID.Value,
-                Is.EqualTo("LOC BANK ACCOUNT")
+                Is.EqualTo("FR20 1254 2547 2569 8542 5874 698")
             );
             Assert.That(
                 invoice
@@ -8968,14 +8932,12 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                 taxDistributionList?.ElementAt(1).ExemptionReasonCode,
                 Is.EqualTo("VATEX-EU-79-C")
             );
-            Assert.That(taxDistributionList?.ElementAt(1).DueDateTypeCode, Is.EqualTo("72"));
             Assert.That(taxDistributionList?.ElementAt(1).RateApplicablePercent, Is.EqualTo(0.00));
 
             Assert.That(taxDistributionList?.ElementAt(2).CalculatedAmount.Value, Is.EqualTo(1.14));
             Assert.That(taxDistributionList?.ElementAt(1).TypeCode, Is.EqualTo("VAT"));
             Assert.That(taxDistributionList?.ElementAt(2).BasisAmount.Value, Is.EqualTo(11.40));
             Assert.That(taxDistributionList?.ElementAt(2).CategoryCode, Is.EqualTo("S"));
-            Assert.That(taxDistributionList?.ElementAt(2).DueDateTypeCode, Is.EqualTo("72"));
             Assert.That(taxDistributionList?.ElementAt(2).RateApplicablePercent, Is.EqualTo(10.00));
 
             var allowanceChargeList = invoice
@@ -9068,7 +9030,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                     .DueDateDateTime
                     .DateTimeString
                     .Value,
-                Is.EqualTo("20220302")
+                Is.EqualTo("20260302")
             );
             Assert.That(
                 invoice
