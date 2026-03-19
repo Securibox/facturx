@@ -463,12 +463,59 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 using (var fileStream = new FileStream(outputPath, FileMode.Create))
                 {
                     await stream.CopyToAsync(fileStream);
+                    fileStream.Close();
+                }
+            }
+
+            Assert.That(File.Exists(outputPath), Is.True);
+        }
+
+        [Test]
+        [Order(2)]
+        public async Task WriteData_Stream_EN16931_SUCCESS()
+        {
+            var outputPath = Path.GetTempFileName();
+
+            try
+            {
+                Securibox.FacturX.SpecificationModels.EN16931.CrossIndustryInvoice invoice =
+                    GetInvoice_SpecificationModels();
+                FacturxExporter exporter = new FacturxExporter();
+
+                using (
+                    var stream = exporter.CreateFacturXStream(
+                        File.Open(
+                            Path.Combine(_mainDir, "2023-6013_facture.pdf"),
+                            FileMode.Open,
+                            FileAccess.Read,
+                            FileShare.Read
+                        ),
+                        invoice,
+                        $"SEPEM: Invoice ",
+                        $"Invoice "
+                    )
+                )
+                {
+                    using (var fileStream = new FileStream(outputPath, FileMode.Create))
+                    {
+                        await stream.CopyToAsync(fileStream);
+                        fileStream.Close();
+                    }
+                }
+
+                Assert.That(File.Exists(outputPath), Is.True);
+            }
+            finally
+            {
+                if (File.Exists(outputPath))
+                {
+                    File.Delete(outputPath);
                 }
             }
         }
 
         [Test]
-        [Order(2)]
+        [Order(3)]
         public void AssertWrittenData_EN16931_SUCCESS()
         {
             var invoicePath = Path.Combine(_mainDir, "2023-6013_facture_facturx_en16931.pdf");

@@ -42,14 +42,40 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", xmlPath);
             }
 
-            return CreateFacturXStream(
-                File.OpenRead(pdfPath),
-                File.OpenRead(xmlPath),
-                conformanceLevel,
-                documentTitle,
-                documentDescription,
-                failOnInvalid
-            );
+            using var pdfFileStream = File.OpenRead(pdfPath);
+            using var xmlFileStream = File.OpenRead(xmlPath);
+
+            var pdfMemoryStream = new MemoryStream();
+            var xmlMemoryStream = new MemoryStream();
+
+            try
+            {
+                pdfFileStream.CopyTo(pdfMemoryStream);
+                xmlFileStream.CopyTo(xmlMemoryStream);
+
+                pdfMemoryStream.Seek(0, SeekOrigin.Begin);
+                xmlMemoryStream.Seek(0, SeekOrigin.Begin);
+
+                var result = CreateFacturXStream(
+                    pdfMemoryStream,
+                    xmlMemoryStream,
+                    conformanceLevel,
+                    documentTitle,
+                    documentDescription,
+                    failOnInvalid
+                );
+
+                pdfMemoryStream.Dispose();
+                xmlMemoryStream.Dispose();
+
+                return result;
+            }
+            catch
+            {
+                pdfMemoryStream?.Dispose();
+                xmlMemoryStream?.Dispose();
+                throw;
+            }
         }
 
         public Stream CreateFacturXStream(
@@ -93,18 +119,44 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", xmlPath);
             }
 
-            return CreateFacturXStream(
-                File.OpenRead(pdfPath),
-                File.OpenRead(xmlPath),
-                conformanceLevel,
-                documentTitle,
-                documentDescription,
-                failOnInvalid
-            );
+            using var pdfFileStream = File.OpenRead(pdfPath);
+            using var xmlFileStream = File.OpenRead(xmlPath);
+
+            var pdfMemoryStream = new MemoryStream();
+            var xmlMemoryStream = new MemoryStream();
+
+            try
+            {
+                pdfFileStream.CopyTo(pdfMemoryStream);
+                xmlFileStream.CopyTo(xmlMemoryStream);
+
+                pdfMemoryStream.Seek(0, SeekOrigin.Begin);
+                xmlMemoryStream.Seek(0, SeekOrigin.Begin);
+
+                var result = CreateFacturXStream(
+                    pdfMemoryStream,
+                    xmlMemoryStream,
+                    conformanceLevel,
+                    documentTitle,
+                    documentDescription,
+                    failOnInvalid
+                );
+
+                pdfMemoryStream.Dispose();
+                xmlMemoryStream.Dispose();
+
+                return result;
+            }
+            catch
+            {
+                pdfMemoryStream?.Dispose();
+                xmlMemoryStream?.Dispose();
+                throw;
+            }
         }
 
         public Stream CreateFacturXStream(
-            string pdfPath,
+            Stream pdfStream,
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
@@ -112,9 +164,9 @@ namespace Securibox.FacturX
         )
         {
             ArgumentNullException.ThrowIfNull(invoice);
-            if (!File.Exists(pdfPath))
+            if (pdfStream == null)
             {
-                throw new FileNotFoundException("File not found", pdfPath);
+                throw new ArgumentNullException(nameof(pdfStream));
             }
 
             var invoiceType = invoice.GetType();
@@ -153,24 +205,74 @@ namespace Securibox.FacturX
             settings.Encoding = new UTF8Encoding();
             settings.Indent = true;
 
-            //create an XmlWriter that utilizes a StringWriter to
-            //build the output, then write that to the Console window
-            using (Stream stream = new MemoryStream())
+            var invoiceStream = new MemoryStream();
+            try
             {
-                using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
+                using (XmlWriter xmlWriter = XmlWriter.Create(invoiceStream, settings))
                 {
                     serializer.Serialize(xmlWriter, invoice, namespaces);
-                    stream.Seek(0, SeekOrigin.Begin);
-
-                    return CreateFacturXStream(
-                        File.OpenRead(pdfPath),
-                        stream,
-                        conformanceLevel,
-                        documentTitle,
-                        documentDescription,
-                        failOnInvalid
-                    );
                 }
+
+                invoiceStream.Seek(0, SeekOrigin.Begin);
+
+                var result = CreateFacturXStream(
+                    pdfStream,
+                    invoiceStream,
+                    conformanceLevel,
+                    documentTitle,
+                    documentDescription,
+                    failOnInvalid
+                );
+
+                invoiceStream.Dispose();
+
+                return result;
+            }
+            catch
+            {
+                invoiceStream?.Dispose();
+                throw;
+            }
+        }
+
+        public Stream CreateFacturXStream(
+            string pdfPath,
+            ICrossIndustryInvoice invoice,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
+        {
+            ArgumentNullException.ThrowIfNull(invoice);
+            if (!File.Exists(pdfPath))
+            {
+                throw new FileNotFoundException("File not found", pdfPath);
+            }
+
+            using var pdfFileStream = File.OpenRead(pdfPath);
+            var pdfMemoryStream = new MemoryStream();
+
+            try
+            {
+                pdfFileStream.CopyTo(pdfMemoryStream);
+                pdfMemoryStream.Seek(0, SeekOrigin.Begin);
+
+                var result = CreateFacturXStream(
+                    pdfMemoryStream,
+                    invoice,
+                    documentTitle,
+                    documentDescription,
+                    failOnInvalid
+                );
+
+                pdfMemoryStream.Dispose();
+
+                return result;
+            }
+            catch
+            {
+                pdfMemoryStream?.Dispose();
+                throw;
             }
         }
 
