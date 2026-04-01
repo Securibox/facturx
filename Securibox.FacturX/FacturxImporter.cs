@@ -21,6 +21,7 @@ namespace Securibox.FacturX
         private ILogger<FacturxImporter> _logger;
         private MemoryStream _pdfFileStream;
         private XmlDocument _xmlDocument;
+        private string _xmlText;
         private FacturXMetadata _facturXMetadata;
         private PdfDocument _pdfDocument;
         public List<ValidationReport> validationReport;
@@ -89,7 +90,7 @@ namespace Securibox.FacturX
             LoadXml(xmlPdfStream);
             FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
             var schValidationResult = FacturxSchematronValidator.ValidateXml(
-                _xmlDocument,
+                new MemoryStream(Encoding.UTF8.GetBytes(_xmlText)),
                 facturXMetadata.ConformanceLevel
             );
             if (!schValidationResult._isSuccessfullValidation)
@@ -204,6 +205,8 @@ namespace Securibox.FacturX
                 {
                     text = text.Substring(1);
                 }
+
+                _xmlText = text;
 
                 _xmlDocument = new XmlDocument();
                 _xmlDocument.LoadXml(text);

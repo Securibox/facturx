@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
+using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.Schematron.Xslt;
 using Wmhelp.XPath2;
 
@@ -32,13 +32,11 @@ namespace Securibox.FacturX.Schematron.Types
 
         // linkable
         #region Linkable
-
         [XmlAttribute(AttributeName = "role")]
         public string Role { get; set; }
 
         [XmlAttribute(AttributeName = "subject")]
         public string Subject { get; set; }
-
         #endregion
 
         [XmlElement(ElementName = "include")]
@@ -57,8 +55,6 @@ namespace Securibox.FacturX.Schematron.Types
         public string Context { get; set; }
 
         #region Rich Attributes
-
-
         [XmlAttribute(AttributeName = "icon")]
         public string Icon { get; set; }
 
@@ -67,7 +63,6 @@ namespace Securibox.FacturX.Schematron.Types
 
         [XmlAttribute(AttributeName = "fpi")]
         public string Fpi { get; set; }
-
         #endregion
 
         [XmlElement(ElementName = "assert")]
@@ -86,7 +81,8 @@ namespace Securibox.FacturX.Schematron.Types
             string? ruleContext = null
         )
         {
-            List<EvaluationResult> results = new List<EvaluationResult>();
+            var results = new List<EvaluationResult>();
+
             if (this.Assertions != null)
             {
                 foreach (var assert in this.Assertions)
@@ -95,6 +91,7 @@ namespace Securibox.FacturX.Schematron.Types
                     results.Add(result);
                 }
             }
+
             if (this.Reports != null)
             {
                 foreach (var report in this.Reports)
@@ -108,9 +105,11 @@ namespace Securibox.FacturX.Schematron.Types
 
         private SchematronContext BuildSchematronContext(Schema schema, IEnumerable<Let> lets)
         {
-            List<Let> combined = new List<Let>(lets);
+            var combined = new List<Let>(lets);
             if (this.Lets != null)
+            {
                 combined.AddRange(this.Lets);
+            }
 
             var context = new Xslt.SchematronContext(new NameTable(), combined);
             if (schema.Namespaces != null)
@@ -132,7 +131,9 @@ namespace Securibox.FacturX.Schematron.Types
         )
         {
             if (this.Abstract && !evalAbstract)
+            {
                 return RuleResult.Empty;
+            }
 
             var results = new List<EvaluationResult>();
 
@@ -143,15 +144,15 @@ namespace Securibox.FacturX.Schematron.Types
 
             foreach (XPathNavigator nav in nodes)
             {
-                int contextLine = -1;
-                int contextPosition = -1;
-                if (nav is IXmlLineInfo info)
+                var contextLine = -1;
+                var contextPosition = -1;
+                if (nav is IXmlLineInfo info && info.HasLineInfo())
                 {
                     contextLine = info.LineNumber;
                     contextPosition = info.LinePosition;
                 }
 
-                string contextName = nav.Name;
+                var contextName = nav.GetPath();
 
                 if (this.Extensions != null)
                 {
@@ -165,6 +166,7 @@ namespace Securibox.FacturX.Schematron.Types
                         }
                     }
                 }
+
                 var assertResults = this.EvaluateAssertions(schema, nav, context, this.Context);
                 foreach (var result in assertResults)
                 {
