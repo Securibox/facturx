@@ -13,20 +13,10 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel
         )
         {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(xmlDocumentStream);
-            return ValidateXml(xmlDocument, conformanceLevel);
-        }
-
-        public static ValidationResult ValidateXml(
-            XmlDocument xmlDocument,
-            FacturXConformanceLevelType conformanceLevel
-        )
-        {
             var validationSchema = LoadValidationSchema(conformanceLevel);
 
-            XmlReader xmlReader = new XmlNodeReader(xmlDocument);
-            XPathDocument doc = new XPathDocument(xmlReader);
+            var xmlReader = new XmlTextReader(xmlDocumentStream);
+            var doc = new XPathDocument(xmlReader);
 
             if (validationSchema.Phases != null)
             {

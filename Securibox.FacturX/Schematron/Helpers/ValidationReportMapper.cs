@@ -24,14 +24,9 @@ namespace Securibox.FacturX.Schematron.Helpers
         {
             foreach (var patternResult in _patternResults)
             {
-                var ruleResults = patternResult.RuleResults.ToList();
-                foreach (var ruleResult in ruleResults)
+                foreach (var ruleResult in patternResult.RuleResults)
                 {
-                    if (
-                        ruleResult.ExecutedAssertions.Any(x =>
-                            x.IsError == true || x.IsWarning == true
-                        )
-                    )
+                    if (ruleResult.ExecutedAssertions.Any(x => x.IsError || x.IsWarning))
                     {
                         return false;
                     }
@@ -55,16 +50,18 @@ namespace Securibox.FacturX.Schematron.Helpers
                 {
                     foreach (var executedAssertion in ruleResult.ExecutedAssertions)
                     {
-                        var validationReport = new ValidationReport();
-                        validationReport.Path = ruleResult.Rule.Context;
-                        validationReport.ContextElement = executedAssertion.ContextElement;
-                        validationReport.ContextLine = executedAssertion.ContextLine;
-                        validationReport.ContextPosition = executedAssertion.ContextPosition;
-                        validationReport.Description = executedAssertion.AssertInnerText;
-                        validationReport.IsError = executedAssertion.IsError;
-                        validationReport.IsWarning = executedAssertion.IsWarning;
-                        validationReport.BusinessRuleCode = executedAssertion.Assertion.Id;
-                        validationReport.Test = executedAssertion.Assertion.Test;
+                        var validationReport = new ValidationReport()
+                        {
+                            Path = ruleResult.Rule.Context,
+                            ContextElement = executedAssertion.ContextElement,
+                            ContextLine = executedAssertion.ContextLine,
+                            ContextPosition = executedAssertion.ContextPosition,
+                            Description = executedAssertion.AssertInnerText,
+                            IsError = executedAssertion.IsError,
+                            IsWarning = executedAssertion.IsWarning,
+                            BusinessRuleCode = executedAssertion.Assertion.Id,
+                            Test = executedAssertion.Assertion.Test,
+                        };
 
                         results.Add(validationReport);
                     }
