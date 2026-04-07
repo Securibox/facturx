@@ -1,5 +1,4 @@
 using System.IO;
-using System.Linq;
 using NUnit.Framework;
 
 namespace Securibox.FacturX.Tests.FacturxImporterTests

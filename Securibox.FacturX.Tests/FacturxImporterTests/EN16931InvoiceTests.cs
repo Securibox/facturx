@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Securibox.FacturX.Models.EN16931.Enum;
 
 namespace Securibox.FacturX.Tests.FacturxImporterTests
 {
@@ -74,13 +72,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
             Assert.That(line1.SpecifiedTradeProduct is not null);
-            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct!.GlobalID.Value, Is.EqualTo("3518370400049"));
             Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
             Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
             Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.55)
             );
             Assert.That(
@@ -92,9 +90,9 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             );
             Assert.That(
                 line1
-                    .SpecifiedLineTradeAgreement
-                    .GrossPriceProductTradePrice
-                    .AppliedTradeAllowanceCharge
+                    .SpecifiedLineTradeAgreement!
+                    .GrossPriceProductTradePrice!
+                    .AppliedTradeAllowanceCharge!
                     .ChargeIndicator
                     .Indicator
                     is false
@@ -111,7 +109,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.10)
             );
 
@@ -148,7 +146,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
             Assert.That(line2.SpecifiedTradeProduct is not null);
-            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
+            Assert.That(line2!.SpecifiedTradeProduct!.SellerAssignedID, Is.EqualTo("HOLANCL"));
             Assert.That(
                 line2!.SpecifiedTradeProduct.Name,
                 Is.EqualTo("Huile d'olive à l'ancienne")
@@ -156,13 +154,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
             Assert.That(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
@@ -671,13 +669,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
             Assert.That(line1.SpecifiedTradeProduct is not null);
-            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct!.GlobalID.Value, Is.EqualTo("3518370400049"));
             Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
             Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
             Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.55)
             );
             Assert.That(
@@ -690,9 +688,9 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(
                 line1
-                    .SpecifiedLineTradeAgreement
-                    .GrossPriceProductTradePrice
-                    .AppliedTradeAllowanceCharge
+                    .SpecifiedLineTradeAgreement!
+                    .GrossPriceProductTradePrice!
+                    .AppliedTradeAllowanceCharge!
                     .ChargeIndicator
                     .Indicator
                     is false
@@ -709,7 +707,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.10)
             );
 
@@ -746,7 +744,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
             Assert.That(line2.SpecifiedTradeProduct is not null);
-            Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
+            Assert.That(line2!.SpecifiedTradeProduct!.SellerAssignedID, Is.EqualTo("HOLANCL"));
             Assert.That(
                 line2!.SpecifiedTradeProduct.Name,
                 Is.EqualTo("Huile d'olive à l'ancienne")
@@ -754,13 +752,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
             Assert.That(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
@@ -2647,14 +2645,14 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
             Assert.That(line1.SpecifiedTradeProduct is not null);
-            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct!.GlobalID.Value, Is.EqualTo("3518370400049"));
             Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
             Assert.That(line1!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("NOUG250"));
             Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
             Assert.That(line1.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.55)
             );
             Assert.That(
@@ -2666,9 +2664,9 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             );
             Assert.That(
                 line1
-                    .SpecifiedLineTradeAgreement
-                    .GrossPriceProductTradePrice
-                    .AppliedTradeAllowanceCharge
+                    .SpecifiedLineTradeAgreement!
+                    .GrossPriceProductTradePrice!
+                    .AppliedTradeAllowanceCharge!
                     .ChargeIndicator
                     .Indicator
                     is false
@@ -2685,7 +2683,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line1.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.10)
             );
 
@@ -2722,20 +2720,20 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line2!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("2"));
 
             Assert.That(line2.SpecifiedTradeProduct is not null);
-            Assert.That(line2!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370200090"));
+            Assert.That(line2!.SpecifiedTradeProduct!.GlobalID.Value, Is.EqualTo("3518370200090"));
             Assert.That(line2!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
             Assert.That(line2!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("BRAIS300"));
             Assert.That(line2!.SpecifiedTradeProduct.Name, Is.EqualTo("Biscuits aux raisins 300g"));
 
             Assert.That(line2.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(3.20)
             );
 
             Assert.That(line2.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(3.20)
             );
 
@@ -2772,7 +2770,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line3!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("3"));
 
             Assert.That(line3.SpecifiedTradeProduct is not null);
-            Assert.That(line3!.SpecifiedTradeProduct.SellerAssignedID, Is.EqualTo("HOLANCL"));
+            Assert.That(line3!.SpecifiedTradeProduct!.SellerAssignedID, Is.EqualTo("HOLANCL"));
             Assert.That(
                 line3!.SpecifiedTradeProduct.Name,
                 Is.EqualTo("Huile d'olive à l'ancienne")
@@ -2780,13 +2778,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line3.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice is not null);
             Assert.That(
-                line3!.SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.ChargeAmount.Value,
+                line3!.SpecifiedLineTradeAgreement!.GrossPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
             Assert.That(line3.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line3!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line3!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 

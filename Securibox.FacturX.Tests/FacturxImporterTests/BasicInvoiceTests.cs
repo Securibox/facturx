@@ -114,13 +114,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line2!.SpecifiedTradeProduct is not null);
             Assert.That(
-                line2!.SpecifiedTradeProduct.Name,
+                line2!.SpecifiedTradeProduct!?.Name,
                 Is.EqualTo("Huile d'olive à l'ancienne")
             );
 
             Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
@@ -558,13 +558,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
             Assert.That(line1!.AssociatedDocumentLineDocument.LineID.Value, Is.EqualTo("1"));
 
             Assert.That(line1!.SpecifiedTradeProduct is not null);
-            Assert.That(line1!.SpecifiedTradeProduct.GlobalID.Value, Is.EqualTo("3518370400049"));
+            Assert.That(line1!.SpecifiedTradeProduct!.GlobalID.Value, Is.EqualTo("3518370400049"));
             Assert.That(line1!.SpecifiedTradeProduct.GlobalID.SchemeID, Is.EqualTo("0160"));
             Assert.That(line1!.SpecifiedTradeProduct.Name, Is.EqualTo("Nougat de l'Abbaye 250g"));
 
             Assert.That(line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line1!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line1!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(4.10)
             );
 
@@ -602,13 +602,13 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(line2!.SpecifiedTradeProduct is not null);
             Assert.That(
-                line2!.SpecifiedTradeProduct.Name,
+                line2!.SpecifiedTradeProduct!.Name,
                 Is.EqualTo("Huile d'olive à l'ancienne")
             );
 
             Assert.That(line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice is not null);
             Assert.That(
-                line2!.SpecifiedLineTradeAgreement.NetPriceProductTradePrice.ChargeAmount.Value,
+                line2!.SpecifiedLineTradeAgreement!.NetPriceProductTradePrice!.ChargeAmount.Value,
                 Is.EqualTo(19.80)
             );
 
