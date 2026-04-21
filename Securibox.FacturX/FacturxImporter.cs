@@ -27,7 +27,8 @@ namespace Securibox.FacturX
 
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
         {
-            InitializeLogger(logger);
+            _logger = InitializeLogger(logger);
+
             if (pdfStream is MemoryStream memoryStream)
             {
                 _pdfFileStream = memoryStream;
@@ -155,27 +156,24 @@ namespace Securibox.FacturX
             return result;
         }
 
-        private void InitializeLogger(ILogger<FacturxImporter> logger)
+        private ILogger<FacturxImporter> InitializeLogger(ILogger<FacturxImporter>? logger)
         {
-            if (logger == null)
+            if (logger != null)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(
-                    delegate(ILoggingBuilder builder)
-                    {
-                        builder
-                            .AddFilter("Microsoft", LogLevel.Warning)
-                            .AddFilter("System", LogLevel.Warning)
-                            .AddFilter(nameof(FacturxImporter), LogLevel.Debug);
-                    }
-                );
+                return logger;
+            }
 
-                _logger = factory.CreateLogger<FacturxImporter>();
-                _logger.LogInformation("Example log message");
-            }
-            else
-            {
-                _logger = logger;
-            }
+            using ILoggerFactory factory = LoggerFactory.Create(
+                delegate(ILoggingBuilder builder)
+                {
+                    builder
+                        .AddFilter("Microsoft", LogLevel.Warning)
+                        .AddFilter("System", LogLevel.Warning)
+                        .AddFilter(nameof(FacturxImporter), LogLevel.Debug);
+                }
+            );
+
+            return factory.CreateLogger<FacturxImporter>();
         }
 
         private XmlDocument LoadXml(PdfStream streamFromPDF)
