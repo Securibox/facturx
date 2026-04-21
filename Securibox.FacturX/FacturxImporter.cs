@@ -2,17 +2,16 @@
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.Advanced;
-using PdfSharpCore.Pdf.Filters;
-using PdfSharpCore.Pdf.IO;
-using PdfSharpCore.Pdf.IO.enums;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Advanced;
+using PdfSharp.Pdf.Filters;
+using PdfSharp.Pdf.IO;
 using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.SpecificationModels;
 using XmpCore;
-using static PdfSharpCore.Pdf.PdfDictionary;
+using static PdfSharp.Pdf.PdfDictionary;
 
 namespace Securibox.FacturX
 {
@@ -44,7 +43,7 @@ namespace Securibox.FacturX
                 }
             }
 
-            _pdfDocument = PdfReader.Open(_pdfFileStream, accuracy: PdfReadAccuracy.Moderate);
+            _pdfDocument = PdfReader.Open(_pdfFileStream);
         }
 
         public FacturxImporter(string pdfFilename, ILogger<FacturxImporter>? logger = null)
@@ -62,7 +61,7 @@ namespace Securibox.FacturX
                 memoryStream.Position = 0;
 
                 _pdfFileStream = memoryStream;
-                _pdfDocument = PdfReader.Open(_pdfFileStream, accuracy: PdfReadAccuracy.Moderate);
+                _pdfDocument = PdfReader.Open(_pdfFileStream);
             }
         }
 
@@ -191,12 +190,8 @@ namespace Securibox.FacturX
                 }
                 else
                 {
-                    PdfSharpCore.Pdf.Filters.FlateDecode flate =
-                        new PdfSharpCore.Pdf.Filters.FlateDecode();
-                    bytes = flate.Decode(
-                        streamFromPDF.Value,
-                        new PdfSharpCore.Pdf.Filters.FilterParms(null)
-                    );
+                    var flate = new FlateDecode();
+                    bytes = flate.Decode(streamFromPDF.Value);
                 }
 
                 UTF8Encoding uTF8Encoding = new UTF8Encoding();
@@ -249,12 +244,8 @@ namespace Securibox.FacturX
                     }
                     else
                     {
-                        PdfSharpCore.Pdf.Filters.FlateDecode flate =
-                            new PdfSharpCore.Pdf.Filters.FlateDecode();
-                        metadataBytes = flate.Decode(
-                            dict.Stream.Value,
-                            new PdfSharpCore.Pdf.Filters.FilterParms(null)
-                        );
+                        var flate = new FlateDecode();
+                        metadataBytes = flate.Decode(dict.Stream.Value);
                     }
                 }
 
@@ -502,7 +493,7 @@ namespace Securibox.FacturX
                 }
             }
 
-            foreach (var page in document.Pages)
+            foreach (PdfPage page in document.Pages)
             {
                 var annots = page.Elements["/Annots"] as PdfArray;
                 if (annots == null)
