@@ -86,13 +86,9 @@ namespace Securibox.FacturX
             );
             if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = schValidationResult
-                    ._results.Where(x => x.IsError == true || x.IsWarning == true)
+                validationReport = schValidationResult
+                    ._results.Where(x => x.IsError || x.IsWarning)
                     .ToList();
-                for (int i = 0; i < errors.Count; i++)
-                {
-                    validationReport.Add(errors[i]);
-                }
 
                 return false;
             }
