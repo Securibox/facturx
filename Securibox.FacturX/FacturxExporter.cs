@@ -4,7 +4,6 @@ using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
 using PdfSharp.Pdf;
-using PdfSharp.Pdf.Filters;
 using PdfSharp.Pdf.IO;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Minimum;
@@ -30,7 +29,7 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             if (!File.Exists(pdfPath))
@@ -62,7 +61,7 @@ namespace Securibox.FacturX
             Invoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             if (!File.Exists(pdfPath))
@@ -115,7 +114,7 @@ namespace Securibox.FacturX
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             if (!File.Exists(pdfPath))
@@ -139,7 +138,7 @@ namespace Securibox.FacturX
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             ArgumentNullException.ThrowIfNull(pdfStream);
@@ -204,7 +203,7 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             ArgumentNullException.ThrowIfNull(pdfStream);
