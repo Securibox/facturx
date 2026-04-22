@@ -160,8 +160,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 srcFile,
                 invoiceToExport,
                 $"SEPEM: Invoice ",
-                $"Invoice ",
-                failOnInvalid: true
+                $"Invoice "
             );
 
             using var fileStream = new FileStream(dstFile, FileMode.Create);

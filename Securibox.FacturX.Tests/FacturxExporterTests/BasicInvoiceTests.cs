@@ -441,12 +441,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             var invoice = GetHotelInvoice_SpecificationModels();
             var exporter = new FacturxExporter();
 
-            using var stream = exporter.CreateFacturXStream(
-                srcFile,
-                invoice,
-                $"SEPEM: Invoice ",
-                failOnInvalid: true
-            );
+            using var stream = exporter.CreateFacturXStream(srcFile, invoice, $"SEPEM: Invoice ");
 
             using var fileStream = new FileStream(dstFile, FileMode.Create);
 

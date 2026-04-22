@@ -461,8 +461,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 srcFile,
                 invoice,
                 $"SEPEM: Invoice ",
-                $"Invoice ",
-                failOnInvalid: true
+                $"Invoice "
             );
 
             using var fileStream = new FileStream(importExportDstFile, FileMode.Create);
@@ -1114,7 +1113,9 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 srcFile,
                 invoice,
                 "Test Invoice with Incorrect VAT",
-                "Test Invoice"
+                "Test Invoice",
+                // required because this test intentionally fails validation
+                failOnInvalid: false
             );
             using var fileStream = new FileStream(
                 incorrectVatCalculationsTestDstFile,
