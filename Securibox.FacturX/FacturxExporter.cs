@@ -118,11 +118,32 @@ namespace Securibox.FacturX
             bool failOnInvalid = false
         )
         {
-            ArgumentNullException.ThrowIfNull(invoice);
             if (!File.Exists(pdfPath))
             {
                 throw new FileNotFoundException("File not found", pdfPath);
             }
+
+            using var pdfStream = File.OpenRead(pdfPath);
+
+            return CreateFacturXStream(
+                pdfStream,
+                invoice,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
+        }
+
+        public Stream CreateFacturXStream(
+            Stream pdfStream,
+            ICrossIndustryInvoice invoice,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = false
+        )
+        {
+            ArgumentNullException.ThrowIfNull(pdfStream);
+            ArgumentNullException.ThrowIfNull(invoice);
 
             var invoiceType = invoice.GetType();
             var conformanceLevel = FacturXConformanceLevelType.Minimum;
@@ -160,27 +181,21 @@ namespace Securibox.FacturX
             settings.Encoding = new UTF8Encoding();
             settings.Indent = true;
 
-            //create an XmlWriter that utilizes a StringWriter to
-            //build the output, then write that to the Console window
-            using (Stream stream = new MemoryStream())
-            {
-                using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
-                {
-                    serializer.Serialize(xmlWriter, invoice, namespaces);
-                    stream.Seek(0, SeekOrigin.Begin);
+            // create an XmlWriter that utilizes a StringWriter to
+            // build the output, then write that to the Console window
+            Stream xmlStream = new MemoryStream();
+            using var xmlWriter = XmlWriter.Create(xmlStream, settings);
+            serializer.Serialize(xmlWriter, invoice, namespaces);
+            xmlStream.Seek(0, SeekOrigin.Begin);
 
-                    using var pdfStream = File.OpenRead(pdfPath);
-
-                    return CreateFacturXStream(
-                        pdfStream,
-                        stream,
-                        conformanceLevel,
-                        documentTitle,
-                        documentDescription,
-                        failOnInvalid
-                    );
-                }
-            }
+            return CreateFacturXStream(
+                pdfStream,
+                xmlStream,
+                conformanceLevel,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
         }
 
         public Stream CreateFacturXStream(
