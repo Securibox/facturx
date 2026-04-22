@@ -27,6 +27,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             dstPath,
             "2023-6013_facture_facturx_extended_incorrect_VAT_output.pdf"
         );
+        private static readonly string tmpFile = Path.GetTempFileName();
 
         [SetUp]
         public void Setup()
@@ -35,6 +36,15 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             if (!Directory.Exists(dstPath))
             {
                 Directory.CreateDirectory(dstPath);
+            }
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            if (File.Exists(tmpFile))
+            {
+                File.Delete(tmpFile);
             }
         }
 
@@ -451,17 +461,38 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 srcFile,
                 invoice,
                 $"SEPEM: Invoice ",
-                $"Invoice ",
-                failOnInvalid: true
+                $"Invoice "
             );
 
             using var fileStream = new FileStream(importExportDstFile, FileMode.Create);
 
             await stream.CopyToAsync(fileStream);
+
+            Assert.That(File.Exists(tmpFile), Is.True);
         }
 
         [Test]
         [Order(2)]
+        public async Task WriteData_Stream_Extended_SUCCESS()
+        {
+            var invoice = GetInvoice_SpecificationModels();
+            var exporter = new FacturxExporter();
+
+            using var stream = exporter.CreateFacturXStream(
+                File.Open(srcFile, FileMode.Open, FileAccess.Read, FileShare.Read),
+                invoice,
+                $"SEPEM: Invoice ",
+                $"Invoice "
+            );
+
+            using var fileStream = new FileStream(tmpFile, FileMode.Create);
+            await stream.CopyToAsync(fileStream);
+
+            Assert.That(File.Exists(tmpFile), Is.True);
+        }
+
+        [Test]
+        [Order(3)]
         public void AssertWrittenData_Extended_SUCCESS()
         {
             var importer = new FacturxImporter(importExportDstFile);
@@ -1082,7 +1113,9 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 srcFile,
                 invoice,
                 "Test Invoice with Incorrect VAT",
-                "Test Invoice"
+                "Test Invoice",
+                // required because this test intentionally fails validation
+                failOnInvalid: false
             );
             using var fileStream = new FileStream(
                 incorrectVatCalculationsTestDstFile,

@@ -2,17 +2,16 @@
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.Advanced;
-using PdfSharpCore.Pdf.Filters;
-using PdfSharpCore.Pdf.IO;
-using PdfSharpCore.Pdf.IO.enums;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Advanced;
+using PdfSharp.Pdf.Filters;
+using PdfSharp.Pdf.IO;
 using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.SpecificationModels;
 using XmpCore;
-using static PdfSharpCore.Pdf.PdfDictionary;
+using static PdfSharp.Pdf.PdfDictionary;
 
 namespace Securibox.FacturX
 {
@@ -28,23 +27,15 @@ namespace Securibox.FacturX
 
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
         {
-            InitializeLogger(logger);
-            if (pdfStream is MemoryStream memoryStream)
-            {
-                _pdfFileStream = memoryStream;
-            }
-            else
-            {
-                using (var temp = pdfStream)
-                {
-                    var ms = new MemoryStream();
-                    temp.CopyTo(ms);
-                    ms.Position = 0;
-                    _pdfFileStream = ms;
-                }
-            }
+            _logger = InitializeLogger(logger);
+            ArgumentNullException.ThrowIfNull(pdfStream);
 
-            _pdfDocument = PdfReader.Open(_pdfFileStream, accuracy: PdfReadAccuracy.Moderate);
+            var ms = new MemoryStream();
+            pdfStream.CopyTo(ms);
+            ms.Position = 0;
+            _pdfFileStream = ms;
+
+            _pdfDocument = PdfReader.Open(_pdfFileStream);
         }
 
         public FacturxImporter(string pdfFilename, ILogger<FacturxImporter>? logger = null)
@@ -62,7 +53,7 @@ namespace Securibox.FacturX
                 memoryStream.Position = 0;
 
                 _pdfFileStream = memoryStream;
-                _pdfDocument = PdfReader.Open(_pdfFileStream, accuracy: PdfReadAccuracy.Moderate);
+                _pdfDocument = PdfReader.Open(_pdfFileStream);
             }
         }
 
@@ -95,13 +86,9 @@ namespace Securibox.FacturX
             );
             if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = schValidationResult
-                    ._results.Where(x => x.IsError == true || x.IsWarning == true)
+                validationReport = schValidationResult
+                    ._results.Where(x => x.IsError || x.IsWarning)
                     .ToList();
-                for (int i = 0; i < errors.Count; i++)
-                {
-                    validationReport.Add(errors[i]);
-                }
 
                 return false;
             }
@@ -156,27 +143,24 @@ namespace Securibox.FacturX
             return result;
         }
 
-        private void InitializeLogger(ILogger<FacturxImporter> logger)
+        private ILogger<FacturxImporter> InitializeLogger(ILogger<FacturxImporter>? logger)
         {
-            if (logger == null)
+            if (logger != null)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(
-                    delegate(ILoggingBuilder builder)
-                    {
-                        builder
-                            .AddFilter("Microsoft", LogLevel.Warning)
-                            .AddFilter("System", LogLevel.Warning)
-                            .AddFilter(nameof(FacturxImporter), LogLevel.Debug);
-                    }
-                );
+                return logger;
+            }
 
-                _logger = factory.CreateLogger<FacturxImporter>();
-                _logger.LogInformation("Example log message");
-            }
-            else
-            {
-                _logger = logger;
-            }
+            using ILoggerFactory factory = LoggerFactory.Create(
+                delegate(ILoggingBuilder builder)
+                {
+                    builder
+                        .AddFilter("Microsoft", LogLevel.Warning)
+                        .AddFilter("System", LogLevel.Warning)
+                        .AddFilter(nameof(FacturxImporter), LogLevel.Debug);
+                }
+            );
+
+            return factory.CreateLogger<FacturxImporter>();
         }
 
         private XmlDocument LoadXml(PdfStream streamFromPDF)
@@ -191,12 +175,8 @@ namespace Securibox.FacturX
                 }
                 else
                 {
-                    PdfSharpCore.Pdf.Filters.FlateDecode flate =
-                        new PdfSharpCore.Pdf.Filters.FlateDecode();
-                    bytes = flate.Decode(
-                        streamFromPDF.Value,
-                        new PdfSharpCore.Pdf.Filters.FilterParms(null)
-                    );
+                    var flate = new FlateDecode();
+                    bytes = flate.Decode(streamFromPDF.Value);
                 }
 
                 UTF8Encoding uTF8Encoding = new UTF8Encoding();
@@ -249,12 +229,8 @@ namespace Securibox.FacturX
                     }
                     else
                     {
-                        PdfSharpCore.Pdf.Filters.FlateDecode flate =
-                            new PdfSharpCore.Pdf.Filters.FlateDecode();
-                        metadataBytes = flate.Decode(
-                            dict.Stream.Value,
-                            new PdfSharpCore.Pdf.Filters.FilterParms(null)
-                        );
+                        var flate = new FlateDecode();
+                        metadataBytes = flate.Decode(dict.Stream.Value);
                     }
                 }
 
@@ -502,7 +478,7 @@ namespace Securibox.FacturX
                 }
             }
 
-            foreach (var page in document.Pages)
+            foreach (PdfPage page in document.Pages)
             {
                 var annots = page.Elements["/Annots"] as PdfArray;
                 if (annots == null)

@@ -3,8 +3,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.IO;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.Schematron.Helpers;
@@ -19,7 +19,7 @@ namespace Securibox.FacturX
 
         public FacturxExporter(ILogger<FacturxExporter>? logger = null)
         {
-            InitializeLogger(logger);
+            _logger = InitializeLogger(logger);
             validationReport = [];
         }
 
@@ -29,7 +29,7 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             if (!File.Exists(pdfPath))
@@ -42,9 +42,12 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", xmlPath);
             }
 
+            using var pdfStream = File.OpenRead(pdfPath);
+            using var xmlStream = File.OpenRead(xmlPath);
+
             return CreateFacturXStream(
-                File.OpenRead(pdfPath),
-                File.OpenRead(xmlPath),
+                pdfStream,
+                xmlStream,
                 conformanceLevel,
                 documentTitle,
                 documentDescription,
@@ -58,7 +61,7 @@ namespace Securibox.FacturX
             Invoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             if (!File.Exists(pdfPath))
@@ -93,9 +96,12 @@ namespace Securibox.FacturX
                 throw new FileNotFoundException("File not found", xmlPath);
             }
 
+            using var pdfStream = File.OpenRead(pdfPath);
+            using var xmlFileStream = File.OpenRead(xmlPath);
+
             return CreateFacturXStream(
-                File.OpenRead(pdfPath),
-                File.OpenRead(xmlPath),
+                pdfStream,
+                xmlFileStream,
                 conformanceLevel,
                 documentTitle,
                 documentDescription,
@@ -108,14 +114,35 @@ namespace Securibox.FacturX
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
-            ArgumentNullException.ThrowIfNull(invoice);
             if (!File.Exists(pdfPath))
             {
                 throw new FileNotFoundException("File not found", pdfPath);
             }
+
+            using var pdfStream = File.OpenRead(pdfPath);
+
+            return CreateFacturXStream(
+                pdfStream,
+                invoice,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
+        }
+
+        public Stream CreateFacturXStream(
+            Stream pdfStream,
+            ICrossIndustryInvoice invoice,
+            string documentTitle = "Invoice",
+            string documentDescription = "Invoice description",
+            bool failOnInvalid = true
+        )
+        {
+            ArgumentNullException.ThrowIfNull(pdfStream);
+            ArgumentNullException.ThrowIfNull(invoice);
 
             var invoiceType = invoice.GetType();
             var conformanceLevel = FacturXConformanceLevelType.Minimum;
@@ -153,25 +180,21 @@ namespace Securibox.FacturX
             settings.Encoding = new UTF8Encoding();
             settings.Indent = true;
 
-            //create an XmlWriter that utilizes a StringWriter to
-            //build the output, then write that to the Console window
-            using (Stream stream = new MemoryStream())
-            {
-                using (XmlWriter xmlWriter = XmlWriter.Create(stream, settings))
-                {
-                    serializer.Serialize(xmlWriter, invoice, namespaces);
-                    stream.Seek(0, SeekOrigin.Begin);
+            // create an XmlWriter that utilizes a StringWriter to
+            // build the output, then write that to the Console window
+            Stream xmlStream = new MemoryStream();
+            using var xmlWriter = XmlWriter.Create(xmlStream, settings);
+            serializer.Serialize(xmlWriter, invoice, namespaces);
+            xmlStream.Seek(0, SeekOrigin.Begin);
 
-                    return CreateFacturXStream(
-                        File.OpenRead(pdfPath),
-                        stream,
-                        conformanceLevel,
-                        documentTitle,
-                        documentDescription,
-                        failOnInvalid
-                    );
-                }
-            }
+            return CreateFacturXStream(
+                pdfStream,
+                xmlStream,
+                conformanceLevel,
+                documentTitle,
+                documentDescription,
+                failOnInvalid
+            );
         }
 
         public Stream CreateFacturXStream(
@@ -180,7 +203,7 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = false
+            bool failOnInvalid = true
         )
         {
             ArgumentNullException.ThrowIfNull(pdfStream);
@@ -191,7 +214,6 @@ namespace Securibox.FacturX
             );
             FacturxXsdValidator.ValidateXml(xmlStream, conformanceLevel);
 
-            bool isNotValid = false;
             xmlStream.Position = 0;
             var schValidationResult = FacturxSchematronValidator.ValidateXml(
                 xmlStream,
@@ -199,21 +221,12 @@ namespace Securibox.FacturX
             );
             if (!schValidationResult._isSuccessfullValidation)
             {
-                var errors = schValidationResult
-                    ._results.Where(x => x.IsError == true || x.IsWarning == true)
+                validationReport = schValidationResult
+                    ._results.Where(x => x.IsError || x.IsWarning)
                     .ToList();
-                for (int i = 0; i < errors.Count; i++)
-                {
-                    if (!isNotValid && errors[i].IsError)
-                    {
-                        isNotValid = true;
-                    }
-
-                    validationReport.Add(errors[i]);
-                }
             }
 
-            if (failOnInvalid && isNotValid)
+            if (failOnInvalid && validationReport.Any(report => report.IsError))
             {
                 throw new Exception(
                     "The provided XML is not valid according to the selected Factur-X conformance level. "
@@ -232,153 +245,169 @@ namespace Securibox.FacturX
                 $"Success in validating XML with XSD validation for conformance level {conformanceLevel.Name}"
             );
 
-            var pdfDocument = PdfReader.Open(pdfStream, PdfDocumentOpenMode.Import);
+            Stream inputPdfStream = pdfStream;
+            MemoryStream? tempStream = null;
 
-            PdfDocument outputDocument = new PdfDocument();
-            for (int i = 0; i < pdfDocument.PageCount; i++)
+            if (!pdfStream.CanSeek)
             {
-                outputDocument.AddPage(pdfDocument.Pages[i]);
+                tempStream = new MemoryStream();
+                pdfStream.CopyTo(tempStream);
+                tempStream.Position = 0;
+                inputPdfStream = tempStream;
             }
 
-            string xmlChecksum = string.Empty;
-            byte[] xmlFileBytes = null;
+            using var inputDocument = PdfReader.Open(inputPdfStream, PdfDocumentOpenMode.Import);
+            var outputDocument = new PdfDocument();
+
+            foreach (var page in inputDocument.Pages)
+            {
+                outputDocument.AddPage(page);
+            }
+
+            outputDocument.Version = 17;
+
+            string xmlChecksum;
+            byte[] xmlFileBytes;
             using (var md5 = MD5.Create())
             {
                 var hashBytes = md5.ComputeHash(xmlStream);
                 xmlChecksum = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
 
-                xmlStream.Seek(0, SeekOrigin.Begin);
+                xmlStream.Position = 0;
                 xmlFileBytes = new byte[xmlStream.Length];
-                xmlStream.Read(xmlFileBytes, 0, (int)xmlStream.Length);
+                int bytesRead = 0;
+                while (bytesRead < xmlFileBytes.Length)
+                {
+                    int read = xmlStream.Read(
+                        xmlFileBytes,
+                        bytesRead,
+                        xmlFileBytes.Length - bytesRead
+                    );
+
+                    if (read == 0)
+                    {
+                        break;
+                    }
+
+                    bytesRead += read;
+                }
             }
 
-            _logger.LogInformation($"Calculated the MD5 checksum for the XML file");
+            PdfDictionary fStreamDict = new PdfDictionary(outputDocument);
+            fStreamDict.CreateStream(xmlFileBytes);
+            fStreamDict.Elements.Remove("/Filter");
 
-            var xmlFileEncodedBytes = PdfSharpCore.Pdf.Filters.Filtering.FlateDecode.Encode(
-                xmlFileBytes
+            PdfDictionary xmlParamsDict = new PdfDictionary(outputDocument);
+            xmlParamsDict.Elements["/CheckSum"] = new PdfString(xmlChecksum);
+            xmlParamsDict.Elements["/ModDate"] = new PdfString(
+                "D:" + DateTime.UtcNow.ToString("yyyyMMddHHmmsszzz")
             );
+            xmlParamsDict.Elements["/Size"] = new PdfInteger(xmlFileBytes.Length);
 
-            PdfDictionary xmlParamsDict = new PdfDictionary();
-            xmlParamsDict.Elements.Add("/CheckSum", new PdfString(xmlChecksum));
-            xmlParamsDict.Elements.Add(
-                "/ModDate",
-                new PdfString("D:" + DateTime.UtcNow.ToString("yyyyMMddHHmmsszzz"))
-            );
-            xmlParamsDict.Elements.Add("/Size", new PdfInteger(xmlFileBytes.Length));
+            fStreamDict.Elements["/Type"] = new PdfName("/EmbeddedFile");
+            fStreamDict.Elements["/Params"] = xmlParamsDict;
+            fStreamDict.Elements["/Subtype"] = new PdfName("/text/xml");
 
-            PdfDictionary fStreamDict = new PdfDictionary();
-            fStreamDict.CreateStream(xmlFileEncodedBytes);
-            fStreamDict.Elements.Add("/Filter", new PdfName("/FlateDecode"));
-            fStreamDict.Elements.Add("/Type", new PdfName("/EmbeddedFile"));
-            fStreamDict.Elements.Add("/Params", xmlParamsDict);
-            fStreamDict.Elements.Add("/Subtype", new PdfName("/text/xml"));
             outputDocument.Internals.AddObject(fStreamDict);
 
-            PdfDictionary af0Dict = new PdfDictionary();
-            af0Dict.Elements.Add("/AFRelationship", new PdfName("/Data"));
-            af0Dict.Elements.Add("/Desc", new PdfString("Factur-X XML file"));
-            af0Dict.Elements.Add("/Type", new PdfName("/Filespec"));
-            af0Dict.Elements.Add("/F", new PdfString("factur-x.xml"));
+            PdfDictionary af0Dict = new PdfDictionary(outputDocument);
+            af0Dict.Elements["/AFRelationship"] = new PdfName("/Data");
+            af0Dict.Elements["/Desc"] = new PdfString("Factur-X XML file");
+            af0Dict.Elements["/Type"] = new PdfName("/Filespec");
+            af0Dict.Elements["/F"] = new PdfString("factur-x.xml");
+            af0Dict.Elements["/UF"] = new PdfString("factur-x.xml");
 
-            PdfDictionary af1Dict = new PdfDictionary();
-            af1Dict.Elements.Add("/F", fStreamDict.Reference);
-            af1Dict.Elements.Add("/UF", fStreamDict.Reference);
+            PdfDictionary af1Dict = new PdfDictionary(outputDocument);
+            af1Dict.Elements["/F"] = fStreamDict.Reference;
+            af1Dict.Elements["/UF"] = fStreamDict.Reference;
 
-            af0Dict.Elements.Add("/EF", af1Dict);
-            af0Dict.Elements.Add("/UF", new PdfString("factur-x.xml"));
+            af0Dict.Elements["/EF"] = af1Dict;
             outputDocument.Internals.AddObject(af0Dict);
 
-            var afPdfArray = new PdfArray();
+            var afPdfArray = new PdfArray(outputDocument);
             afPdfArray.Elements.Add(af0Dict.Reference);
             outputDocument.Internals.AddObject(afPdfArray);
-            outputDocument.Internals.Catalog.Elements.Add("/AF", afPdfArray.Reference);
+            outputDocument.Internals.Catalog.Elements["/AF"] = afPdfArray.Reference;
 
             var dateTimeNow = DateTime.UtcNow;
-            var conformanceLevelName = conformanceLevel.Name.ToUpperInvariant();
             var xmpmeta = Resources
                 .PdfMetadataTemplate.Replace(
                     "{{CreationDate}}",
-                    dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz")
+                    dateTimeNow.ToString("yyyy-MM-ddTHH:mm:sszzz")
                 )
-                .Replace("{{ModificationDate}}", dateTimeNow.ToString("yyyy-MM-ddThh:mm:sszzz"))
+                .Replace("{{ModificationDate}}", dateTimeNow.ToString("yyyy-MM-ddTHH:mm:sszzz"))
                 .Replace("{{DocumentTitle}}", documentTitle)
                 .Replace("{{DocumentDescription}}", documentDescription)
-                .Replace("{{ConformanceLevel}}", conformanceLevelName);
+                .Replace("{{ConformanceLevel}}", conformanceLevel.Name.ToUpperInvariant());
 
-            var metadataBytes = System.Text.Encoding.UTF8.GetBytes(xmpmeta);
-            var metadataEncodedBytes = PdfSharpCore.Pdf.Filters.Filtering.FlateDecode.Encode(
-                metadataBytes
-            );
+            var metadataBytes = new UTF8Encoding(false).GetBytes(xmpmeta);
 
-            PdfDictionary metadataDictionary = new PdfDictionary();
-            metadataDictionary.CreateStream(metadataEncodedBytes);
-            metadataDictionary.Elements.Add("/Filter", new PdfName("/FlateDecode"));
-            metadataDictionary.Elements.Add("/Subtype", new PdfName("/XML"));
-            metadataDictionary.Elements.Add("/Type", new PdfName("/Metadata"));
+            PdfDictionary metadataDictionary = new PdfDictionary(outputDocument);
+            metadataDictionary.CreateStream(metadataBytes);
+            metadataDictionary.Elements["/Type"] = new PdfName("/Metadata");
+            metadataDictionary.Elements["/Subtype"] = new PdfName("/XML");
+            metadataDictionary.Elements.Remove("/Filter");
+
             outputDocument.Internals.AddObject(metadataDictionary);
-            outputDocument.Internals.Catalog.Elements.Add(
-                "/Metadata",
-                metadataDictionary.Reference
-            );
+            outputDocument.Internals.Catalog.Elements["/Metadata"] = metadataDictionary.Reference;
 
-            var namesPdfArray = new PdfArray();
+            var namesPdfArray = new PdfArray(outputDocument);
             namesPdfArray.Elements.Add(new PdfString("factur-x.xml"));
             namesPdfArray.Elements.Add(af0Dict.Reference);
-            PdfDictionary embeddedFilesDict = new PdfDictionary();
-            embeddedFilesDict.Elements.Add("/Names", namesPdfArray);
-            PdfDictionary namesDict = new PdfDictionary();
-            namesDict.Elements.Add("/EmbeddedFiles", embeddedFilesDict);
 
-            outputDocument.Internals.Catalog.Elements.Add("/Names", namesDict);
+            PdfDictionary embeddedFilesDict = new PdfDictionary(outputDocument);
+            embeddedFilesDict.Elements["/Names"] = namesPdfArray;
 
-            PdfDictionary rgbProfileDict = new PdfDictionary();
+            PdfDictionary namesDict = new PdfDictionary(outputDocument);
+            namesDict.Elements["/EmbeddedFiles"] = embeddedFilesDict;
+            outputDocument.Internals.Catalog.Elements["/Names"] = namesDict;
+
+            PdfDictionary rgbProfileDict = new PdfDictionary(outputDocument);
             rgbProfileDict.CreateStream(Resources.sRGB_IEC61966_2_1);
-            rgbProfileDict.Elements.Add("/N", new PdfInteger(3));
+            rgbProfileDict.Elements["/N"] = new PdfInteger(3);
+            rgbProfileDict.Elements.Remove("/Filter");
+
             outputDocument.Internals.AddObject(rgbProfileDict);
 
-            PdfDictionary outputIntent0Dict = new PdfDictionary();
-            outputIntent0Dict.Elements.Add("/DestOutputProfile", rgbProfileDict.Reference);
-            outputIntent0Dict.Elements.Add(
-                "/OutputConditionIdentifier",
-                new PdfString("sRGB IEC61966-2.1")
+            PdfDictionary outputIntent0Dict = new PdfDictionary(outputDocument);
+            outputIntent0Dict.Elements["/DestOutputProfile"] = rgbProfileDict.Reference;
+            outputIntent0Dict.Elements["/OutputConditionIdentifier"] = new PdfString(
+                "sRGB IEC61966-2.1"
             );
-            outputIntent0Dict.Elements.Add("/S", new PdfName("/GTS_PDFA1"));
-            outputIntent0Dict.Elements.Add("/Type", new PdfName("/OutputIntent"));
+            outputIntent0Dict.Elements["/S"] = new PdfName("/GTS_PDFA1");
+            outputIntent0Dict.Elements["/Type"] = new PdfName("/OutputIntent");
             outputDocument.Internals.AddObject(outputIntent0Dict);
 
-            var outputIntentsArray = new PdfArray();
+            var outputIntentsArray = new PdfArray(outputDocument);
             outputIntentsArray.Elements.Add(outputIntent0Dict.Reference);
-            outputDocument.Internals.Catalog.Elements.Add("/OutputIntents", outputIntentsArray);
-
+            outputDocument.Internals.Catalog.Elements["/OutputIntents"] = outputIntentsArray;
             outputDocument.Info.Creator = "Securibox";
-
             MemoryStream memoryStream = new MemoryStream();
             outputDocument.Save(memoryStream);
             memoryStream.Seek(0, SeekOrigin.Begin);
+
             _logger.LogInformation($"Successfully generated the Factur-X PDF stream.");
             return memoryStream;
         }
 
-        private void InitializeLogger(ILogger<FacturxExporter>? logger)
+        private ILogger<FacturxExporter> InitializeLogger(ILogger<FacturxExporter>? logger)
         {
-            if (logger == null)
+            if (logger != null)
             {
-                using ILoggerFactory factory = LoggerFactory.Create(
-                    delegate(ILoggingBuilder builder)
-                    {
-                        builder
-                            .AddFilter("Microsoft", LogLevel.Warning)
-                            .AddFilter("System", LogLevel.Warning)
-                            .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
-                    }
-                );
+                return logger;
+            }
 
-                _logger = factory.CreateLogger<FacturxExporter>();
-            }
-            else
-            {
-                _logger = logger;
-            }
+            using ILoggerFactory factory = LoggerFactory.Create(
+                delegate(ILoggingBuilder builder)
+                {
+                    builder
+                        .AddFilter("Microsoft", LogLevel.Warning)
+                        .AddFilter("System", LogLevel.Warning)
+                        .AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
+                }
+            );
+
+            return factory.CreateLogger<FacturxExporter>();
         }
     }
 }

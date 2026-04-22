@@ -21,6 +21,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             dstPath,
             "2023-6026_facture_facturx_minimum.pdf"
         );
+        private static readonly string tmpFile = Path.GetTempFileName();
 
         [SetUp]
         public void Setup()
@@ -29,6 +30,15 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             if (!Directory.Exists(dstPath))
             {
                 Directory.CreateDirectory(dstPath);
+            }
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            if (File.Exists(tmpFile))
+            {
+                File.Delete(tmpFile);
             }
         }
 
@@ -150,17 +160,38 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 srcFile,
                 invoiceToExport,
                 $"SEPEM: Invoice ",
-                $"Invoice ",
-                failOnInvalid: true
+                $"Invoice "
             );
 
             using var fileStream = new FileStream(dstFile, FileMode.Create);
 
             await stream.CopyToAsync(fileStream);
+
+            Assert.That(File.Exists(dstFile), Is.True);
         }
 
         [Test]
         [Order(2)]
+        public async Task WriteData_Stream_Minimum_SUCCESS()
+        {
+            var invoiceToExport = GetInvoice();
+            var exporter = new FacturxExporter();
+
+            using var stream = exporter.CreateFacturXStream(
+                File.Open(srcFile, FileMode.Open, FileAccess.Read, FileShare.Read),
+                invoiceToExport,
+                $"SEPEM: Invoice ",
+                $"Invoice "
+            );
+
+            using var fileStream = new FileStream(tmpFile, FileMode.Create);
+            await stream.CopyToAsync(fileStream);
+
+            Assert.That(File.Exists(tmpFile), Is.True);
+        }
+
+        [Test]
+        [Order(3)]
         public void AssertWrittenData_Minimum_SUCCESS()
         {
             var importer = new FacturxImporter(dstFile);
