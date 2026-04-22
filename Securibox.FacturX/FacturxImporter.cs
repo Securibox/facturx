@@ -28,21 +28,12 @@ namespace Securibox.FacturX
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
         {
             _logger = InitializeLogger(logger);
+            ArgumentNullException.ThrowIfNull(pdfStream);
 
-            if (pdfStream is MemoryStream memoryStream)
-            {
-                _pdfFileStream = memoryStream;
-            }
-            else
-            {
-                using (var temp = pdfStream)
-                {
-                    var ms = new MemoryStream();
-                    temp.CopyTo(ms);
-                    ms.Position = 0;
-                    _pdfFileStream = ms;
-                }
-            }
+            var ms = new MemoryStream();
+            pdfStream.CopyTo(ms);
+            ms.Position = 0;
+            _pdfFileStream = ms;
 
             _pdfDocument = PdfReader.Open(_pdfFileStream);
         }
