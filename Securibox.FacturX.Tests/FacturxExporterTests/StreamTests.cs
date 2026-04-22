@@ -297,7 +297,13 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                 },
                             },
                         ApplicableHeaderTradeDelivery =
-                            new SpecificationModels.BasicWL.HeaderTradeDelivery() { },
+                            new SpecificationModels.BasicWL.HeaderTradeDelivery()
+                            {
+                                ShipToTradeParty = new SpecificationModels.BasicWL.TradeParty()
+                                {
+                                    Name = "Securibox SARL",
+                                },
+                            },
                         ApplicableHeaderTradeSettlement =
                             new SpecificationModels.BasicWL.HeaderTradeSettlement()
                             {
