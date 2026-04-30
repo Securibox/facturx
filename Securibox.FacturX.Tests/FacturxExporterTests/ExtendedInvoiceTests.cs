@@ -50,7 +50,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
         public static SpecificationModels.Extended.CrossIndustryInvoice GetInvoice_SpecificationModels()
         {
-            var invoice = new Securibox.FacturX.SpecificationModels.Extended.CrossIndustryInvoice()
+            var invoice = new SpecificationModels.Extended.CrossIndustryInvoice()
             {
                 ExchangedDocument = new SpecificationModels.Extended.ExchangedDocument()
                 {
@@ -498,7 +498,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
             var importer = new FacturxImporter(importExportDstFile);
             var extendedInvoice =
                 importer.ImportDataWithDeserialization()
-                as Securibox.FacturX.SpecificationModels.Extended.CrossIndustryInvoice;
+                as SpecificationModels.Extended.CrossIndustryInvoice;
 
             Assert.That(extendedInvoice is not null);
 
@@ -1069,7 +1069,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
         }
 
         [Test]
-        [Order(3)]
+        [Order(4)]
         public async Task ValidateXml_IncorrectVATCalculation_FAILS_BR_FXEXT_S_09()
         {
             // This test validates that BR-FXEXT-S-09 assertion correctly detects
@@ -1117,17 +1117,22 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 // required because this test intentionally fails validation
                 failOnInvalid: false
             );
-            using var fileStream = new FileStream(
-                incorrectVatCalculationsTestDstFile,
-                FileMode.Create
-            );
 
-            await stream.CopyToAsync(fileStream);
+            // using block is mandatory as FacturXImporter need the file being closed on Windows
+            using (
+                var fileStream = new FileStream(
+                    incorrectVatCalculationsTestDstFile,
+                    FileMode.Create
+                )
+            )
+            {
+                await stream.CopyToAsync(fileStream);
+            }
 
             var importer = new FacturxImporter(incorrectVatCalculationsTestDstFile);
             var extendedInvoice =
                 importer.ImportDataWithDeserialization()
-                as Securibox.FacturX.SpecificationModels.Extended.CrossIndustryInvoice;
+                as SpecificationModels.Extended.CrossIndustryInvoice;
 
             Assert.That(importer.validationReport, Is.Not.Null);
             var brFxextS09Error = importer.validationReport.FirstOrDefault(r =>
