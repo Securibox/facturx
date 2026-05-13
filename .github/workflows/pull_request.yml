@@ -4,15 +4,20 @@ on: [pull_request]
 
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-latest  
+    name: Build on ${{matrix.os}} with .NET ${{matrix.dotnet}}
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        dotnet: ['8.x', '9.x', '10.x']
+        os: ['ubuntu-latest']
 
     steps:
     - uses: actions/checkout@v6
-    - name: Setup .NET 8.x
+    - name: Setup .NET ${{matrix.dotnet}}
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '8.x'
+        dotnet-version: ${{matrix.dotnet}}
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
@@ -23,15 +28,20 @@ jobs:
       run: dotnet build --no-restore
 
   test:
-    name: Test
-    runs-on: ubuntu-latest  
+    name: Test on ${{matrix.os}} with .NET ${{matrix.dotnet}}
+    runs-on: ${{matrix.os}}
+
+    strategy:
+      matrix:
+        dotnet: ['8.x', '9.x', '10.x']
+        os: ['ubuntu-latest']
 
     steps:
     - uses: actions/checkout@v6
-    - name: Setup .NET 8.x
+    - name: Setup .NET ${{matrix.dotnet}}
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '8.x'
+        dotnet-version: ${{matrix.dotnet}}
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
