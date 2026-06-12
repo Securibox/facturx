@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Securibox.FacturX.Core;
 
 namespace Securibox.FacturX.Schematron.Xslt
 {
@@ -54,7 +55,7 @@ namespace Securibox.FacturX.Schematron.Xslt
                 byte[] byteArray = Encoding.UTF8.GetBytes(codedbFile);
                 using (var codedbStream = new MemoryStream(byteArray))
                 {
-                    var codeDbNav = new XPathDocument(codedbStream);
+                    var codeDbNav = SecureXml.LoadXPathDocument(codedbStream);
                     var codeDBNavigator = codeDbNav.CreateNavigator();
                     codeDBNavigator.MoveToFirstChild();
 

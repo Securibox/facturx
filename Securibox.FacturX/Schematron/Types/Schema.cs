@@ -280,7 +280,13 @@ namespace Securibox.FacturX.Schematron.Types
             XmlSerializer serializer = new XmlSerializer(typeof(Schema));
             using (var s = File.OpenRead(path))
             {
-                XmlReaderSettings settings = new XmlReaderSettings();
+                XmlReaderSettings settings = new XmlReaderSettings
+                {
+                    // Safe defaults: no DTD and no external resolver unless a caller
+                    // explicitly opts in by passing a resolver.
+                    DtdProcessing = DtdProcessing.Prohibit,
+                    XmlResolver = null,
+                };
                 if (resolver != null)
                 {
                     settings.DtdProcessing = DtdProcessing.Parse;

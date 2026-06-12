@@ -52,7 +52,7 @@ namespace Securibox.FacturX.Schematron.Types
 
         public string EvaluateDescriptionFragment(XsltContext context)
         {
-            var fragment = new XmlDocument();
+            var fragment = new XmlDocument { XmlResolver = null };
             var nav = fragment.CreateNavigator();
             if (nav != null)
             {

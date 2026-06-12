@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
+using Securibox.FacturX.Core;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Schematron.Helpers;
 
@@ -15,8 +16,9 @@ namespace Securibox.FacturX
         {
             var validationSchema = LoadValidationSchema(conformanceLevel);
 
-            var xmlReader = new XmlTextReader(xmlDocumentStream);
-            var doc = new XPathDocument(xmlReader);
+            // Untrusted invoice XML: load with DTD and external-entity resolution
+            // disabled to prevent XXE attacks.
+            var doc = SecureXml.LoadXPathDocument(xmlDocumentStream);
 
             if (validationSchema.Phases != null)
             {
@@ -39,11 +41,13 @@ namespace Securibox.FacturX
         )
         {
             var schemaStream = GetSchemaFileByConformanceLevel(conformanceLevel);
-            // check this xmlReaderSettings, is it necessary
+            // Schema is a trusted, embedded resource. We still set XmlResolver = null so
+            // that no external DTD/entity can ever be fetched from disk or network.
             XmlReaderSettings readerSettings = new XmlReaderSettings()
             {
                 DtdProcessing = DtdProcessing.Parse,
                 ValidationType = ValidationType.Schema,
+                XmlResolver = null,
             };
 
             var reader = XmlReader.Create(schemaStream, readerSettings);

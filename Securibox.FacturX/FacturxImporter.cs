@@ -6,6 +6,7 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Filters;
 using PdfSharp.Pdf.IO;
+using Securibox.FacturX.Core;
 using Securibox.FacturX.Models;
 using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Schematron.Helpers;
@@ -188,8 +189,9 @@ namespace Securibox.FacturX
 
                 _xmlText = text;
 
-                _xmlDocument = new XmlDocument();
-                _xmlDocument.LoadXml(text);
+                // Untrusted XML extracted from a third-party PDF: load with DTD and
+                // external-entity resolution disabled to prevent XXE attacks.
+                _xmlDocument = SecureXml.LoadDocument(text);
             }
             return _xmlDocument;
         }

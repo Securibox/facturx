@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
+using Securibox.FacturX.Core;
 using Securibox.FacturX.Models.Enums;
 
 namespace Securibox.FacturX
@@ -12,8 +13,9 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel
         )
         {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(xmlDocumentStream);
+            // Untrusted invoice XML: load with DTD and external-entity resolution
+            // disabled to prevent XXE attacks.
+            var xmlDocument = SecureXml.LoadDocument(xmlDocumentStream);
             ValidateXml(xmlDocument, conformanceLevel);
         }
 
