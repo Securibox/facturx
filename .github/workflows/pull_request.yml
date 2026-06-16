@@ -9,15 +9,15 @@ jobs:
 
     strategy:
       matrix:
-        dotnet: ['8.x', '9.x', '10.x']
+        dotnet: ['8', '9', '10']
         os: ['ubuntu-latest']
 
     steps:
     - uses: actions/checkout@v6
-    - name: Setup .NET ${{matrix.dotnet}}
+    - name: Setup .NET ${{matrix.dotnet}}.x
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: ${{matrix.dotnet}}
+        dotnet-version: ${{matrix.dotnet}}.x
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
@@ -25,7 +25,7 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore -p TargetFramework=net${{matrix.dotnet}}.0
 
   test:
     name: Test on ${{matrix.os}} with .NET ${{matrix.dotnet}}
@@ -33,15 +33,15 @@ jobs:
 
     strategy:
       matrix:
-        dotnet: ['8.x', '9.x', '10.x']
+        dotnet: ['8', '9', '10']
         os: ['ubuntu-latest']
 
     steps:
     - uses: actions/checkout@v6
-    - name: Setup .NET ${{matrix.dotnet}}
+    - name: Setup .NET ${{matrix.dotnet}}.x
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: ${{matrix.dotnet}}
+        dotnet-version: ${{matrix.dotnet}}.x
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
@@ -49,7 +49,7 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Test
-      run: dotnet test --no-restore
+      run: dotnet test --no-restore -p TargetFramework=net${{matrix.dotnet}}.0
 
   formatter:
     name: Format
