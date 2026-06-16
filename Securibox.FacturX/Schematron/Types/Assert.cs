@@ -6,6 +6,9 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using Securibox.FacturX.Schematron.Xslt;
 using Wmhelp.XPath2;
+#if NET462
+using Securibox.FacturX.Compatibility;
+#endif
 
 namespace Securibox.FacturX.Schematron.Types
 {
@@ -84,7 +87,11 @@ namespace Securibox.FacturX.Schematron.Types
             var result = fragment.DocumentElement?.InnerXml.Trim().Split('\n');
             if (result != null && result.Length > 0)
             {
+#if NET462
+                return CompatibilityExtensions.JoinChar('\n', result.Select(x => x.Trim()));
+#else
                 return String.Join('\n', result.Select(x => x.Trim()));
+#endif
             }
             else
             {
@@ -98,15 +105,14 @@ namespace Securibox.FacturX.Schematron.Types
             XsltContext context
         )
         {
-            var result = false;
             var assert = this
                 .Test.Replace("\r\n", " ")
                 .Replace('\n', ' ')
                 .Replace('\r', ' ')
                 .Trim();
 
-            assert = System.Text.RegularExpressions.Regex.Replace(assert, @"\s+", " ");
-            result = EvaluateLogicalExpression(context, navigator, assert);
+            assert = Regex.Replace(assert, @"\s+", " ");
+            var result = EvaluateLogicalExpression(context, navigator, assert);
 
             return new EvaluationResult
             {
@@ -160,29 +166,15 @@ namespace Securibox.FacturX.Schematron.Types
             var result = navigator.Evaluate(compiledExpr);
             var returnType = compiledExpr.ReturnType;
 
-            bool ok = false;
-            switch (returnType)
+            var ok = returnType switch
             {
-                case XPathResultType.Boolean:
-                    ok = (bool)result;
-                    break;
-                case XPathResultType.Error:
-                    ok = false;
-                    break;
-                case XPathResultType.NodeSet:
-                    ok = ((XPathNodeIterator)result).Count != 0;
-                    break;
-                case XPathResultType.Number:
-                    ok = int.TryParse(result.ToString(), out int t);
-                    //ok = (int)result != 0;
-                    break;
-                case XPathResultType.String:
-                    ok = !String.IsNullOrEmpty((string)result);
-                    break;
-                default:
-                    ok = false;
-                    break;
-            }
+                XPathResultType.Boolean => (bool)result,
+                XPathResultType.Error => false,
+                XPathResultType.NodeSet => ((XPathNodeIterator)result).Count != 0,
+                XPathResultType.Number => int.TryParse(result.ToString(), out int t),
+                XPathResultType.String => !String.IsNullOrEmpty((string)result),
+                _ => false,
+            };
 
             return ok;
         }
@@ -205,7 +197,7 @@ namespace Securibox.FacturX.Schematron.Types
                 var parts = everyMatch
                     .Groups[1]
                     .ToString()
-                    .Split(new[] { " in " }, StringSplitOptions.None);
+                    .Split([" in "], StringSplitOptions.None);
                 var varName = parts[0].TrimStart('$').Trim();
                 var exprPart = parts[1].Trim();
                 var resultExprPart = navigator.XPath2Evaluate(exprPart, context);
@@ -229,9 +221,15 @@ namespace Securibox.FacturX.Schematron.Types
                     varValues.Add(resultExprPart);
                 }
 
-                string condition = everyMatch.Groups[2].ToString().Trim();
+                var condition = everyMatch.Groups[2].ToString().Trim();
+#if NET462
+                if (condition.StartsWithChar('(') && condition.EndsWithChar(')'))
+#else
                 if (condition.StartsWith('(') && condition.EndsWith(')'))
+#endif
+                {
                     condition = condition.Substring(1, condition.Length - 2);
+                }
 
                 if (variablesDictionary is null)
                 {
@@ -260,10 +258,7 @@ namespace Securibox.FacturX.Schematron.Types
 
             if (someMatch.Success && (expr.Contains(" for ") || expr.Contains(" let ")))
             {
-                var parts = someMatch
-                    .Groups[1]
-                    .ToString()
-                    .Split(new[] { " in " }, StringSplitOptions.None);
+                var parts = someMatch.Groups[1].ToString().Split([" in "], StringSplitOptions.None);
 
                 var varName = parts[0].TrimStart('$').Trim();
                 var exprPart = Regex.Replace(parts[1].Trim(), @"xs:decimal\s*\(([^)]+)\)", "$1");
@@ -280,7 +275,11 @@ namespace Securibox.FacturX.Schematron.Types
                 }
 
                 string condition = someMatch.Groups[2].ToString().Trim();
+#if NET462
+                if (condition.StartsWithChar('(') && condition.EndsWithChar(')'))
+#else
                 if (condition.StartsWith('(') && condition.EndsWith(')'))
+#endif
                 {
                     condition = condition.Substring(1, condition.Length - 2);
                 }
@@ -369,7 +368,11 @@ namespace Securibox.FacturX.Schematron.Types
             var bindingParts = bindings
                 .Split(',')
                 .Select(b => b.Trim())
+#if NET462
+                .Where(b => b.StartsWithChar('$'))
+#else
                 .Where(b => b.StartsWith('$'))
+#endif
                 .ToArray();
 
             var variables = new Dictionary<XmlQualifiedName, object>();
@@ -397,7 +400,7 @@ namespace Securibox.FacturX.Schematron.Types
             {
                 if (binding.Contains(" in "))
                 {
-                    var parts = binding.Split(new[] { " in " }, StringSplitOptions.None);
+                    var parts = binding.Split([" in "], StringSplitOptions.None);
                     if (parts.Length != 2)
                         throw new ArgumentException($"Invalid binding: {binding}");
 
@@ -424,7 +427,7 @@ namespace Securibox.FacturX.Schematron.Types
                 }
                 else if (binding.Contains(":="))
                 {
-                    var parts = binding.Split(new[] { ":=" }, StringSplitOptions.None);
+                    var parts = binding.Split([":="], StringSplitOptions.None);
                     if (parts.Length != 2)
                         throw new ArgumentException($"Invalid 'let' binding: {binding}");
 
@@ -488,7 +491,9 @@ namespace Securibox.FacturX.Schematron.Types
                     return !string.IsNullOrEmpty(str);
                 default:
                     if (int.TryParse(result.ToString(), out int parsed))
+                    {
                         return parsed != 0;
+                    }
                     return true;
             }
         }
@@ -562,7 +567,11 @@ namespace Securibox.FacturX.Schematron.Types
         private static string TrimOuterParentheses(string expr)
         {
             expr = expr.Trim();
+#if NET462
+            while (expr.StartsWithChar('(') && expr.EndsWithChar(')'))
+#else
             while (expr.StartsWith('(') && expr.EndsWith(')'))
+#endif
             {
                 int depth = 0;
                 bool matched = false;
@@ -583,7 +592,7 @@ namespace Securibox.FacturX.Schematron.Types
                         break;
                     }
 
-                    matched = (depth == 0 && i == expr.Length - 1);
+                    matched = depth == 0 && i == expr.Length - 1;
                 }
 
                 if (matched)

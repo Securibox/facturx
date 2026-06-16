@@ -1,11 +1,14 @@
-﻿namespace Securibox.FacturX.Schematron.Xslt
-{
-    using System.Collections.Concurrent;
-    using System.Dynamic;
-    using System.Reflection;
-    using System.Reflection.Emit;
-    using System.Xml;
+using System.Collections.Concurrent;
+using System.Dynamic;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Xml;
+#if NET462
+using Securibox.FacturX.Compatibility;
+#endif
 
+namespace Securibox.FacturX.Schematron.Xslt
+{
     public class DynamicXPathVariables : DynamicObject
     {
         private static readonly ConcurrentDictionary<string, Type> _typeCache = new();
@@ -16,7 +19,11 @@
 
         public static object BuildDynamicProps(Dictionary<XmlQualifiedName, object> lets)
         {
+#if NET462
+            CompatibilityExtensions.ThrowIfNull(lets, nameof(lets));
+#else
             ArgumentNullException.ThrowIfNull(lets, nameof(lets));
+#endif
             if (lets.Count == 0)
             {
                 return new object();
@@ -69,7 +76,11 @@
                 CreateAutoProperty(typeBuilder, propertyName, propertyType);
             }
 
+#if NET462
             return typeBuilder.CreateType();
+#else
+            return typeBuilder.CreateTypeInfo();
+#endif
         }
 
         private static string GenerateTypeKey(Dictionary<XmlQualifiedName, object> lets)
@@ -77,16 +88,27 @@
             var sortedProps = lets.OrderBy(kv => kv.Key.ToString())
                 .Select(kv => $"{kv.Key}:{(kv.Value?.GetType().FullName ?? "object")}");
 
+#if NET462
+            return CompatibilityExtensions.JoinChar('|', sortedProps);
+#else
             return string.Join('|', sortedProps);
+#endif
         }
 
         private static TypeBuilder CreateTypeBuilder(string typeName)
         {
             var assemblyName = new AssemblyName("DynamicXPathAssembly");
+#if NET462
+            var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
+                assemblyName,
+                AssemblyBuilderAccess.Run
+            );
+#else
             var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(
                 assemblyName,
                 AssemblyBuilderAccess.Run
             );
+#endif
             var moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
             return moduleBuilder.DefineType(
                 typeName,
