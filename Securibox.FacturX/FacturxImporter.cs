@@ -12,6 +12,9 @@ using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.SpecificationModels;
 using XmpCore;
 using static PdfSharp.Pdf.PdfDictionary;
+#if NET462
+using Securibox.FacturX.Compatibility;
+#endif
 
 namespace Securibox.FacturX
 {
@@ -28,7 +31,11 @@ namespace Securibox.FacturX
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
         {
             _logger = InitializeLogger(logger);
+#if NET462
+            CompatibilityExtensions.ThrowIfNull(pdfStream, nameof(pdfStream));
+#else
             ArgumentNullException.ThrowIfNull(pdfStream);
+#endif
 
             var ms = new MemoryStream();
             pdfStream.CopyTo(ms);
@@ -204,7 +211,11 @@ namespace Securibox.FacturX
                 byte[] metadataBytes = new byte[0];
                 if (dict?.Stream == null)
                 {
+#if NET462
+                    CompatibilityExtensions.ThrowIfNull(_pdfFileStream, nameof(_pdfFileStream));
+#else
                     ArgumentNullException.ThrowIfNull(_pdfFileStream);
+#endif
 
                     _pdfFileStream.Position = 0;
                     var pdfText = Encoding.UTF8.GetString(_pdfFileStream.ToArray());

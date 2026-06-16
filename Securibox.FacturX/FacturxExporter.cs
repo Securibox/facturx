@@ -9,6 +9,9 @@ using Securibox.FacturX.Models.Enums;
 using Securibox.FacturX.Models.Minimum;
 using Securibox.FacturX.Schematron.Helpers;
 using Securibox.FacturX.SpecificationModels;
+#if NET462
+using Securibox.FacturX.Compatibility;
+#endif
 
 namespace Securibox.FacturX
 {
@@ -141,8 +144,13 @@ namespace Securibox.FacturX
             bool failOnInvalid = true
         )
         {
+#if NET462
+            CompatibilityExtensions.ThrowIfNull(pdfStream, nameof(pdfStream));
+            CompatibilityExtensions.ThrowIfNull(invoice, nameof(invoice));
+#else
             ArgumentNullException.ThrowIfNull(pdfStream);
             ArgumentNullException.ThrowIfNull(invoice);
+#endif
 
             var invoiceType = invoice.GetType();
             var conformanceLevel = FacturXConformanceLevelType.Minimum;
@@ -206,8 +214,13 @@ namespace Securibox.FacturX
             bool failOnInvalid = true
         )
         {
+#if NET462
+            CompatibilityExtensions.ThrowIfNull(pdfStream, nameof(pdfStream));
+            CompatibilityExtensions.ThrowIfNull(xmlStream, nameof(xmlStream));
+#else
             ArgumentNullException.ThrowIfNull(pdfStream);
             ArgumentNullException.ThrowIfNull(xmlStream);
+#endif
 
             _logger.LogInformation(
                 $"Validating XML with XSD validation for conformance level {conformanceLevel.Name}"
