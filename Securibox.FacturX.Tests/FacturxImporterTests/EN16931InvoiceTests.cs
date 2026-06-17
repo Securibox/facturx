@@ -14290,7 +14290,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         0
                     )
                     .CalculationPercent,
-                Is.EqualTo(0.0)
+                Is.Null
             );
             Assert.That(
                 invoice
@@ -14363,7 +14363,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
                         1
                     )
                     .CalculationPercent,
-                Is.EqualTo(0.0)
+                Is.Null
             );
             Assert.That(
                 invoice
