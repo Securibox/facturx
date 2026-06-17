@@ -4,20 +4,32 @@ on: [pull_request]
 
 jobs:
   build:
-    name: Build on ${{matrix.os}} with .NET ${{matrix.dotnet}}
+    name: Build on ${{matrix.os}} with .NET ${{matrix.dotnet.setup}}
     runs-on: ${{matrix.os}}
 
     strategy:
       matrix:
-        dotnet: ['8', '9', '10']
+        dotnet:
+          - setup: 8.x
+            exec: net8.0
+          - setup: 9.x
+            exec: net9.0
+          - setup: 10.x
+            exec: net10.0
         os: ['ubuntu-latest']
+        include:
+          - dotnet:
+              setup: 4.6.2
+              exec: net462
+            os: 'windows-latest'
+            eval: '--force-evaluate'
 
     steps:
     - uses: actions/checkout@v6
-    - name: Setup .NET ${{matrix.dotnet}}.x
+    - name: Setup .NET ${{matrix.dotnet.setup}}
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: ${{matrix.dotnet}}.x
+        dotnet-version: ${{matrix.dotnet.setup}}
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
@@ -25,23 +37,35 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Build
-      run: dotnet build --no-restore -p TargetFramework=net${{matrix.dotnet}}.0
+      run: dotnet build --no-restore -p TargetFramework=${{matrix.dotnet.exec}} ${{matrix.eval}}
 
   test:
-    name: Test on ${{matrix.os}} with .NET ${{matrix.dotnet}}
+    name: Test on ${{matrix.os}} with .NET ${{matrix.dotnet.setup}}
     runs-on: ${{matrix.os}}
 
     strategy:
       matrix:
-        dotnet: ['8', '9', '10']
+        dotnet:
+          - setup: 8.x
+            exec: net8.0
+          - setup: 9.x
+            exec: net9.0
+          - setup: 10.x
+            exec: net10.0
         os: ['ubuntu-latest']
+        include:
+          - dotnet:
+              setup: 4.6.2
+              exec: net462
+            os: 'windows-latest'
+            eval: '--force-evaluate'
 
     steps:
     - uses: actions/checkout@v6
-    - name: Setup .NET ${{matrix.dotnet}}.x
+    - name: Setup .NET ${{matrix.dotnet.setup}}
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: ${{matrix.dotnet}}.x
+        dotnet-version: ${{matrix.dotnet.setup}}
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
@@ -49,7 +73,7 @@ jobs:
       run: dotnet restore --locked-mode
 
     - name: Test
-      run: dotnet test --no-restore -p TargetFramework=net${{matrix.dotnet}}.0
+      run: dotnet test --no-restore -p TargetFramework=${{matrix.dotnet.exec}} ${{matrix.eval}}
 
   formatter:
     name: Format
