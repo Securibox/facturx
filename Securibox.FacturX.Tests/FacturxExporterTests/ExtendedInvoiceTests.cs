@@ -1115,7 +1115,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 "Test Invoice with Incorrect VAT",
                 "Test Invoice",
                 // required because this test intentionally fails validation
-                failOnInvalid: false
+                failOnError: false
             );
 
             // using block is mandatory as FacturXImporter need the file being closed on Windows
