@@ -1200,9 +1200,8 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 .Value += 0.01m;
 
             invoice
-                .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(
-                    0
-                ).SpecifiedTradeProduct.ManufacturerTradeParty =
+                .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                .SpecifiedTradeProduct.ManufacturerTradeParty =
                 new SpecificationModels.Extended.TradeParty() { Name = "Pacano Manufacturing" };
 
             var exporter = new FacturxExporter();
@@ -1264,12 +1263,8 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             Assert.That(
                 extendedInvoice
-                    .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(
-                        0
-                    )
-                    .SpecifiedTradeProduct
-                    .ManufacturerTradeParty
-                    .Name,
+                    .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                    .SpecifiedTradeProduct.ManufacturerTradeParty.Name,
                 Is.EqualTo("Pacano Manufacturing")
             );
 
