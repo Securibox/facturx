@@ -152,7 +152,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 6.0000m,
                                                         },
                                                 },
-                                                        },
+                                        },
                                     SpecifiedLineTradeSettlement =
                                         new SpecificationModels.EN16931.LineTradeSettlement()
                                         {
@@ -172,7 +172,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 1235.40m,
                                                         },
                                                 },
-                                                            },
+                                        },
                                     SpecifiedLineTradeDelivery =
                                         new SpecificationModels.Basic.LineTradeDelivery()
                                         {
@@ -553,7 +553,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 6.0000m,
                                                         },
                                                 },
-                                                        },
+                                        },
                                     SpecifiedLineTradeSettlement =
                                         new SpecificationModels.EN16931.LineTradeSettlement()
                                         {
@@ -573,7 +573,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 1235.40m,
                                                         },
                                                 },
-                                                            },
+                                        },
                                     SpecifiedLineTradeDelivery =
                                         new SpecificationModels.Basic.LineTradeDelivery()
                                         {
@@ -730,14 +730,7 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                     },
                             },
                         ApplicableHeaderTradeDelivery =
-                            new SpecificationModels.EN16931.HeaderTradeDelivery()
-                            {
-                        //        ShipToTradeParty =
-                        //            new SpecificationModels.EN16931.TradePartyEN16931()
-                        //            {
-                        //                Name = "Securibox SARL",
-                        //            },
-                            },
+                            new SpecificationModels.EN16931.HeaderTradeDelivery() { },
                         ApplicableHeaderTradeSettlement =
                             new SpecificationModels.EN16931.HeaderTradeSettlement()
                             {
