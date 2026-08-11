@@ -450,7 +450,7 @@ namespace Securibox.FacturX.Tests.RegressionTests
                         tmpPDFStreamFile,
                         GetModel(),
                         "Invoice",
-                        failOnInvalid: false
+                        failOnError: false
                     )
                 )
                 {
@@ -475,7 +475,7 @@ namespace Securibox.FacturX.Tests.RegressionTests
                 tmpPDFStreamFile,
                 GetModel(),
                 "Invoice",
-                failOnInvalid: false
+                failOnError: false
             );
 
             await stream.CopyToAsync(outStream);

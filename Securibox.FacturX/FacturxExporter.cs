@@ -20,6 +20,12 @@ namespace Securibox.FacturX
         private ILogger<FacturxExporter> _logger;
         public List<ValidationReport> validationReport;
 
+        public IReadOnlyList<ValidationReport> Errors =>
+            validationReport.Where(r => r.IsError).ToList();
+
+        public IReadOnlyList<ValidationReport> Warnings =>
+            validationReport.Where(r => r.IsWarning).ToList();
+
         public FacturxExporter(ILogger<FacturxExporter>? logger = null)
         {
             _logger = InitializeLogger(logger);
@@ -32,7 +38,8 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = true
+            bool failOnError = true,
+            bool failOnWarning = false
         )
         {
             if (!File.Exists(pdfPath))
@@ -54,7 +61,8 @@ namespace Securibox.FacturX
                 conformanceLevel,
                 documentTitle,
                 documentDescription,
-                failOnInvalid
+                failOnError,
+                failOnWarning
             );
         }
 
@@ -64,7 +72,8 @@ namespace Securibox.FacturX
             Invoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = true
+            bool failOnError = true,
+            bool failOnWarning = false
         )
         {
             if (!File.Exists(pdfPath))
@@ -108,7 +117,8 @@ namespace Securibox.FacturX
                 conformanceLevel,
                 documentTitle,
                 documentDescription,
-                failOnInvalid
+                failOnError,
+                failOnWarning
             );
         }
 
@@ -117,7 +127,8 @@ namespace Securibox.FacturX
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = true
+            bool failOnError = true,
+            bool failOnWarning = false
         )
         {
             if (!File.Exists(pdfPath))
@@ -132,7 +143,8 @@ namespace Securibox.FacturX
                 invoice,
                 documentTitle,
                 documentDescription,
-                failOnInvalid
+                failOnError,
+                failOnWarning
             );
         }
 
@@ -141,7 +153,8 @@ namespace Securibox.FacturX
             ICrossIndustryInvoice invoice,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = true
+            bool failOnError = true,
+            bool failOnWarning = false
         )
         {
 #if NET462
@@ -201,7 +214,8 @@ namespace Securibox.FacturX
                 conformanceLevel,
                 documentTitle,
                 documentDescription,
-                failOnInvalid
+                failOnError,
+                failOnWarning
             );
         }
 
@@ -211,7 +225,8 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel,
             string documentTitle = "Invoice",
             string documentDescription = "Invoice description",
-            bool failOnInvalid = true
+            bool failOnError = true,
+            bool failOnWarning = false
         )
         {
 #if NET462
@@ -239,7 +254,11 @@ namespace Securibox.FacturX
                     .ToList();
             }
 
-            if (failOnInvalid && validationReport.Any(report => report.IsError))
+            var hasBlockingError = failOnError && validationReport.Any(report => report.IsError);
+            var hasBlockingWarning =
+                failOnWarning && validationReport.Any(report => report.IsWarning);
+
+            if (hasBlockingError || hasBlockingWarning)
             {
                 throw new Exception(
                     "The provided XML is not valid according to the selected Factur-X conformance level. "

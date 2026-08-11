@@ -113,11 +113,18 @@ namespace Securibox.FacturX.Schematron.Types
 
             assert = Regex.Replace(assert, @"\s+", " ");
             var result = EvaluateLogicalExpression(context, navigator, assert);
+            var failed = !result;
+            var isWarningFlag = string.Equals(
+                this.Flag,
+                "warning",
+                StringComparison.OrdinalIgnoreCase
+            );
 
             return new EvaluationResult
             {
                 Assertion = this,
-                IsError = !result,
+                IsError = failed && !isWarningFlag,
+                IsWarning = failed && isWarningFlag,
                 AssertInnerText = this.EvaluateDescriptionFragment(context),
             };
         }
