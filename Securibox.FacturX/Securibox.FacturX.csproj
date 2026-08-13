@@ -5,7 +5,7 @@
     <LangVersion>14.0</LangVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Securibox Factur-X Library</Title>
-    <Version>0.6.0-alpha-1</Version>
+    <Version>0.6.0-alpha-2</Version>
     <Company>Securibox</Company>
     <RepositoryUrl>https://github.com/Securibox/facturx</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -23,6 +23,10 @@
   <!-- Configuration specifically for .NET Framework 4.6.2 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
     <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
