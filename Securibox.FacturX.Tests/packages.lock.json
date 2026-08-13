@@ -52,12 +52,6 @@
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
       },
-      "SixLabors.ImageSharp": {
-        "type": "Direct",
-        "requested": "[3.1.12, )",
-        "resolved": "3.1.12",
-        "contentHash": "iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A=="
-      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",
@@ -313,7 +307,6 @@
           "Microsoft.Extensions.Logging": "[10.0.7, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.7, )",
           "PdfSharp": "[7.0.0-preview-1, )",
-          "SixLabors.ImageSharp": "[3.1.12, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
@@ -358,12 +351,6 @@
           "Microsoft.Testing.Extensions.VSTestBridge": "2.1.0",
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
-      },
-      "SixLabors.ImageSharp": {
-        "type": "Direct",
-        "requested": "[3.1.12, )",
-        "resolved": "3.1.12",
-        "contentHash": "iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A=="
       },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
@@ -510,7 +497,6 @@
           "Microsoft.Extensions.Logging": "[10.0.7, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.7, )",
           "PdfSharp": "[7.0.0-preview-1, )",
-          "SixLabors.ImageSharp": "[3.1.12, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
@@ -555,12 +541,6 @@
           "Microsoft.Testing.Extensions.VSTestBridge": "2.1.0",
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
-      },
-      "SixLabors.ImageSharp": {
-        "type": "Direct",
-        "requested": "[3.1.12, )",
-        "resolved": "3.1.12",
-        "contentHash": "iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A=="
       },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
@@ -730,7 +710,6 @@
           "Microsoft.Extensions.Logging": "[10.0.7, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.7, )",
           "PdfSharp": "[7.0.0-preview-1, )",
-          "SixLabors.ImageSharp": "[3.1.12, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
@@ -775,12 +754,6 @@
           "Microsoft.Testing.Extensions.VSTestBridge": "2.1.0",
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
-      },
-      "SixLabors.ImageSharp": {
-        "type": "Direct",
-        "requested": "[3.1.12, )",
-        "resolved": "3.1.12",
-        "contentHash": "iAg6zifihXEFS/t7fiHhZBGAdCp3FavsF4i2ZIDp0JfeYeDVzvmlbY1CNhhIKimaIzrzSi5M/NBFcWvZT2rB/A=="
       },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
@@ -947,7 +920,6 @@
           "Microsoft.Extensions.Logging": "[10.0.7, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.7, )",
           "PdfSharp": "[7.0.0-preview-1, )",
-          "SixLabors.ImageSharp": "[3.1.12, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
