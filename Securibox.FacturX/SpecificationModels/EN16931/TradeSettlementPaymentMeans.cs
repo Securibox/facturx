@@ -10,6 +10,7 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
         public BasicWL.DebtorFinancialAccount PayerPartyDebtorFinancialAccount { get; set; }
 
         public CreditorFinancialAccount PayeePartyCreditorFinancialAccount { get; set; }
+        public DebtorFinancialInstitution PayerSpecifiedDebtorFinancialInstitution { get; set; }
         public CreditorFinancialInstitution PayeeSpecifiedCreditorFinancialInstitution { get; set; }
     }
 }

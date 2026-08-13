@@ -20,6 +20,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         [XmlElement]
         public TradeProductInstance[] IndividualTradeProductInstance { get; set; }
         public TradeCountry OriginTradeCountry { get; set; }
+        public TradeParty ManufacturerTradeParty { get; set; }
 
         [XmlElement]
         public ReferencedProduct[] IncludedReferencedProduct { get; set; }

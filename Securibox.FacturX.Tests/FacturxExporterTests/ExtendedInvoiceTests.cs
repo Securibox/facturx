@@ -1153,5 +1153,122 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                 $"Validation failed as expected with error: {brFxextS09Error.Description}"
             );
         }
+
+        [Test]
+        [Order(5)]
+        public async Task WriteData_Extended_109_NewFields_SUCCESS()
+        {
+            var invoice = GetInvoice_SpecificationModels();
+
+            var paymentMeans = invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedTradeSettlementPaymentMeans[0];
+            paymentMeans.PayerPartyDebtorFinancialAccount =
+                new SpecificationModels.BasicWL.DebtorFinancialAccount()
+                {
+                    IBANID = new SpecificationModels.Minimum.ID
+                    {
+                        Value = "FR7630006000011234567890189",
+                    },
+                    AccountName = "Securibox SARL",
+                };
+            paymentMeans.PayerSpecifiedDebtorFinancialInstitution =
+                new SpecificationModels.EN16931.DebtorFinancialInstitution()
+                {
+                    BICID = new SpecificationModels.Minimum.ID { Value = "AGRIFRPP" },
+                };
+
+            invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedFinancialAdjustment =
+                new SpecificationModels.Extended.FinancialAdjustment[]
+                {
+                    new SpecificationModels.Extended.FinancialAdjustment()
+                    {
+                        Reason = "Currency rounding adjustment",
+                        ActualAmount = new SpecificationModels.Minimum.Amount { Value = 0.01m },
+                    },
+                };
+            // BR-FXEXT-CO-16: DuePayableAmount must include the sum of SpecifiedFinancialAdjustment.
+            invoice
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedTradeSettlementHeaderMonetarySummation
+                .DuePayableAmount
+                .Value += 0.01m;
+
+            invoice
+                .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                .SpecifiedTradeProduct.ManufacturerTradeParty =
+                new SpecificationModels.Extended.TradeParty() { Name = "Pacano Manufacturing" };
+
+            var exporter = new FacturxExporter();
+            using var stream = exporter.CreateFacturXStream(
+                srcFile,
+                invoice,
+                "Test Invoice with 1.09 Extended fields",
+                "Test Invoice"
+            );
+
+            var newFieldsDstFile = Path.Combine(
+                dstPath,
+                "2023-6013_facture_facturx_extended_109_newfields.pdf"
+            );
+            using (var fileStream = new FileStream(newFieldsDstFile, FileMode.Create))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+
+            Assert.That(exporter.validationReport.Any(r => r.IsError), Is.False);
+
+            var importer = new FacturxImporter(newFieldsDstFile);
+            var extendedInvoice =
+                importer.ImportDataWithDeserialization()
+                as SpecificationModels.Extended.CrossIndustryInvoice;
+
+            Assert.That(extendedInvoice, Is.Not.Null);
+
+            var importedPaymentMeans = extendedInvoice!
+                .SupplyChainTradeTransaction
+                .ApplicableHeaderTradeSettlement
+                .SpecifiedTradeSettlementPaymentMeans[0];
+            Assert.That(
+                importedPaymentMeans.PayerPartyDebtorFinancialAccount.AccountName,
+                Is.EqualTo("Securibox SARL")
+            );
+            Assert.That(
+                importedPaymentMeans.PayerSpecifiedDebtorFinancialInstitution.BICID.Value,
+                Is.EqualTo("AGRIFRPP")
+            );
+
+            Assert.That(
+                extendedInvoice
+                    .SupplyChainTradeTransaction
+                    .ApplicableHeaderTradeSettlement
+                    .SpecifiedFinancialAdjustment[0]
+                    .Reason,
+                Is.EqualTo("Currency rounding adjustment")
+            );
+            Assert.That(
+                extendedInvoice
+                    .SupplyChainTradeTransaction
+                    .ApplicableHeaderTradeSettlement
+                    .SpecifiedFinancialAdjustment[0]
+                    .ActualAmount
+                    .Value,
+                Is.EqualTo(0.01m)
+            );
+
+            Assert.That(
+                extendedInvoice
+                    .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                    .SpecifiedTradeProduct.ManufacturerTradeParty.Name,
+                Is.EqualTo("Pacano Manufacturing")
+            );
+
+            File.Delete(newFieldsDstFile);
+        }
     }
 }

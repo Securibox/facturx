@@ -421,11 +421,7 @@ namespace Securibox.FacturX.Schematron.Types
                             : null
                     );
 
-                    if (
-                        value == null
-                        || (value is string s && string.IsNullOrWhiteSpace(s))
-                        || value.ToString() == "()"
-                    )
+                    if (value == null || value.ToString() == "()")
                     {
                         value = 0;
                     }
@@ -449,11 +445,7 @@ namespace Securibox.FacturX.Schematron.Types
                             : null
                     );
 
-                    if (
-                        value == null
-                        || (value is string s && string.IsNullOrWhiteSpace(s))
-                        || value.ToString() == "()"
-                    )
+                    if (value == null || value.ToString() == "()")
                     {
                         value = 0;
                     }

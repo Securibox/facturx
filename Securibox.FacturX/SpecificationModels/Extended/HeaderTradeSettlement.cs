@@ -31,6 +31,9 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public EN16931.TradeSettlementHeaderMonetarySummation SpecifiedTradeSettlementHeaderMonetarySummation { get; set; }
 
         [XmlElement]
+        public FinancialAdjustment[] SpecifiedFinancialAdjustment { get; set; }
+
+        [XmlElement]
         public EN16931.ReferencedDocumentEN16931[] InvoiceReferencedDocument { get; set; }
         public TradeAccountingAccount ReceivableSpecifiedTradeAccountingAccount { get; set; }
 
