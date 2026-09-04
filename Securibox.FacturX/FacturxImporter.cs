@@ -33,13 +33,19 @@ namespace Securibox.FacturX
             {
                 ["urn:factur-x.eu:1p0:minimum"] = FacturXConformanceLevelType.Minimum,
                 ["urn:factur-x.eu:1p0:basicwl"] = FacturXConformanceLevelType.BasicWL,
-                ["urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic"] = FacturXConformanceLevelType.Basic,
-                ["urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:en16931"] = FacturXConformanceLevelType.EN16931,
-                ["urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended"] = FacturXConformanceLevelType.Extended,
+                ["urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic"] =
+                    FacturXConformanceLevelType.Basic,
+                ["urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:en16931"] =
+                    FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended"] =
+                    FacturXConformanceLevelType.Extended,
                 ["urn:cen.eu:en16931:2017"] = FacturXConformanceLevelType.EN16931,
-                ["urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0"] = FacturXConformanceLevelType.EN16931,
-                ["urn:cen.eu:en16931:2017#compliant#urn:xoev-de:kosit:standard:xrechnung_3.0"] = FacturXConformanceLevelType.EN16931,
-                ["urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0"] = FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0"] =
+                    FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#compliant#urn:xoev-de:kosit:standard:xrechnung_3.0"] =
+                    FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0"] =
+                    FacturXConformanceLevelType.EN16931,
             };
 
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
@@ -116,15 +122,15 @@ namespace Securibox.FacturX
                 return false;
             }
 
-            if (!isValidXsd) 
+            if (!isValidXsd)
             {
                 validationReport.AddRange(
-                xsdErrors.Select(error => new ValidationReport
+                    xsdErrors.Select(error => new ValidationReport
                     {
                         Path = "xsd",
                         Description = error,
                         IsError = true,
-                        IsWarning = false
+                        IsWarning = false,
                     })
                 );
 
@@ -138,7 +144,7 @@ namespace Securibox.FacturX
         {
             IsFacturXValid();
 
-            if (_level == null )
+            if (_level == null)
             {
                 throw new Exception("Could not detect conformance level from XML.");
             }
@@ -567,14 +573,20 @@ namespace Securibox.FacturX
 
         private FacturXConformanceLevelType DetectConformanceLevelFromXml()
         {
-            var probe = Deserialize<SpecificationModels.CrossIndustryInvoiceProfileProbe>(_xmlDocument);
+            var probe = Deserialize<SpecificationModels.CrossIndustryInvoiceProfileProbe>(
+                _xmlDocument
+            );
 
-            var guidelineId = probe?.ExchangedDocumentContext
-                              ?.GuidelineSpecifiedDocumentContextParameter
-                              ?.ID?.Value;
+            var guidelineId = probe
+                ?.ExchangedDocumentContext
+                ?.GuidelineSpecifiedDocumentContextParameter
+                ?.ID
+                ?.Value;
 
             if (string.IsNullOrWhiteSpace(guidelineId))
-                throw new InvalidOperationException("GuidelineSpecifiedDocumentContextParameter/ID not found.");
+                throw new InvalidOperationException(
+                    "GuidelineSpecifiedDocumentContextParameter/ID not found."
+                );
 
             var id = guidelineId.Trim();
             if (KnownGuidelineIds.TryGetValue(id, out var level))

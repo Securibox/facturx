@@ -15,11 +15,7 @@ namespace Securibox.FacturX
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlDocumentStream);
-            return ValidateXml(
-                xmlDocument,
-                conformanceLevel,
-                validationErrors
-            );
+            return ValidateXml(xmlDocument, conformanceLevel, validationErrors);
         }
 
         public static bool ValidateXml(
@@ -48,8 +44,8 @@ namespace Securibox.FacturX
                 xmlDocument.Schemas.Add(schema);
             }
 
-            xmlDocument.Validate((sender, eventArgs) =>
-                ValidationEventHandler(sender, eventArgs, validationErrors)
+            xmlDocument.Validate(
+                (sender, eventArgs) => ValidationEventHandler(sender, eventArgs, validationErrors)
             );
 
             return validationErrors.Count == 0;
@@ -58,10 +54,10 @@ namespace Securibox.FacturX
         private static void ValidationEventHandler(
             object? sender,
             ValidationEventArgs e,
-            List<string> validationErrors)
+            List<string> validationErrors
+        )
         {
-            var message =
-                $"{e.Severity}: {e.Message}";
+            var message = $"{e.Severity}: {e.Message}";
 
             validationErrors.Add(message);
         }
