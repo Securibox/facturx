@@ -240,7 +240,8 @@ namespace Securibox.FacturX
             _logger.LogInformation(
                 $"Validating XML with XSD validation for conformance level {conformanceLevel.Name}"
             );
-            FacturxXsdValidator.ValidateXml(xmlStream, conformanceLevel);
+            var xsdErrors = new List<string>();
+            FacturxXsdValidator.ValidateXml(xmlStream, conformanceLevel, xsdErrors);
 
             xmlStream.Position = 0;
             var schValidationResult = FacturxSchematronValidator.ValidateXml(
