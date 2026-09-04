@@ -26,7 +26,21 @@ namespace Securibox.FacturX
         private string _xmlText;
         private FacturXMetadata _facturXMetadata;
         private PdfDocument _pdfDocument;
+        private FacturXConformanceLevelType _level;
         public List<ValidationReport> validationReport;
+        private static readonly Dictionary<string, FacturXConformanceLevelType> KnownGuidelineIds =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                ["urn:factur-x.eu:1p0:minimum"] = FacturXConformanceLevelType.Minimum,
+                ["urn:factur-x.eu:1p0:basicwl"] = FacturXConformanceLevelType.BasicWL,
+                ["urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic"] = FacturXConformanceLevelType.Basic,
+                ["urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:en16931"] = FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended"] = FacturXConformanceLevelType.Extended,
+                ["urn:cen.eu:en16931:2017"] = FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0"] = FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#compliant#urn:xoev-de:kosit:standard:xrechnung_3.0"] = FacturXConformanceLevelType.EN16931,
+                ["urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0"] = FacturXConformanceLevelType.EN16931,
+            };
 
         public FacturxImporter(Stream pdfStream, ILogger<FacturxImporter>? logger = null)
         {
@@ -86,16 +100,33 @@ namespace Securibox.FacturX
             }
 
             LoadXml(xmlPdfStream);
-            FacturxXsdValidator.ValidateXml(_xmlDocument, facturXMetadata.ConformanceLevel);
+            _level = DetectConformanceLevelFromXml();
+            var xsdErrors = new List<string>();
+            var isValidXsd = FacturxXsdValidator.ValidateXml(_xmlDocument, _level, xsdErrors);
             var schValidationResult = FacturxSchematronValidator.ValidateXml(
                 new MemoryStream(Encoding.UTF8.GetBytes(_xmlText)),
-                facturXMetadata.ConformanceLevel
+                _level
             );
             if (!schValidationResult._isSuccessfullValidation)
             {
                 validationReport = schValidationResult
                     ._results.Where(x => x.IsError || x.IsWarning)
                     .ToList();
+
+                return false;
+            }
+
+            if (!isValidXsd) 
+            {
+                validationReport.AddRange(
+                xsdErrors.Select(error => new ValidationReport
+                    {
+                        Path = "xsd",
+                        Description = error,
+                        IsError = true,
+                        IsWarning = false
+                    })
+                );
 
                 return false;
             }
@@ -107,38 +138,34 @@ namespace Securibox.FacturX
         {
             IsFacturXValid();
 
-            if (_facturXMetadata.ConformanceLevel == FacturXConformanceLevelType.Minimum)
+            if (_level == null )
             {
-                return this.Deserialize<SpecificationModels.Minimum.CrossIndustryInvoice>(
-                    _xmlDocument
-                );
+                throw new Exception("Could not detect conformance level from XML.");
             }
-            else if (_facturXMetadata.ConformanceLevel == FacturXConformanceLevelType.BasicWL)
+            if (_level == FacturXConformanceLevelType.Minimum)
             {
-                return this.Deserialize<SpecificationModels.BasicWL.CrossIndustryInvoice>(
-                    _xmlDocument
-                );
+                return Deserialize<SpecificationModels.Minimum.CrossIndustryInvoice>(_xmlDocument);
             }
-            else if (_facturXMetadata.ConformanceLevel == FacturXConformanceLevelType.Basic)
+            else if (_level == FacturXConformanceLevelType.BasicWL)
             {
-                return this.Deserialize<SpecificationModels.Basic.CrossIndustryInvoice>(
-                    _xmlDocument
-                );
+                return Deserialize<SpecificationModels.BasicWL.CrossIndustryInvoice>(_xmlDocument);
             }
-            else if (_facturXMetadata.ConformanceLevel == FacturXConformanceLevelType.EN16931)
+            else if (_level == FacturXConformanceLevelType.Basic)
             {
-                return this.Deserialize<SpecificationModels.EN16931.CrossIndustryInvoice>(
-                    _xmlDocument
-                );
+                return Deserialize<SpecificationModels.Basic.CrossIndustryInvoice>(_xmlDocument);
             }
-            else if (_facturXMetadata.ConformanceLevel == FacturXConformanceLevelType.Extended)
+            else if (_level == FacturXConformanceLevelType.EN16931)
             {
-                return this.Deserialize<SpecificationModels.Extended.CrossIndustryInvoice>(
-                    _xmlDocument
-                );
+                return Deserialize<SpecificationModels.EN16931.CrossIndustryInvoice>(_xmlDocument);
             }
-
-            return null;
+            else if (_level == FacturXConformanceLevelType.Extended)
+            {
+                return Deserialize<SpecificationModels.Extended.CrossIndustryInvoice>(_xmlDocument);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private T Deserialize<T>(XmlDocument document)
@@ -536,6 +563,56 @@ namespace Securibox.FacturX
             }
 
             return null;
+        }
+
+        private FacturXConformanceLevelType DetectConformanceLevelFromXml()
+        {
+            var probe = Deserialize<SpecificationModels.CrossIndustryInvoiceProfileProbe>(_xmlDocument);
+
+            var guidelineId = probe?.ExchangedDocumentContext
+                              ?.GuidelineSpecifiedDocumentContextParameter
+                              ?.ID?.Value;
+
+            if (string.IsNullOrWhiteSpace(guidelineId))
+                throw new InvalidOperationException("GuidelineSpecifiedDocumentContextParameter/ID not found.");
+
+            var id = guidelineId.Trim();
+            if (KnownGuidelineIds.TryGetValue(id, out var level))
+            {
+                return level;
+            }
+
+            var fragments = id.Split('#');
+            var lastFragment = fragments[fragments.Length - 1];
+            var segments = lastFragment.Split(':');
+            var token = segments[segments.Length - 1].ToLowerInvariant();
+
+            if (token.StartsWith("minimum"))
+            {
+                return FacturXConformanceLevelType.Minimum;
+            }
+            if (token.StartsWith("basicwl"))
+            {
+                return FacturXConformanceLevelType.BasicWL;
+            }
+            if (token.StartsWith("basic"))
+            {
+                return FacturXConformanceLevelType.Basic;
+            }
+            if (token.StartsWith("en16931"))
+            {
+                return FacturXConformanceLevelType.EN16931;
+            }
+            if (token.StartsWith("extended"))
+            {
+                return FacturXConformanceLevelType.Extended;
+            }
+            if (id.Contains("en16931", StringComparison.OrdinalIgnoreCase))
+            {
+                return FacturXConformanceLevelType.EN16931;
+            }
+
+            throw new NotSupportedException($"Unknown Factur-X guideline ID: {guidelineId}");
         }
 
         public void Dispose()

@@ -7,19 +7,25 @@ namespace Securibox.FacturX
 {
     public class FacturxXsdValidator
     {
-        public static void ValidateXml(
+        public static bool ValidateXml(
             Stream xmlDocumentStream,
-            FacturXConformanceLevelType conformanceLevel
+            FacturXConformanceLevelType conformanceLevel,
+            List<string> validationErrors
         )
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlDocumentStream);
-            ValidateXml(xmlDocument, conformanceLevel);
+            return ValidateXml(
+                xmlDocument,
+                conformanceLevel,
+                validationErrors
+            );
         }
 
-        public static void ValidateXml(
+        public static bool ValidateXml(
             XmlDocument xmlDocument,
-            FacturXConformanceLevelType conformanceLevel
+            FacturXConformanceLevelType conformanceLevel,
+            List<string> validationErrors
         )
         {
             var asm = Assembly.GetExecutingAssembly();
@@ -42,17 +48,22 @@ namespace Securibox.FacturX
                 xmlDocument.Schemas.Add(schema);
             }
 
-            xmlDocument.Validate(ValidationEventHandler!);
+            xmlDocument.Validate((sender, eventArgs) =>
+                ValidationEventHandler(sender, eventArgs, validationErrors)
+            );
+
+            return validationErrors.Count == 0;
         }
 
-        static void ValidationEventHandler(object sender, ValidationEventArgs e)
+        private static void ValidationEventHandler(
+            object? sender,
+            ValidationEventArgs e,
+            List<string> validationErrors)
         {
-            XmlSeverityType type = XmlSeverityType.Warning;
-            if (Enum.TryParse<XmlSeverityType>("Error", out type))
-            {
-                if (type == XmlSeverityType.Error)
-                    throw new Exception(e.Message);
-            }
+            var message =
+                $"{e.Severity}: {e.Message}";
+
+            validationErrors.Add(message);
         }
     }
 }
