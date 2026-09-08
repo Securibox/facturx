@@ -23,7 +23,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public BasicWL.SpecifiedPeriod BillingSpecifiedPeriod { get; set; }
 
         [XmlElement]
-        public TradeAllowanceChargeExtended[] SpecifiedTradeAllowanceCharge { get; set; }
+        public AdjustementTradeAllowanceChargeExtended[] SpecifiedTradeAllowanceCharge { get; set; }
 
         [XmlElement]
         public LogisticsServiceCharge[] SpecifiedLogisticsServiceCharge { get; set; }

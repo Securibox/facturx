@@ -242,7 +242,31 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 9.90m,
                                                         },
                                                 },
+                                            SpecifiedTradeAllowanceCharge =
+                                            [
+                                                new()
+                                                {
+                                                    ChargeIndicator =
+                                                        new SpecificationModels.Basic.IndicatorType
+                                                        {
+                                                            Indicator = false,
+                                                        },
+                                                    ActualAmount =
+                                                        new SpecificationModels.Minimum.Amount
+                                                        {
+                                                            Value = 0.00m,
+                                                        },
+                                                    CalculationPercent = 0.00m,
+                                                    BasisAmount =
+                                                        new SpecificationModels.Minimum.Amount
+                                                        {
+                                                            Value = 9.90m,
+                                                        },
+                                                    Reason = "Remise exceptionnelle",
+                                                },
+                                            ],
                                         },
+
                                     SpecifiedLineTradeDelivery =
                                         new SpecificationModels.Extended.LineTradeDelivery()
                                         {

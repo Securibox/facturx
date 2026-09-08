@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Securibox.FacturX.SpecificationModels.Basic;
 using Securibox.FacturX.SpecificationModels.Minimum;
 
 namespace Securibox.FacturX.Tests.FacturxExporterTests
@@ -152,6 +153,21 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 6.0000m,
                                                         },
                                                 },
+                                            GrossPriceProductTradePrice =
+                                                new SpecificationModels.Basic.TradePrice()
+                                                {
+                                                    ChargeAmount =
+                                                        new SpecificationModels.Minimum.Amount
+                                                        {
+                                                            Value = 205.9000m,
+                                                        },
+                                                    BasisQuantity =
+                                                        new SpecificationModels.Basic.Quantity()
+                                                        {
+                                                            UnitCode = "C62",
+                                                            Value = 6.0000m,
+                                                        },
+                                                },
                                         },
                                     SpecifiedLineTradeSettlement =
                                         new SpecificationModels.EN16931.LineTradeSettlement()
@@ -171,6 +187,28 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                         {
                                                             Value = 1235.40m,
                                                         },
+                                                },
+                                            SpecifiedTradeAllowanceCharge =
+                                                new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge[]
+                                                {
+                                                    new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge()
+                                                    {
+                                                        ChargeIndicator = new IndicatorType
+                                                        {
+                                                            Indicator = false,
+                                                        },
+                                                        ActualAmount =
+                                                            new SpecificationModels.Minimum.Amount
+                                                            {
+                                                                Value = 0.00m,
+                                                            },
+                                                        BasisAmount =
+                                                            new SpecificationModels.Minimum.Amount
+                                                            {
+                                                                Value = 1235.40m,
+                                                            },
+                                                        Reason = "Remise",
+                                                    },
                                                 },
                                         },
                                     SpecifiedLineTradeDelivery =
@@ -553,6 +591,21 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 6.0000m,
                                                         },
                                                 },
+                                            GrossPriceProductTradePrice =
+                                                new SpecificationModels.Basic.TradePrice()
+                                                {
+                                                    ChargeAmount =
+                                                        new SpecificationModels.Minimum.Amount
+                                                        {
+                                                            Value = 205.9000m,
+                                                        },
+                                                    BasisQuantity =
+                                                        new SpecificationModels.Basic.Quantity()
+                                                        {
+                                                            UnitCode = "C62",
+                                                            Value = 6.0000m,
+                                                        },
+                                                },
                                         },
                                     SpecifiedLineTradeSettlement =
                                         new SpecificationModels.EN16931.LineTradeSettlement()
@@ -572,6 +625,28 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                         {
                                                             Value = 1235.40m,
                                                         },
+                                                },
+                                            SpecifiedTradeAllowanceCharge =
+                                                new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge[]
+                                                {
+                                                    new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge()
+                                                    {
+                                                        ChargeIndicator = new IndicatorType
+                                                        {
+                                                            Indicator = false,
+                                                        },
+                                                        ActualAmount =
+                                                            new SpecificationModels.Minimum.Amount
+                                                            {
+                                                                Value = 0.00m,
+                                                            },
+                                                        BasisAmount =
+                                                            new SpecificationModels.Minimum.Amount
+                                                            {
+                                                                Value = 1235.40m,
+                                                            },
+                                                        Reason = "Remise",
+                                                    },
                                                 },
                                         },
                                     SpecifiedLineTradeDelivery =
