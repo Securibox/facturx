@@ -45,12 +45,12 @@
       },
       "PDFsharp": {
         "type": "Direct",
-        "requested": "[7.0.0-preview-1, )",
-        "resolved": "7.0.0-preview-1",
-        "contentHash": "HluwO+KMXSWTzi0hOIk2zW35SeYMBTPFoJ1itW4sGLTPeaFYOrs7PhWCy7HLAcPtmohOJm8/sp3V9ZPLiexdIA==",
+        "requested": "[6.2.4, )",
+        "resolved": "6.2.4",
+        "contentHash": "GhTr9F1uOYXHCIEOB5PXIgqn5a8WLsJL2m0eewTA0IvY1j6N4HGXHKKmEyB90/N6vrjmYamf41V9zbmdW2HY3g==",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5",
-          "System.Security.Cryptography.Pkcs": "10.0.5"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "System.Security.Cryptography.Pkcs": "8.0.1"
         }
       },
       "XmpCore": {
@@ -71,16 +71,6 @@
         "contentHash": "pUkYI1f99hY9giu/MRaEVN53RO7skXwR7FGtVvFJCK5ezdg5i0W+z1yj/91X5aKv07xGuSB5n1g/Zt2P4Ooq6g==",
         "dependencies": {
           "System.Threading.Tasks.Extensions": "4.6.3"
-        }
-      },
-      "Microsoft.Bcl.Cryptography": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "W6jwuBd21mAmyffMCfv4XFFqmI51AHAb9xEh3sqIUaomjwl5SWHgYO4/Q3uSdAlY4Hi8cM367fZVl6FhurzSTg==",
-        "dependencies": {
-          "System.Formats.Asn1": "10.0.5",
-          "System.Memory": "4.6.3",
-          "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         }
       },
       "Microsoft.Extensions.DependencyInjection": {
@@ -140,15 +130,6 @@
           "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         }
       },
-      "System.Formats.Asn1": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "wMHoKO5NpE8iWGTf2dsVJFPlWVpIfm5wGubqopqxHdmZeOJBA5xLs9BhoIxmoBu9MeCpzvDzqxeVZ2/tnCJI+w==",
-        "dependencies": {
-          "System.Memory": "4.6.3",
-          "System.ValueTuple": "4.6.1"
-        }
-      },
       "System.Memory": {
         "type": "Transitive",
         "resolved": "4.6.3",
@@ -171,11 +152,8 @@
       },
       "System.Security.Cryptography.Pkcs": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w==",
-        "dependencies": {
-          "Microsoft.Bcl.Cryptography": "10.0.5"
-        }
+        "resolved": "8.0.1",
+        "contentHash": "CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA=="
       },
       "System.Threading.Tasks.Extensions": {
         "type": "Transitive",
@@ -220,12 +198,12 @@
       },
       "PDFsharp": {
         "type": "Direct",
-        "requested": "[7.0.0-preview-1, )",
-        "resolved": "7.0.0-preview-1",
-        "contentHash": "HluwO+KMXSWTzi0hOIk2zW35SeYMBTPFoJ1itW4sGLTPeaFYOrs7PhWCy7HLAcPtmohOJm8/sp3V9ZPLiexdIA==",
+        "requested": "[6.2.4, )",
+        "resolved": "6.2.4",
+        "contentHash": "GhTr9F1uOYXHCIEOB5PXIgqn5a8WLsJL2m0eewTA0IvY1j6N4HGXHKKmEyB90/N6vrjmYamf41V9zbmdW2HY3g==",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5",
-          "System.Security.Cryptography.Pkcs": "10.0.5"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "System.Security.Cryptography.Pkcs": "8.0.1"
         }
       },
       "XmpCore": {
@@ -269,8 +247,8 @@
       },
       "System.Security.Cryptography.Pkcs": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w=="
+        "resolved": "8.0.1",
+        "contentHash": "CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA=="
       }
     },
     "net8.0": {
@@ -303,12 +281,12 @@
       },
       "PDFsharp": {
         "type": "Direct",
-        "requested": "[7.0.0-preview-1, )",
-        "resolved": "7.0.0-preview-1",
-        "contentHash": "HluwO+KMXSWTzi0hOIk2zW35SeYMBTPFoJ1itW4sGLTPeaFYOrs7PhWCy7HLAcPtmohOJm8/sp3V9ZPLiexdIA==",
+        "requested": "[6.2.4, )",
+        "resolved": "6.2.4",
+        "contentHash": "GhTr9F1uOYXHCIEOB5PXIgqn5a8WLsJL2m0eewTA0IvY1j6N4HGXHKKmEyB90/N6vrjmYamf41V9zbmdW2HY3g==",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5",
-          "System.Security.Cryptography.Pkcs": "10.0.5"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "System.Security.Cryptography.Pkcs": "8.0.1"
         }
       },
       "XmpCore": {
@@ -322,14 +300,6 @@
         "requested": "[1.1.5, )",
         "resolved": "1.1.5",
         "contentHash": "LQg7kZyAmmb+qvv5TiOuuijxN97rRbR05qbMkVIH+i+sx9CA2UNUKGNtdVxWEXOabS8BIwlXm6ox1OOTjvZ6jw=="
-      },
-      "Microsoft.Bcl.Cryptography": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "W6jwuBd21mAmyffMCfv4XFFqmI51AHAb9xEh3sqIUaomjwl5SWHgYO4/Q3uSdAlY4Hi8cM367fZVl6FhurzSTg==",
-        "dependencies": {
-          "System.Formats.Asn1": "10.0.5"
-        }
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Transitive",
@@ -363,19 +333,10 @@
         "resolved": "10.0.11",
         "contentHash": "QoXcAdDhBudxorzYF1F5Uo7FY0CSWgmTjqVRJjcQaYAkbO3dCPXDJajJwyApTGHCJ+T5PfVyKZqXEKZ8PH+UWQ=="
       },
-      "System.Formats.Asn1": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "wMHoKO5NpE8iWGTf2dsVJFPlWVpIfm5wGubqopqxHdmZeOJBA5xLs9BhoIxmoBu9MeCpzvDzqxeVZ2/tnCJI+w=="
-      },
       "System.Security.Cryptography.Pkcs": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w==",
-        "dependencies": {
-          "Microsoft.Bcl.Cryptography": "10.0.5",
-          "System.Formats.Asn1": "10.0.5"
-        }
+        "resolved": "8.0.1",
+        "contentHash": "CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA=="
       }
     },
     "net9.0": {
@@ -408,12 +369,12 @@
       },
       "PDFsharp": {
         "type": "Direct",
-        "requested": "[7.0.0-preview-1, )",
-        "resolved": "7.0.0-preview-1",
-        "contentHash": "HluwO+KMXSWTzi0hOIk2zW35SeYMBTPFoJ1itW4sGLTPeaFYOrs7PhWCy7HLAcPtmohOJm8/sp3V9ZPLiexdIA==",
+        "requested": "[6.2.4, )",
+        "resolved": "6.2.4",
+        "contentHash": "GhTr9F1uOYXHCIEOB5PXIgqn5a8WLsJL2m0eewTA0IvY1j6N4HGXHKKmEyB90/N6vrjmYamf41V9zbmdW2HY3g==",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "10.0.5",
-          "System.Security.Cryptography.Pkcs": "10.0.5"
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "System.Security.Cryptography.Pkcs": "8.0.1"
         }
       },
       "XmpCore": {
@@ -427,11 +388,6 @@
         "requested": "[1.1.5, )",
         "resolved": "1.1.5",
         "contentHash": "LQg7kZyAmmb+qvv5TiOuuijxN97rRbR05qbMkVIH+i+sx9CA2UNUKGNtdVxWEXOabS8BIwlXm6ox1OOTjvZ6jw=="
-      },
-      "Microsoft.Bcl.Cryptography": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "W6jwuBd21mAmyffMCfv4XFFqmI51AHAb9xEh3sqIUaomjwl5SWHgYO4/Q3uSdAlY4Hi8cM367fZVl6FhurzSTg=="
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Transitive",
@@ -465,19 +421,10 @@
         "resolved": "10.0.11",
         "contentHash": "QoXcAdDhBudxorzYF1F5Uo7FY0CSWgmTjqVRJjcQaYAkbO3dCPXDJajJwyApTGHCJ+T5PfVyKZqXEKZ8PH+UWQ=="
       },
-      "System.Formats.Asn1": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "wMHoKO5NpE8iWGTf2dsVJFPlWVpIfm5wGubqopqxHdmZeOJBA5xLs9BhoIxmoBu9MeCpzvDzqxeVZ2/tnCJI+w=="
-      },
       "System.Security.Cryptography.Pkcs": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w==",
-        "dependencies": {
-          "Microsoft.Bcl.Cryptography": "10.0.5",
-          "System.Formats.Asn1": "10.0.5"
-        }
+        "resolved": "8.0.1",
+        "contentHash": "CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA=="
       }
     }
   }
