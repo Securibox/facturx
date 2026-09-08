@@ -9,5 +9,8 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
 
         [XmlAttribute("filename")]
         public string Filename { get; set; }
+
+        [XmlText(DataType = "base64Binary")]
+        public byte[] Value { get; set; }
     }
 }
