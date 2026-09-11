@@ -67,7 +67,7 @@ namespace Securibox.FacturX
 
         public FacturxImporter(string pdfFilename, ILogger<FacturxImporter>? logger = null)
         {
-            InitializeLogger(logger);
+            _logger = InitializeLogger(logger);
             if (!File.Exists(pdfFilename))
             {
                 throw new FileNotFoundException("File not found", pdfFilename);
