@@ -8,7 +8,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public BasicWL.SpecifiedPeriod BillingSpecifiedPeriod { get; set; }
 
         [XmlElement]
-        public BasicWL.TradeAllowanceCharge[] SpecifiedTradeAllowanceCharge { get; set; }
+        public Basic.AdjustmentTradeAllowanceCharge[] SpecifiedTradeAllowanceCharge { get; set; }
         public TradeSettlementLineMonetarySummation SpecifiedTradeSettlementLineMonetarySummation { get; set; }
         public EN16931.ReferencedDocumentEN16931 InvoiceReferencedDocument { get; set; }
         public EN16931.ReferencedDocumentEN16931 AdditionalReferencedDocument { get; set; }

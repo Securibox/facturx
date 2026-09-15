@@ -7,7 +7,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
     )]
     public class ExchangedDocumentContext
     {
-        public BasicWL.IndicatorType TestIndicator { get; set; }
+        public Basic.IndicatorType TestIndicator { get; set; }
         public Minimum.DocumentContextParameter BusinessProcessSpecifiedDocumentContextParameter { get; set; }
         public Minimum.DocumentContextParameter GuidelineSpecifiedDocumentContextParameter { get; set; }
     }

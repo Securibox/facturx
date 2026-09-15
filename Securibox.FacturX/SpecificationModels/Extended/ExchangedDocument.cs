@@ -11,7 +11,7 @@ namespace Securibox.FacturX.SpecificationModels.Extended
         public string Name { get; set; }
         public string TypeCode { get; set; }
         public Minimum.IssueDateTime IssueDateTime { get; set; }
-        public BasicWL.IndicatorType CopyIndicator { get; set; }
+        public Basic.IndicatorType CopyIndicator { get; set; }
         public SpecifiedPeriodExtended EffectiveSpecifiedPeriod { get; set; }
 
         [XmlElement]

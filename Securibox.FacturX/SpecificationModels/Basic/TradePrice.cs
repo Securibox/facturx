@@ -4,6 +4,6 @@
     {
         public Minimum.Amount ChargeAmount { get; set; }
         public Quantity BasisQuantity { get; set; }
-        public BasicWL.TradeAllowanceCharge AppliedTradeAllowanceCharge { get; set; }
+        public TradeAllowanceCharge AppliedTradeAllowanceCharge { get; set; }
     }
 }
