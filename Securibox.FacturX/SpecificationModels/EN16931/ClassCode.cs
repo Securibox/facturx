@@ -7,10 +7,10 @@ namespace Securibox.FacturX.SpecificationModels.EN16931
         [XmlText]
         public string Value { get; set; }
 
-        [XmlAttribute("@listID")]
+        [XmlAttribute("listID")]
         public string ListID { get; set; }
 
-        [XmlAttribute("@listVersionID")]
+        [XmlAttribute("listVersionID")]
         public string ListVersionID { get; set; }
     }
 }
