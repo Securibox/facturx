@@ -34,6 +34,7 @@ namespace Securibox.FacturX
                     && r.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase)
                 );
 
+            var schemaSet = new XmlSchemaSet();
             foreach (var resourceName in resourceNames)
             {
                 using var stream =
@@ -41,8 +42,9 @@ namespace Securibox.FacturX
                     ?? throw new FileNotFoundException($"Resource not found: {resourceName}");
 
                 var schema = XmlSchema.Read(stream, null);
-                xmlDocument.Schemas.Add(schema);
+                schemaSet.Add(schema);
             }
+            xmlDocument.Schemas = schemaSet;
 
             xmlDocument.Validate(
                 (sender, eventArgs) => ValidationEventHandler(sender, eventArgs, validationErrors)
