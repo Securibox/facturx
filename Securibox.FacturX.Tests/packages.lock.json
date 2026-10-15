@@ -52,6 +52,15 @@
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
       },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Direct",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw==",
+        "dependencies": {
+          "Microsoft.Bcl.Cryptography": "10.0.13"
+        }
+      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",
@@ -70,10 +79,10 @@
       },
       "Microsoft.Bcl.Cryptography": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "W6jwuBd21mAmyffMCfv4XFFqmI51AHAb9xEh3sqIUaomjwl5SWHgYO4/Q3uSdAlY4Hi8cM367fZVl6FhurzSTg==",
+        "resolved": "10.0.13",
+        "contentHash": "6H3QqvjxTgCt4gxVVCJVjo35Zh/gzjw7NXidIx0ghZrgYYMUja/7JJ4g39ynE/OH5YBBbUhlmirGR/AuYpNIuA==",
         "dependencies": {
-          "System.Formats.Asn1": "10.0.5",
+          "System.Formats.Asn1": "10.0.13",
           "System.Memory": "4.6.3",
           "System.Runtime.CompilerServices.Unsafe": "6.1.2"
         }
@@ -234,11 +243,11 @@
       },
       "System.Formats.Asn1": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "wMHoKO5NpE8iWGTf2dsVJFPlWVpIfm5wGubqopqxHdmZeOJBA5xLs9BhoIxmoBu9MeCpzvDzqxeVZ2/tnCJI+w==",
+        "resolved": "10.0.13",
+        "contentHash": "uwKFGyJaUQ8xsf+wddv512+UIU1O4reOveom3y0gpQr86P1ReAKcQa/UdOZtg1etTIHgb01/grXp00tgeGBxqA==",
         "dependencies": {
           "System.Memory": "4.6.3",
-          "System.ValueTuple": "4.6.1"
+          "System.ValueTuple": "4.6.2"
         }
       },
       "System.Memory": {
@@ -270,14 +279,6 @@
         "resolved": "6.1.2",
         "contentHash": "2hBr6zdbIBTDE3EhK7NSVNdX58uTK6iHW/P/Axmm9sl1xoGSLqDvMtpecn226TNwHByFokYwJmt/aQQNlO5CRw=="
       },
-      "System.Security.Cryptography.Pkcs": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w==",
-        "dependencies": {
-          "Microsoft.Bcl.Cryptography": "10.0.5"
-        }
-      },
       "System.Threading.Tasks.Extensions": {
         "type": "Transitive",
         "resolved": "4.6.3",
@@ -307,6 +308,7 @@
           "Microsoft.Extensions.Logging": "[10.0.11, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.11, )",
           "PdfSharp": "[7.0.0-preview-1, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
@@ -352,6 +354,12 @@
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
       },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Direct",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw=="
+      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",
@@ -475,11 +483,6 @@
           "System.Security.Cryptography.Pkcs": "10.0.5"
         }
       },
-      "System.Security.Cryptography.Pkcs": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w=="
-      },
       "XmpCore": {
         "type": "Transitive",
         "resolved": "6.1.10.1",
@@ -496,6 +499,7 @@
           "Microsoft.Extensions.Logging": "[10.0.11, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.11, )",
           "PdfSharp": "[7.0.0-preview-1, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
@@ -541,6 +545,16 @@
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
       },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Direct",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw==",
+        "dependencies": {
+          "Microsoft.Bcl.Cryptography": "10.0.13",
+          "System.Formats.Asn1": "10.0.13"
+        }
+      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",
@@ -548,10 +562,10 @@
       },
       "Microsoft.Bcl.Cryptography": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "W6jwuBd21mAmyffMCfv4XFFqmI51AHAb9xEh3sqIUaomjwl5SWHgYO4/Q3uSdAlY4Hi8cM367fZVl6FhurzSTg==",
+        "resolved": "10.0.13",
+        "contentHash": "6H3QqvjxTgCt4gxVVCJVjo35Zh/gzjw7NXidIx0ghZrgYYMUja/7JJ4g39ynE/OH5YBBbUhlmirGR/AuYpNIuA==",
         "dependencies": {
-          "System.Formats.Asn1": "10.0.5"
+          "System.Formats.Asn1": "10.0.13"
         }
       },
       "Microsoft.CodeCoverage": {
@@ -680,17 +694,8 @@
       },
       "System.Formats.Asn1": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "wMHoKO5NpE8iWGTf2dsVJFPlWVpIfm5wGubqopqxHdmZeOJBA5xLs9BhoIxmoBu9MeCpzvDzqxeVZ2/tnCJI+w=="
-      },
-      "System.Security.Cryptography.Pkcs": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w==",
-        "dependencies": {
-          "Microsoft.Bcl.Cryptography": "10.0.5",
-          "System.Formats.Asn1": "10.0.5"
-        }
+        "resolved": "10.0.13",
+        "contentHash": "uwKFGyJaUQ8xsf+wddv512+UIU1O4reOveom3y0gpQr86P1ReAKcQa/UdOZtg1etTIHgb01/grXp00tgeGBxqA=="
       },
       "XmpCore": {
         "type": "Transitive",
@@ -708,6 +713,7 @@
           "Microsoft.Extensions.Logging": "[10.0.11, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.11, )",
           "PdfSharp": "[7.0.0-preview-1, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
@@ -753,6 +759,16 @@
           "Microsoft.Testing.Platform.MSBuild": "2.1.0"
         }
       },
+      "System.Security.Cryptography.Pkcs": {
+        "type": "Direct",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "a+EovgC1fBnwdlQ6cn3j4JFBfKqiFaFvoAhjisOoSvazLAcIznaBzPQP0oYnvccmeXfqUH1KebVZOxSeH6rMaw==",
+        "dependencies": {
+          "Microsoft.Bcl.Cryptography": "10.0.13",
+          "System.Formats.Asn1": "10.0.13"
+        }
+      },
       "Microsoft.ApplicationInsights": {
         "type": "Transitive",
         "resolved": "2.23.0",
@@ -760,8 +776,8 @@
       },
       "Microsoft.Bcl.Cryptography": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "W6jwuBd21mAmyffMCfv4XFFqmI51AHAb9xEh3sqIUaomjwl5SWHgYO4/Q3uSdAlY4Hi8cM367fZVl6FhurzSTg=="
+        "resolved": "10.0.13",
+        "contentHash": "6H3QqvjxTgCt4gxVVCJVjo35Zh/gzjw7NXidIx0ghZrgYYMUja/7JJ4g39ynE/OH5YBBbUhlmirGR/AuYpNIuA=="
       },
       "Microsoft.CodeCoverage": {
         "type": "Transitive",
@@ -889,17 +905,8 @@
       },
       "System.Formats.Asn1": {
         "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "wMHoKO5NpE8iWGTf2dsVJFPlWVpIfm5wGubqopqxHdmZeOJBA5xLs9BhoIxmoBu9MeCpzvDzqxeVZ2/tnCJI+w=="
-      },
-      "System.Security.Cryptography.Pkcs": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "BJEYUZfXpkPIHo2+oFoUemD5CPMFHPJOkRzXrbj/iZrWsjga3ypj8Rqd9bFlSLupEH4IIdD/aBWm/V1gCiBL9w==",
-        "dependencies": {
-          "Microsoft.Bcl.Cryptography": "10.0.5",
-          "System.Formats.Asn1": "10.0.5"
-        }
+        "resolved": "10.0.13",
+        "contentHash": "uwKFGyJaUQ8xsf+wddv512+UIU1O4reOveom3y0gpQr86P1ReAKcQa/UdOZtg1etTIHgb01/grXp00tgeGBxqA=="
       },
       "XmpCore": {
         "type": "Transitive",
@@ -917,6 +924,7 @@
           "Microsoft.Extensions.Logging": "[10.0.11, )",
           "Microsoft.Extensions.Logging.Abstractions": "[10.0.11, )",
           "PdfSharp": "[7.0.0-preview-1, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )",
           "XPath2": "[1.1.5, )",
           "XmpCore": "[6.1.10.1, )"
         }
