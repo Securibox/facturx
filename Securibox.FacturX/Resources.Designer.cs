@@ -63,95 +63,182 @@ namespace Securibox.FacturX {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_09_BASIC {
+        public static byte[] Factur_X_BASIC {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.09_BASIC", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_BASIC", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!-- Factur-X release metadata
+        ///     Version: 1.09.2
+        ///     Release date: 2026-08-04
+        ///     Effective date: 2026-09-01
+        ///--&gt;
+        ///&lt;codedb&gt;
+        ///  &lt;cl id=&quot;1&quot;&gt;
+        ///    &lt;enumeration value=&quot;urn:cen.eu:en16931:2017#compliant#urn:factur-x.eu:1p0:basic&quot;/&gt;
+        ///    &lt;enumeration value=&quot;urn:cen.eu:en16931:2017#compliant#urn:zugferd.de:2p0:basic&quot;/&gt;
+        ///  &lt;/cl&gt;
+        ///  &lt;cl id=&quot;2&quot;&gt;
+        ///    &lt;enumeration value=&quot;71&quot;/&gt;
+        ///    &lt;enumeration value=&quot;80&quot;/&gt;
+        ///    &lt;enumeration value=&quot;81&quot;/&gt;
+        ///    &lt;enumeration value=&quot;82&quot;/&gt;
+        ///    &lt;enumeration  [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_09_BASIC_codedb {
+        public static string FACTUR_X_BASIC_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.09_BASIC_codedb", resourceCulture);
+                return ResourceManager.GetString("FACTUR-X_BASIC_codedb", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_09_BASICWL {
+        public static byte[] Factur_X_BASICWL {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.09_BASICWL", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_BASICWL", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!-- Factur-X release metadata
+        ///     Version: 1.09.2
+        ///     Release date: 2026-08-04
+        ///     Effective date: 2026-09-01
+        ///--&gt;
+        ///&lt;codedb&gt;
+        ///  &lt;cl id=&quot;1&quot;&gt;
+        ///    &lt;enumeration value=&quot;urn:factur-x.eu:1p0:basicwl&quot;/&gt;
+        ///    &lt;enumeration value=&quot;urn:zugferd.de:2p0:basicwl&quot;/&gt;
+        ///  &lt;/cl&gt;
+        ///  &lt;cl id=&quot;2&quot;&gt;
+        ///    &lt;enumeration value=&quot;71&quot;/&gt;
+        ///    &lt;enumeration value=&quot;80&quot;/&gt;
+        ///    &lt;enumeration value=&quot;81&quot;/&gt;
+        ///    &lt;enumeration value=&quot;82&quot;/&gt;
+        ///    &lt;enumeration value=&quot;83&quot;/&gt;
+        ///    &lt;enumeration value=&quot;84&quot;/&gt;
+        ///    &lt;enumeration valu [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_09_BASICWL_codedb {
+        public static string FACTUR_X_BASIC_WL_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.09_BASICWL_codedb", resourceCulture);
+                return ResourceManager.GetString("FACTUR-X_BASIC-WL_codedb", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_09_EN16931 {
+        public static byte[] Factur_X_EN16931 {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.09_EN16931", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_EN16931", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!-- Factur-X release metadata
+        ///     Version: 1.09.2
+        ///     Release date: 2026-08-04
+        ///     Effective date: 2026-09-01
+        ///--&gt;
+        ///&lt;codedb&gt;
+        ///  &lt;cl id=&quot;1&quot;&gt;
+        ///    &lt;enumeration value=&quot;urn:cen.eu:en16931:2017&quot;/&gt;
+        ///  &lt;/cl&gt;
+        ///  &lt;cl id=&quot;2&quot;&gt;
+        ///    &lt;enumeration value=&quot;71&quot;/&gt;
+        ///    &lt;enumeration value=&quot;80&quot;/&gt;
+        ///    &lt;enumeration value=&quot;81&quot;/&gt;
+        ///    &lt;enumeration value=&quot;82&quot;/&gt;
+        ///    &lt;enumeration value=&quot;83&quot;/&gt;
+        ///    &lt;enumeration value=&quot;84&quot;/&gt;
+        ///    &lt;enumeration value=&quot;102&quot;/&gt;
+        ///    &lt;enumeration value=&quot;130&quot;/&gt;
+        ///    &lt;enumeration  [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_09_EN16931_codedb {
+        public static string FACTUR_X_EN16931_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.09_EN16931_codedb", resourceCulture);
+                return ResourceManager.GetString("FACTUR-X_EN16931_codedb", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_09_EXTENDED {
+        public static byte[] Factur_X_EXTENDED {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.09_EXTENDED", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_EXTENDED", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!-- Factur-X release metadata
+        ///     Version: 1.09.2
+        ///     Release date: 2026-08-04
+        ///     Effective date: 2026-09-01
+        ///--&gt;
+        ///&lt;codedb&gt;
+        ///  &lt;cl id=&quot;1&quot;&gt;
+        ///    &lt;enumeration value=&quot;urn:cen.eu:en16931:2017#conformant#urn:factur-x.eu:1p0:extended&quot;/&gt;
+        ///    &lt;enumeration value=&quot;urn:cen.eu:en16931:2017#conformant#urn:zugferd.de:2p0:extended&quot;/&gt;
+        ///  &lt;/cl&gt;
+        ///  &lt;cl id=&quot;2&quot;&gt;
+        ///    &lt;enumeration value=&quot;71&quot;/&gt;
+        ///    &lt;enumeration value=&quot;80&quot;/&gt;
+        ///    &lt;enumeration value=&quot;81&quot;/&gt;
+        ///    &lt;enumeration value=&quot;82&quot;/&gt;
+        ///    &lt;enum [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_09_EXTENDED_codedb {
+        public static string FACTUR_X_EXTENDED_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.09_EXTENDED_codedb", resourceCulture);
+                return ResourceManager.GetString("FACTUR-X_EXTENDED_codedb", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] Factur_X_1_09_MINIMUM {
+        public static byte[] Factur_X_MINIMUM {
             get {
-                object obj = ResourceManager.GetObject("Factur-X_1.09_MINIMUM", resourceCulture);
+                object obj = ResourceManager.GetObject("Factur-X_MINIMUM", resourceCulture);
                 return ((byte[])(obj));
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;!-- Factur-X release metadata
+        ///     Version: 1.09.2
+        ///     Release date: 2026-08-04
+        ///     Effective date: 2026-09-01
+        ///--&gt;
+        ///&lt;codedb&gt;
+        ///  &lt;cl id=&quot;1&quot;&gt;
+        ///    &lt;enumeration value=&quot;urn:factur-x.eu:1p0:minimum&quot;/&gt;
+        ///    &lt;enumeration value=&quot;urn:zugferd.de:2p0:minimum&quot;/&gt;
+        ///  &lt;/cl&gt;
+        ///  &lt;cl id=&quot;2&quot;&gt;
+        ///    &lt;enumeration value=&quot;71&quot;/&gt;
+        ///    &lt;enumeration value=&quot;80&quot;/&gt;
+        ///    &lt;enumeration value=&quot;81&quot;/&gt;
+        ///    &lt;enumeration value=&quot;82&quot;/&gt;
+        ///    &lt;enumeration value=&quot;83&quot;/&gt;
+        ///    &lt;enumeration value=&quot;84&quot;/&gt;
+        ///    &lt;enumeration valu [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string Factur_X_1_09_MINIMUM_codedb {
+        public static string FACTUR_X_MINIMUM_codedb {
             get {
-                return ResourceManager.GetString("Factur-X_1.09_MINIMUM_codedb", resourceCulture);
+                return ResourceManager.GetString("FACTUR-X_MINIMUM_codedb", resourceCulture);
             }
         }
         
