@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
 using PdfSharp.Pdf;
@@ -280,7 +281,15 @@ namespace Securibox.FacturX
                     }
                 }
 
-                var xmp = XmpMetaFactory.ParseFromBuffer(metadataBytes);
+                IXmpMeta xmp;
+                try
+                {
+                    xmp = XmpMetaFactory.ParseFromBuffer(metadataBytes);
+                }
+                catch (InvalidCastException)
+                {
+                    xmp = XmpMetaFactory.ParseFromBuffer(RemoveXmlComments(metadataBytes));
+                }
                 var propertyPdfAConformance = xmp.GetProperty(
                     XmpConstants.NsPdfaId,
                     "pdfaid:conformance"
@@ -384,6 +393,36 @@ namespace Securibox.FacturX
             }
 
             return facturXMetadata;
+        }
+
+        private static byte[] RemoveXmlComments(byte[] xmpBytes)
+        {
+            var settings = new XmlReaderSettings
+            {
+                IgnoreComments = true,
+                DtdProcessing = DtdProcessing.Ignore,
+                XmlResolver = null,
+            };
+
+            XDocument document;
+            using (var input = new MemoryStream(xmpBytes))
+            using (var reader = XmlReader.Create(input, settings))
+            {
+                document = XDocument.Load(reader, LoadOptions.PreserveWhitespace);
+            }
+
+            using var output = new MemoryStream();
+            using (
+                var writer = XmlWriter.Create(
+                    output,
+                    new XmlWriterSettings { Encoding = new UTF8Encoding(false) }
+                )
+            )
+            {
+                document.Save(writer);
+            }
+
+            return output.ToArray();
         }
 
         private PdfStream? GetEmbeddedXmlStream(
