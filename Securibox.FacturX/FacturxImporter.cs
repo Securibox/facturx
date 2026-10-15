@@ -98,7 +98,9 @@ namespace Securibox.FacturX
         {
             validationReport = new List<ValidationReport>();
             var facturXMetadata = GetMetadata();
-            var xmlPdfStream = GetEmbeddedXmlStream(_pdfDocument, facturXMetadata.DocumentFileName);
+            var xmlPdfStream = string.IsNullOrWhiteSpace(facturXMetadata.DocumentFileName)
+                ? GetEmbeddedXmlStream(_pdfDocument)
+                : GetEmbeddedXmlStream(_pdfDocument, facturXMetadata.DocumentFileName);
             if (xmlPdfStream == null || xmlPdfStream.Length == 0)
             {
                 _logger!.LogCritical("Could not read embedded XML file.");
@@ -462,7 +464,7 @@ namespace Securibox.FacturX
                         if (fileSpec?.Value is PdfDictionary dict)
                         {
                             var fileName = dict.Elements.GetString("/F");
-                            if (fileName == xmlFileName)
+                            if (fileName.Trim() == xmlFileName)
                             {
                                 var efDict = dict.Elements.GetDictionary("/EF");
                                 if (efDict == null)
