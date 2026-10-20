@@ -1294,5 +1294,91 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
 
             File.Delete(newFieldsDstFile);
         }
+
+        [Test]
+        [Order(6)]
+        public async Task WriteData_Extended_GrossPriceAllowanceCalculationPercent_SUCCESS()
+        {
+            // Extended allows CalculationPercent on the gross price allowance.
+            var invoice = GetInvoice_SpecificationModels();
+            invoice
+                .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                .SpecifiedLineTradeAgreement.GrossPriceProductTradePrice =
+                new SpecificationModels.Extended.TradePrice()
+                {
+                    ChargeAmount = new SpecificationModels.Minimum.Amount { Value = 220.0000m },
+                    BasisQuantity = new SpecificationModels.Basic.Quantity()
+                    {
+                        UnitCode = "C62",
+                        Value = 6.0000m,
+                    },
+                    AppliedTradeAllowanceCharge =
+                        new SpecificationModels.Extended.TradeAllowanceChargeExtended()
+                        {
+                            ChargeIndicator = new SpecificationModels.Basic.IndicatorType
+                            {
+                                Indicator = false,
+                            },
+                            CalculationPercent = 6.41m,
+                            BasisAmount = new SpecificationModels.Minimum.Amount
+                            {
+                                Value = 220.0000m,
+                            },
+                            ActualAmount = new SpecificationModels.Minimum.Amount
+                            {
+                                Value = 14.1000m,
+                            },
+                        },
+                };
+
+            var exporter = new FacturxExporter();
+            using var stream = exporter.CreateFacturXStream(
+                srcFile,
+                invoice,
+                "Test Invoice with gross price allowance",
+                "Test Invoice"
+            );
+
+            var grossPriceDstFile = Path.Combine(
+                dstPath,
+                "2023-6013_facture_facturx_extended_grossprice_allowance.pdf"
+            );
+            using (var fileStream = new FileStream(grossPriceDstFile, FileMode.Create))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+
+            Assert.That(exporter.validationReport.Any(r => r.IsError), Is.False);
+            Assert.That(
+                exporter.validationReport.Where(r =>
+                    r.Path != null
+                    && (
+                        r.Path.Contains(
+                            "SpecifiedLineTradeSettlement/ram:SpecifiedTradeAllowanceCharge"
+                        )
+                        || r.Path.Contains(
+                            "GrossPriceProductTradePrice/ram:AppliedTradeAllowanceCharge"
+                        )
+                    )
+                    && r.Description != null
+                    && r.Description.Contains("not used")
+                ),
+                Is.Empty
+            );
+
+            var importer = new FacturxImporter(grossPriceDstFile);
+            var extendedInvoice =
+                importer.ImportDataWithDeserialization()
+                as SpecificationModels.Extended.CrossIndustryInvoice;
+
+            Assert.That(extendedInvoice, Is.Not.Null);
+            var appliedAllowance = extendedInvoice!
+                .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                .SpecifiedLineTradeAgreement.GrossPriceProductTradePrice.AppliedTradeAllowanceCharge;
+            Assert.That(appliedAllowance.CalculationPercent, Is.EqualTo(6.41m));
+            Assert.That(appliedAllowance.ActualAmount.Value, Is.EqualTo(14.10m));
+
+            File.Delete(grossPriceDstFile);
+        }
     }
 }

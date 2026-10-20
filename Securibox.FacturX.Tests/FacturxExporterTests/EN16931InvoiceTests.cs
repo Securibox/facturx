@@ -189,9 +189,9 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                         },
                                                 },
                                             SpecifiedTradeAllowanceCharge =
-                                                new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge[]
+                                                new SpecificationModels.EN16931.LineTradeAllowanceCharge[]
                                                 {
-                                                    new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge()
+                                                    new SpecificationModels.EN16931.LineTradeAllowanceCharge()
                                                     {
                                                         ChargeIndicator = new IndicatorType
                                                         {
@@ -627,9 +627,9 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                         },
                                                 },
                                             SpecifiedTradeAllowanceCharge =
-                                                new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge[]
+                                                new SpecificationModels.EN16931.LineTradeAllowanceCharge[]
                                                 {
-                                                    new SpecificationModels.Basic.AdjustmentTradeAllowanceCharge()
+                                                    new SpecificationModels.EN16931.LineTradeAllowanceCharge()
                                                     {
                                                         ChargeIndicator = new IndicatorType
                                                         {
