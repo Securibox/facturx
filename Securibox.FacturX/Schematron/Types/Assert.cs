@@ -199,7 +199,7 @@ namespace Securibox.FacturX.Schematron.Types
                 @"every\s+(.*)\s+satisfies\s+(.+)",
                 RegexOptions.Singleline
             );
-            if (everyMatch.Success && (expr.Contains(" for ") || expr.Contains(" let ")))
+            if (everyMatch.Success && expr.Contains(" let "))
             {
                 var parts = everyMatch
                     .Groups[1]
@@ -263,7 +263,7 @@ namespace Securibox.FacturX.Schematron.Types
                 RegexOptions.Singleline
             );
 
-            if (someMatch.Success && (expr.Contains(" for ") || expr.Contains(" let ")))
+            if (someMatch.Success && expr.Contains(" let "))
             {
                 var parts = someMatch.Groups[1].ToString().Split([" in "], StringSplitOptions.None);
 
@@ -304,9 +304,10 @@ namespace Securibox.FacturX.Schematron.Types
             }
             #endregion
 
+            // Anchored: a nested 'for' (e.g. inside sum(...)) is left to XPath2
             var match = Regex.Match(
                 expr,
-                @"(?:for|let)\s+(.*?)\s+return\s+(.+)",
+                @"^(?:for|let)\s+(.*?)\s+return\s+(.+)",
                 RegexOptions.Singleline
             );
 
