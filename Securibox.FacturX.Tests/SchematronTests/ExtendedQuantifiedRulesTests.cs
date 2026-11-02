@@ -14,7 +14,12 @@ namespace Securibox.FacturX.Tests.SchematronTests
     /// </summary>
     internal class ExtendedQuantifiedRulesTests
     {
-        private class Line(string id, decimal amount, string? status = null, string? parentId = null)
+        private class Line(
+            string id,
+            decimal amount,
+            string? status = null,
+            string? parentId = null
+        )
         {
             public string Id { get; } = id;
             public decimal Amount { get; } = amount;
@@ -54,17 +59,27 @@ namespace Securibox.FacturX.Tests.SchematronTests
 
             foreach (var line in lines)
             {
-                sb.Append("<ram:IncludedSupplyChainTradeLineItem><ram:AssociatedDocumentLineDocument>");
+                sb.Append(
+                    "<ram:IncludedSupplyChainTradeLineItem><ram:AssociatedDocumentLineDocument>"
+                );
                 sb.Append($"<ram:LineID>{line.Id}</ram:LineID>");
                 if (line.ParentId != null)
                     sb.Append($"<ram:ParentLineID>{line.ParentId}</ram:ParentLineID>");
                 if (line.Status != null)
-                    sb.Append($"<ram:LineStatusReasonCode>{line.Status}</ram:LineStatusReasonCode>");
+                    sb.Append(
+                        $"<ram:LineStatusReasonCode>{line.Status}</ram:LineStatusReasonCode>"
+                    );
                 sb.Append("</ram:AssociatedDocumentLineDocument>");
-                sb.Append($"<ram:SpecifiedTradeProduct><ram:Name>Item {line.Id}</ram:Name></ram:SpecifiedTradeProduct>");
-                sb.Append("<ram:SpecifiedLineTradeSettlement><ram:SpecifiedTradeSettlementLineMonetarySummation>");
+                sb.Append(
+                    $"<ram:SpecifiedTradeProduct><ram:Name>Item {line.Id}</ram:Name></ram:SpecifiedTradeProduct>"
+                );
+                sb.Append(
+                    "<ram:SpecifiedLineTradeSettlement><ram:SpecifiedTradeSettlementLineMonetarySummation>"
+                );
                 sb.Append($"<ram:LineTotalAmount>{Format(line.Amount)}</ram:LineTotalAmount>");
-                sb.Append("</ram:SpecifiedTradeSettlementLineMonetarySummation></ram:SpecifiedLineTradeSettlement>");
+                sb.Append(
+                    "</ram:SpecifiedTradeSettlementLineMonetarySummation></ram:SpecifiedLineTradeSettlement>"
+                );
                 sb.Append("</ram:IncludedSupplyChainTradeLineItem>");
             }
 

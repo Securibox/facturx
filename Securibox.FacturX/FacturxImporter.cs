@@ -194,7 +194,7 @@ namespace Securibox.FacturX
             }
 
             using ILoggerFactory factory = LoggerFactory.Create(
-                delegate (ILoggingBuilder builder)
+                delegate(ILoggingBuilder builder)
                 {
                     builder
                         .AddFilter("Microsoft", LogLevel.Warning)
