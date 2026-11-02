@@ -286,9 +286,9 @@ namespace Securibox.FacturX
                 {
                     xmp = XmpMetaFactory.ParseFromBuffer(metadataBytes);
                 }
-                catch (InvalidCastException)
+                catch (Exception ex) when (ex is InvalidCastException || ex is XmpException)
                 {
-                    xmp = XmpMetaFactory.ParseFromBuffer(RemoveXmlComments(metadataBytes));
+                    xmp = XmpMetaFactory.ParseFromBuffer(NormalizeXmp(metadataBytes));
                 }
                 var propertyPdfAConformance = xmp.GetProperty(
                     XmpConstants.NsPdfaId,
@@ -395,7 +395,7 @@ namespace Securibox.FacturX
             return facturXMetadata;
         }
 
-        private static byte[] RemoveXmlComments(byte[] xmpBytes)
+        private static byte[] NormalizeXmp(byte[] xmpBytes)
         {
             var settings = new XmlReaderSettings
             {
@@ -409,6 +409,15 @@ namespace Securibox.FacturX
             using (var reader = XmlReader.Create(input, settings))
             {
                 document = XDocument.Load(reader, LoadOptions.PreserveWhitespace);
+            }
+
+            XNamespace rdf = XmpConstants.NsRdf;
+            foreach (var rdfElement in document.Descendants(rdf + "RDF"))
+            {
+                if (!rdfElement.HasAttributes)
+                {
+                    rdfElement.SetAttributeValue(XNamespace.Xmlns + "rdf", XmpConstants.NsRdf);
+                }
             }
 
             using var output = new MemoryStream();
