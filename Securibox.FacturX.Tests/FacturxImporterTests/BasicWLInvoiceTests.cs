@@ -4056,7 +4056,7 @@ namespace Securibox.FacturX.Tests.FacturxImporterTests
 
             Assert.That(allowanceChargeList?.ElementAt(1).ChargeIndicator.Indicator is true);
             Assert.That(allowanceChargeList?.ElementAt(1).ActualAmount.Value, Is.EqualTo(10.00));
-            Assert.That(allowanceChargeList?.ElementAt(1).CalculationPercent, Is.EqualTo(0.0));
+            Assert.That(allowanceChargeList?.ElementAt(1).CalculationPercent, Is.Null);
             Assert.That(allowanceChargeList?.ElementAt(1).Reason, Is.EqualTo("FRAIS DEPLACEMENT"));
             Assert.That(
                 allowanceChargeList?.ElementAt(1).CategoryTradeTax.TypeCode,

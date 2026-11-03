@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Securibox.FacturX.SpecificationModels.Basic;
 using Securibox.FacturX.SpecificationModels.Minimum;
 
 namespace Securibox.FacturX.Tests.FacturxExporterTests
@@ -153,6 +154,21 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                             Value = 6.0000m,
                                                         },
                                                 },
+                                            GrossPriceProductTradePrice =
+                                                new SpecificationModels.Basic.TradePrice()
+                                                {
+                                                    ChargeAmount =
+                                                        new SpecificationModels.Minimum.Amount
+                                                        {
+                                                            Value = 205.9000m,
+                                                        },
+                                                    BasisQuantity =
+                                                        new SpecificationModels.Basic.Quantity()
+                                                        {
+                                                            UnitCode = "C62",
+                                                            Value = 6.0000m,
+                                                        },
+                                                },
                                         },
                                     SpecifiedLineTradeSettlement =
                                         new SpecificationModels.Basic.LineTradeSettlement()
@@ -172,6 +188,23 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                                                         {
                                                             Value = 1235.40m,
                                                         },
+                                                },
+                                            SpecifiedTradeAllowanceCharge =
+                                                new SpecificationModels.Basic.LineTradeAllowanceCharge[]
+                                                {
+                                                    new SpecificationModels.Basic.LineTradeAllowanceCharge()
+                                                    {
+                                                        ChargeIndicator = new IndicatorType
+                                                        {
+                                                            Indicator = false,
+                                                        },
+                                                        ActualAmount =
+                                                            new SpecificationModels.Minimum.Amount
+                                                            {
+                                                                Value = 0.00m,
+                                                            },
+                                                        Reason = "Remise",
+                                                    },
                                                 },
                                         },
                                     SpecifiedLineTradeDelivery =
@@ -1052,6 +1085,51 @@ namespace Securibox.FacturX.Tests.FacturxExporterTests
                     .Value,
                 Is.EqualTo(452.98m)
             );
+        }
+
+        [Test]
+        [Order(4)]
+        public async Task WriteData_Basic_LineAllowance_NoNotUsedElement_SUCCESS()
+        {
+            // BASIC schematron marks CalculationPercent, BasisAmount and CategoryTradeTax
+            // as not used on line allowances/charges: none of them must be serialized.
+            var invoice = GetHotelInvoice_SpecificationModels();
+            var exporter = new FacturxExporter();
+
+            using var stream = exporter.CreateFacturXStream(
+                srcFile,
+                invoice,
+                "Test Invoice with line allowance",
+                failOnError: false
+            );
+            using (var fileStream = new FileStream(tmpFile, FileMode.Create))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+
+            Assert.That(exporter.validationReport.Any(r => r.IsError), Is.False);
+            Assert.That(
+                exporter.validationReport.Where(r =>
+                    r.Path != null
+                    && r.Path.Contains(
+                        "SpecifiedLineTradeSettlement/ram:SpecifiedTradeAllowanceCharge"
+                    )
+                    && r.Description != null
+                    && r.Description.Contains("not used")
+                ),
+                Is.Empty
+            );
+
+            var importer = new FacturxImporter(tmpFile);
+            var basicInvoice =
+                importer.ImportDataWithDeserialization()
+                as Securibox.FacturX.SpecificationModels.Basic.CrossIndustryInvoice;
+
+            Assert.That(basicInvoice, Is.Not.Null);
+            var lineAllowance = basicInvoice!
+                .SupplyChainTradeTransaction.IncludedSupplyChainTradeLineItem.ElementAt(0)
+                .SpecifiedLineTradeSettlement.SpecifiedTradeAllowanceCharge[0];
+            Assert.That(lineAllowance.Reason, Is.EqualTo("Remise"));
         }
     }
 }

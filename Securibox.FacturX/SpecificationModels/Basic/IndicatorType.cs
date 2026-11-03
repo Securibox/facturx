@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Securibox.FacturX.SpecificationModels.BasicWL
+namespace Securibox.FacturX.SpecificationModels.Basic
 {
     public class IndicatorType
     {
