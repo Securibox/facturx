@@ -16,14 +16,16 @@ namespace Securibox.FacturX.Schematron.Helpers
     {
         private const string ArchiveResourceName = "Securibox.FacturX.compress-resources.zip";
 
-        private static readonly ConcurrentDictionary<string, Lazy<byte[]?>> Entries =
-            new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, Lazy<byte[]?>> Entries = new(
+            StringComparer.OrdinalIgnoreCase
+        );
 
         private static readonly ConcurrentDictionary<string, Lazy<IReadOnlyList<byte[]>>> XsdFiles =
             new(StringComparer.OrdinalIgnoreCase);
 
-        private static readonly ConcurrentDictionary<string, Lazy<XPathDocument?>> CodeDbs =
-            new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, Lazy<XPathDocument?>> CodeDbs = new(
+            StringComparer.OrdinalIgnoreCase
+        );
 
         public static byte[] GetSchema(FacturXConformanceLevelType conformanceLevel)
         {
@@ -53,7 +55,8 @@ namespace Securibox.FacturX.Schematron.Helpers
                 throw new ArgumentException("Could not determine FacturXConformanceLevelType");
             }
 
-            return GetEntry(fileName) ?? throw new FileNotFoundException($"Schematron resource not found: {fileName}");
+            return GetEntry(fileName)
+                ?? throw new FileNotFoundException($"Schematron resource not found: {fileName}");
         }
 
         /// <summary>
@@ -63,33 +66,31 @@ namespace Securibox.FacturX.Schematron.Helpers
         public static XPathDocument? GetCodeDb(string name)
         {
             return CodeDbs
-                .GetOrAdd(
-                    name,
-                    key => new Lazy<XPathDocument?>(() =>
+                .GetOrAdd(name, key => new Lazy<XPathDocument?>(() =>
+                {
+                    var bytes = GetEntry(key + ".xml");
+                    if (bytes == null)
                     {
-                        var bytes = GetEntry(key + ".xml");
-                        if (bytes == null)
-                        {
-                            return null;
-                        }
+                        return null;
+                    }
 
-                        using var stream = new MemoryStream(bytes, writable: false);
-                        return new XPathDocument(stream);
-                    })
-                )
+                    using var stream = new MemoryStream(bytes, writable: false);
+                    return new XPathDocument(stream);
+                }))
                 .Value;
         }
 
         /// <summary>
         /// Returns the content of all the XSD files of the conformance level (folder Xsd/FacturX/{level}/).
         /// </summary>
-        public static IReadOnlyList<byte[]> GetXsdFiles(FacturXConformanceLevelType conformanceLevel)
+        public static IReadOnlyList<byte[]> GetXsdFiles(
+            FacturXConformanceLevelType conformanceLevel
+        )
         {
             return XsdFiles
-                .GetOrAdd(
-                    conformanceLevel.Name,
-                    levelName => new Lazy<IReadOnlyList<byte[]>>(() => ReadXsdFiles(levelName))
-                )
+                .GetOrAdd(conformanceLevel.Name, levelName => new Lazy<IReadOnlyList<byte[]>>(() =>
+                    ReadXsdFiles(levelName)
+                ))
                 .Value;
         }
 
@@ -118,15 +119,17 @@ namespace Securibox.FacturX.Schematron.Helpers
 
         private static byte[]? GetEntry(string entryName)
         {
-            return Entries.GetOrAdd(entryName, key => new Lazy<byte[]?>(() => ReadEntry(key))).Value;
+            return Entries
+                .GetOrAdd(entryName, key => new Lazy<byte[]?>(() => ReadEntry(key)))
+                .Value;
         }
 
         private static Stream OpenArchiveStream()
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream(ArchiveResourceName)
-                   ?? throw new FileNotFoundException(
-                       $"Embedded resource not found: {ArchiveResourceName}"
-                   );
+                ?? throw new FileNotFoundException(
+                    $"Embedded resource not found: {ArchiveResourceName}"
+                );
         }
 
         private static byte[]? ReadEntry(string entryName)

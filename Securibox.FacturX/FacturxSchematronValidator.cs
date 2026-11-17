@@ -38,7 +38,10 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel
         )
         {
-            using var schemaStream = new MemoryStream(CompressedResources.GetSchema(conformanceLevel), writable: false);
+            using var schemaStream = new MemoryStream(
+                CompressedResources.GetSchema(conformanceLevel),
+                writable: false
+            );
             // check this xmlReaderSettings, is it necessary
             XmlReaderSettings readerSettings = new XmlReaderSettings()
             {

@@ -1,7 +1,7 @@
-﻿using Securibox.FacturX.Schematron.Helpers;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Securibox.FacturX.Schematron.Helpers;
 
 namespace Securibox.FacturX.Schematron.Xslt
 {

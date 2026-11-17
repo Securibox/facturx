@@ -1,7 +1,7 @@
-﻿using Securibox.FacturX.Schematron.Helpers;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Schema;
 using Securibox.FacturX.Models.Enums;
+using Securibox.FacturX.Schematron.Helpers;
 
 namespace Securibox.FacturX
 {

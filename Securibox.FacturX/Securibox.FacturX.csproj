@@ -87,16 +87,38 @@
     <CompressedXsdSource Include="Xsd\**\*.xsd" />
   </ItemGroup>
 
-  <Target Name="PackCompressedResources" BeforeTargets="AssignTargetPaths" Inputs="@(CompressedSource);@(CompressedXsdSource);$(MSBuildThisFileFullPath)" Outputs="$(IntermediateOutputPath)compress-resources.zip">
+  <Target
+    Name="PackCompressedResources"
+    BeforeTargets="AssignTargetPaths"
+    Inputs="@(CompressedSource);@(CompressedXsdSource);$(MSBuildThisFileFullPath)"
+    Outputs="$(IntermediateOutputPath)compress-resources.zip"
+  >
     <RemoveDir Directories="$(IntermediateOutputPath)compress-resources" />
-    <Copy SourceFiles="@(CompressedSource)" DestinationFolder="$(IntermediateOutputPath)compress-resources" />
-    <Copy SourceFiles="@(CompressedXsdSource)" DestinationFiles="@(CompressedXsdSource->'$(IntermediateOutputPath)compress-resources\Xsd\%(RecursiveDir)%(Filename)%(Extension)')" />
-    <ZipDirectory SourceDirectory="$(IntermediateOutputPath)compress-resources" DestinationFile="$(IntermediateOutputPath)compress-resources.zip" Overwrite="true" />
+    <Copy
+      SourceFiles="@(CompressedSource)"
+      DestinationFolder="$(IntermediateOutputPath)compress-resources"
+    />
+    <Copy
+      SourceFiles="@(CompressedXsdSource)"
+      DestinationFiles="@(CompressedXsdSource->'$(IntermediateOutputPath)compress-resources\Xsd\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+    <ZipDirectory
+      SourceDirectory="$(IntermediateOutputPath)compress-resources"
+      DestinationFile="$(IntermediateOutputPath)compress-resources.zip"
+      Overwrite="true"
+    />
   </Target>
 
-  <Target Name="EmbedCompressedResources" AfterTargets="PackCompressedResources" BeforeTargets="AssignTargetPaths">
+  <Target
+    Name="EmbedCompressedResources"
+    AfterTargets="PackCompressedResources"
+    BeforeTargets="AssignTargetPaths"
+  >
     <ItemGroup>
-      <EmbeddedResource Include="$(IntermediateOutputPath)compress-resources.zip" LogicalName="Securibox.FacturX.compress-resources.zip" />
+      <EmbeddedResource
+        Include="$(IntermediateOutputPath)compress-resources.zip"
+        LogicalName="Securibox.FacturX.compress-resources.zip"
+      />
     </ItemGroup>
   </Target>
 
