@@ -38,7 +38,7 @@ namespace Securibox.FacturX
             FacturXConformanceLevelType conformanceLevel
         )
         {
-            var schemaStream = GetSchemaFileByConformanceLevel(conformanceLevel);
+            using var schemaStream = new MemoryStream(CompressedResources.GetSchema(conformanceLevel), writable: false);
             // check this xmlReaderSettings, is it necessary
             XmlReaderSettings readerSettings = new XmlReaderSettings()
             {
@@ -46,7 +46,7 @@ namespace Securibox.FacturX
                 ValidationType = ValidationType.Schema,
             };
 
-            var reader = XmlReader.Create(schemaStream, readerSettings);
+            using var reader = XmlReader.Create(schemaStream, readerSettings);
 
             XmlSerializer serializer = new XmlSerializer(typeof(Schematron.Types.Schema));
             Schematron.Types.Schema? schema =
@@ -59,36 +59,6 @@ namespace Securibox.FacturX
             }
 
             return schema;
-        }
-
-        private static Stream GetSchemaFileByConformanceLevel(
-            FacturXConformanceLevelType conformanceLevel
-        )
-        {
-            if (conformanceLevel.Id == FacturXConformanceLevelType.Minimum.Id)
-            {
-                return new MemoryStream(Resources.Factur_X_MINIMUM);
-            }
-            else if (conformanceLevel.Id == FacturXConformanceLevelType.BasicWL.Id)
-            {
-                return new MemoryStream(Resources.Factur_X_BASICWL);
-            }
-            else if (conformanceLevel.Id == FacturXConformanceLevelType.Basic.Id)
-            {
-                return new MemoryStream(Resources.Factur_X_BASIC);
-            }
-            else if (conformanceLevel.Id == FacturXConformanceLevelType.EN16931.Id)
-            {
-                return new MemoryStream(Resources.Factur_X_EN16931);
-            }
-            else if (conformanceLevel.Id == FacturXConformanceLevelType.Extended.Id)
-            {
-                return new MemoryStream(Resources.Factur_X_EXTENDED);
-            }
-            else
-            {
-                throw new ArgumentException($"Could not determine FacturXConformanceLevelType");
-            }
         }
     }
 }
