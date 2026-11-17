@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Schema;
 using Securibox.FacturX.Models.Enums;
+using Securibox.FacturX.Schematron.Helpers;
 
 namespace Securibox.FacturX
 {
@@ -24,23 +24,10 @@ namespace Securibox.FacturX
             List<string> validationErrors
         )
         {
-            var asm = Assembly.GetExecutingAssembly();
-            var resourcePrefix =
-                $"{asm.GetName().Name}.Xsd.FacturX.{conformanceLevel.Name.Replace(' ', '_')}.";
-
-            var resourceNames = asm.GetManifestResourceNames()
-                .Where(r =>
-                    r.StartsWith(resourcePrefix, StringComparison.OrdinalIgnoreCase)
-                    && r.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase)
-                );
-
             var schemaSet = new XmlSchemaSet();
-            foreach (var resourceName in resourceNames)
+            foreach (var xsd in CompressedResources.GetXsdFiles(conformanceLevel))
             {
-                using var stream =
-                    asm.GetManifestResourceStream(resourceName)
-                    ?? throw new FileNotFoundException($"Resource not found: {resourceName}");
-
+                using var stream = new MemoryStream(xsd, writable: false);
                 var schema = XmlSchema.Read(stream, null);
                 schemaSet.Add(schema);
             }
