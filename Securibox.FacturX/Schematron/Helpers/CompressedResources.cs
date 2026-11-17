@@ -7,10 +7,10 @@ using Securibox.FacturX.Models.Enums;
 namespace Securibox.FacturX.Schematron.Helpers
 {
     /// <summary>
-    /// Donne accès aux ressources textuelles embarquées compressées : Schematron (.sch), listes de codes (_codedb.xml) et XSD.
-    /// Ces fichiers sont très redondants entre niveaux de conformité : ils sont embarqués dans
-    /// un unique zip (généré à la compilation, cf. cible PackCompressedResources du csproj)
-    /// et décompressés à la demande, une seule fois chacun.
+    /// Provides access to compressed embedded textual resources: Schematron (.sch), code lists (_codedb.xml), and XSDs.
+    /// These files are highly redundant across compliance levels: they are embedded in
+    /// a single zip file (generated at compile time, see the PackCompressedResources target in the csproj)
+    /// and decompressed on demand, exactly once each.
     /// </summary>
     internal static class CompressedResources
     {
@@ -57,9 +57,9 @@ namespace Securibox.FacturX.Schematron.Helpers
         }
 
         /// <summary>
-        /// Retourne la liste de codes (parsée une seule fois) ou null si elle n'existe pas.
+        /// Returns the code list (parsed only once), or null if it does not exist.
         /// </summary>
-        /// <param name="name">Nom sans extension, ex. "FACTUR-X_BASIC_codedb".</param>
+        /// <param name="name">Name without extension, e.g. "FACTUR-X_BASIC_codedb".</param>
         public static XPathDocument? GetCodeDb(string name)
         {
             return CodeDbs
@@ -81,7 +81,7 @@ namespace Securibox.FacturX.Schematron.Helpers
         }
 
         /// <summary>
-        /// Retourne le contenu de tous les XSD du niveau de conformité (dossier Xsd/FacturX/{niveau}/).
+        /// Returns the content of all the XSD files of the conformance level (folder Xsd/FacturX/{level}/).
         /// </summary>
         public static IReadOnlyList<byte[]> GetXsdFiles(FacturXConformanceLevelType conformanceLevel)
         {
@@ -102,7 +102,7 @@ namespace Securibox.FacturX.Schematron.Helpers
             using var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
             foreach (var entry in archive.Entries)
             {
-                // Selon l'outil qui a créé le zip, le séparateur peut être '\' ou '/'.
+                // Depending on the tool that created the zip, the separator can be '\' or '/'.
                 var name = entry.FullName.Replace('\\', '/');
                 if (
                     name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
